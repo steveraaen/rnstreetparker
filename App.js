@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   AppState,
   Dimensions,
   Modal,
   Picker,
   Slider,
+  StatusBar,
   StyleSheet,
   TouchableOpacity,
   Text,
@@ -14,17 +16,21 @@ import {
 import MapView, { PROVIDER_GOOGLE, Circle } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
+import Icon from 'react-native-vector-icons/Ionicons';
+/*import Swiper from 'react-native-swiper';*/
 import nice from './niceMap.js'
 import niceBlack from './niceMapBlack.js'
+import ModalContent from './ModalContent.js'
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
+      modalVisible: false,
       selDay: moment().format("dddd").toUpperCase().substring(0, 3),
       uLatitude: null,
       uLongitude: null,
-      dayDisplay: moment().format('HH:MM'),
+      fullDay: moment().format('dddd'),
       slideTime: moment(),
       appState: AppState.currentState,
        }
@@ -35,6 +41,13 @@ export default class App extends Component<Props> {
       this.getMeters = this.getMeters.bind(this);
 
   }
+    openModal() {
+      this.setState({modalVisible:true});
+    }
+
+    closeModal() {
+      this.setState({modalVisible:false});
+    }
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
 
@@ -99,6 +112,7 @@ export default class App extends Component<Props> {
       var thuArray = []
       var friArray = []
       var satArray = []
+      var sunArray = []
           if(Array.isArray(endTime)){
                 marker.dayow = dayow
                 marker.rawEnd = endTime[1]
@@ -147,19 +161,22 @@ export default class App extends Component<Props> {
           friArray.push(markersArray[i])
         } if(markersArray[i].text.includes("SAT")) {
           satArray.push(markersArray[i])
+        } if(markersArray[i].text.includes("SUN")) {
+          sunArray.push(markersArray[i])
         }
 }
 // ------------- set state of all markers regardless of day
         this.setState({
           signs: doc,
           markersArray: markersArray,
-          todayMarkersArray: markersArray,
+         /* todayMarkersArray: markersArray,*/
           monArray: monArray,
           tueArray: tueArray,
           wedArray: wedArray,
           thuArray: thuArray,
           friArray: friArray,
           satArray: satArray,
+          sunArray: sunArray,
         }, () => {
           this.makeMarker(this.state.todayMarkersArray)
          /* this.betterMarker(this.state.markersArray)*/
@@ -185,17 +202,18 @@ export default class App extends Component<Props> {
         this.setState({
           uLatitude: position.coords.latitude,
           uLongitude: position.coords.longitude,
+          uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
          error: null,
         }, () => {
-          this.getSigns(this.state.uLatitude, this.state.uLongitude,this.state.selDay)
+          this.getSigns(this.state.uLatitude, this.state.uLongitude)
           this.getMeters(this.state.uLatitude, this.state.uLongitude)
 
         });
        
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true,  distanceFilter: 200 },
+      { enableHighAccuracy: true,  distanceFilter: 20 },
             )      
         }.bind(this)) 
     
@@ -205,7 +223,7 @@ export default class App extends Component<Props> {
           longitude: -73.9855
         },
         curTime: moment().format('hh:mm'),
-       }) 
+       } ) 
     }
     makeMarker(d) {
       var todayMarkersArray = []
@@ -215,16 +233,13 @@ export default class App extends Component<Props> {
           }
       }
       this.setState({
-        todayMarkersArray: todayMarkersArray
+        todayMarkersArray: []
       })
     }
-
     componentDidMount() {
       this.getMeters()
       if(this.state.AppState === 'background') {
-
       }
-
     }
     componentWillUnmount() {
       navigator.geolocation.clearWatch(this.watchID);
@@ -260,7 +275,14 @@ export default class App extends Component<Props> {
       selDay: day,
       todayMarkersArray: this.state.satArray
       })
-    }  
+    }  if(this.state.selDay === "SUN") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.sunArray
+      })
+    }
+    console.log(this.state.todayMarkersArray)
+
   }
   updateSlider(value) {
     this.setState({
@@ -269,10 +291,26 @@ export default class App extends Component<Props> {
   }
   render() {
     if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
-
     return (
 
-<View style={styles.container}> 
+    <View style={styles.container}>            
+    <StatusBar barStyle="light-content" hidden ={false} style={{marginTop: 44}}/>
+     
+          <Modal
+              supportedOrientations={['portrait', 'landscape']}
+
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closeModal()}
+          >
+                   <TouchableOpacity
+            onPress={() => this.closeModal()}
+            >
+            <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="black"/></Text>  
+        </TouchableOpacity> 
+            <ModalContent uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
+          </Modal>
+       
      <MapView
       scrollEnabled={true}  
         zoomEnabled={true}   
@@ -285,8 +323,8 @@ export default class App extends Component<Props> {
         followsUserLocation={true}
         animateToBearing={true}
          animateToViewingAngle={true} 
-           showsCompass = {true}
-           showScale = {true}
+         showsCompass = {true}
+         showScale = {true}
         provider={PROVIDER_GOOGLE}
         region={{
           latitude: this.state.uLatitude,
@@ -314,13 +352,22 @@ export default class App extends Component<Props> {
      />
      ))}
   </MapView>
-
+    <View style={{flexDirection: 'row'}}>
+      <View style={{alignItems: 'flex-start'}}>
+      <TouchableOpacity
+          onPress={() => this.openModal()}
+          >
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-menu" size={42} color="white"/></Text>  
+      </TouchableOpacity> 
+    </View>
+    </View>
     <View style={styles.daySwipe}>
         <Picker
 
           selectedValue={this.state.selDay}
           onValueChange={(itemValue, itemIndex) => this.getNewDay(itemValue)}
           itemStyle={styles.daySwipeText}>
+          <Picker.Item label={"Sunday"} value={"SUN"} />
           <Picker.Item label={"Monday"} value={"MON"} />
           <Picker.Item label={"Tuesday"} value={"TUE"} />
           <Picker.Item label={"Wednesday"} value={"WED"} />
@@ -329,19 +376,11 @@ export default class App extends Component<Props> {
           <Picker.Item label={"Saturday"} value={"SAT"} />
           </Picker>        
   </View>
-  <View style={styles.slider}>
-      <Slider
-        step={1}
-        maximumValue={24}
-        value={parseInt(this.state.dayDisplay)}
-        
-        onSlidingComplete={this.updateSlider.bind(this)}
-       />
-      </View>
+
   </View>
     );
     } else {
-      return <View><Text>... Waiting</Text></View>
+      return <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} ><ActivityIndicator size="large" color="red"></ActivityIndicator></View>
     }
   }
 }
@@ -349,15 +388,18 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,  
+    flexDirection: 'column',
     backgroundColor: '#F5FCFF',
-    justifyContent: 'space-between'
+
+ /*   justifyContent: 'space-between'*/
   },
   daySwipe: {
-    flex: .2,
+    
     height: 50,
     marginRight: 20
   },
   daySwipeText: {
+
     color: 'white',
     fontSize: 40,
     fontWeight: 'bold'
@@ -368,5 +410,11 @@ const styles = StyleSheet.create({
   slider: {
     height: 20,
     marginBottom:40
-  }
+  },
+      modalContainer: {
+      flex: 1,
+      height: 300,
+      justifyContent: 'flex-start',
+      backgroundColor: 'white',
+  },
 });
