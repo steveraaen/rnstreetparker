@@ -68,12 +68,12 @@ dontSaveSpot(e) {
  }
  showTenSigns() {
   if(this.state.nearestTen) {
-      return ( <View style={{height: 100}}>
-                <FlatList 
-                  data={this.state.nearestTen}
+      return ( <View style={{height: 240}}>
+               <FlatList 
+                  data={this.state.nearestTen.slice(0,3)}
                   renderItem={({item}) => 
                     <View style={{height: 26}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View>}
-                  keyExtractor={item =>item.properties.ID}
+                  keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
         )

@@ -27,7 +27,7 @@ export default class App extends Component<Props> {
     super(props);
     this.state = {
       modalVisible: false,
-      selDay: moment().format("dddd").toUpperCase().substring(0, 3),
+      
       uLatitude: null,
       uLongitude: null,
       fullDay: moment().format('dddd'),
@@ -55,6 +55,46 @@ export default class App extends Component<Props> {
     this.setState({
       appState: nextAppState,
     });
+  }
+  getNewDay(day) {
+    if(this.state.selDay === "MON") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.monArray
+      })
+    } if(this.state.selDay === "TUE") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.tueArray
+      })
+    } if(this.state.selDay === "WED") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.wedArray
+      })
+    }  if(this.state.selDay === "THU") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.thuArray
+      })
+    }  if(this.state.selDay === "FRI") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.friArray
+      })
+    }  if(this.state.selDay === "SAT") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.satArray
+      })
+    }  if(this.state.selDay === "SUN") {
+    this.setState({
+      selDay: day,
+      todayMarkersArray: this.state.sunArray
+      })
+    }
+    console.log(this.state.todayMarkersArray)
+
   }
     getMeters(ln, la) {
       /*axios.get('http:127.0.0.1:5000/api/meters', {*/
@@ -87,7 +127,7 @@ export default class App extends Component<Props> {
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
               coordinates: [parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6)],
-              day: this.state.selDay              
+              /*day: this.state.selDay */             
             }
         }) 
       .then((doc) => {
@@ -118,8 +158,7 @@ export default class App extends Component<Props> {
                 marker.rawEnd = endTime[1]
                 marker.endTime = moment(endTime[1], 'hh:mm')
                 marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000
-                }
-             
+                }             
         if(marker.dif > 0 && marker.dif < 2) {
           marker.color = 'rgba(3,189,244,' + 1 + ')'
         } else if(marker.dif > 2 && marker.dif < 4) {
@@ -204,26 +243,21 @@ export default class App extends Component<Props> {
           uLongitude: position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
+          
          error: null,
         }, () => {
           this.getSigns(this.state.uLatitude, this.state.uLongitude)
-          this.getMeters(this.state.uLatitude, this.state.uLongitude)
-
+          this.getMeters(this.state.uLatitude, this.state.uLongitude)          
         });
        
       },
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true,  distanceFilter: 20 },
             )      
-        }.bind(this)) 
-    
-       this.setState({
-        markertest: {
-          latitude: 40.6617,
-          longitude: -73.9855
-        },
-        curTime: moment().format('hh:mm'),
-       } ) 
+        }.bind(this))    
+          this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
+            this.getNewDay(this.state.selDay)
+          })
     }
     makeMarker(d) {
       var todayMarkersArray = []
@@ -239,51 +273,14 @@ export default class App extends Component<Props> {
     componentDidMount() {
       this.getMeters()
       if(this.state.AppState === 'background') {
+        navigator.geolocation.clearWatch(this.watchID);
       }
     }
+
     componentWillUnmount() {
       navigator.geolocation.clearWatch(this.watchID);
     }
-  getNewDay(day) {
-    if(this.state.selDay === "MON") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.monArray
-      })
-    } if(this.state.selDay === "TUE") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.tueArray
-      })
-    } if(this.state.selDay === "WED") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.wedArray
-      })
-    }  if(this.state.selDay === "THU") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.thuArray
-      })
-    }  if(this.state.selDay === "FRI") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.friArray
-      })
-    }  if(this.state.selDay === "SAT") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.satArray
-      })
-    }  if(this.state.selDay === "SUN") {
-    this.setState({
-      selDay: day,
-      todayMarkersArray: this.state.sunArray
-      })
-    }
-    console.log(this.state.todayMarkersArray)
 
-  }
   updateSlider(value) {
     this.setState({
       slideTime: value
@@ -363,9 +360,8 @@ export default class App extends Component<Props> {
     </View>
     <View style={styles.daySwipe}>
         <Picker
-
           selectedValue={this.state.selDay}
-          onValueChange={(itemValue, itemIndex) => this.getNewDay(itemValue)}
+          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.getNewDay(this.state.selDay))}
           itemStyle={styles.daySwipeText}>
           <Picker.Item label={"Sunday"} value={"SUN"} />
           <Picker.Item label={"Monday"} value={"MON"} />
@@ -373,7 +369,7 @@ export default class App extends Component<Props> {
           <Picker.Item label={"Wednesday"} value={"WED"} />
           <Picker.Item label={"Thursday"} value={"THU"} />
           <Picker.Item label={"Friday"} value={"FRI"} />
-          <Picker.Item label={"Saturday"} value={"SAT"} />
+          <Picker.Item label={"Saturday"} value={"SAT"} />        
           </Picker>        
   </View>
 
