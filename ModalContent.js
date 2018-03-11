@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   AppState,
+  AsyncStorage,
   Button,
   Dimensions,
   FlatList,
@@ -16,7 +17,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import moment from 'moment';
 export default class ModalContent extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +30,7 @@ export default class ModalContent extends Component {
     this.showCarLoc = this.showCarLoc.bind(this)
     this.getTenSigns = this.getTenSigns.bind(this)
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
+    this.parseClosest = this.parseClosest.bind(this)
   }
       openModal() {
       this.setState({modalVisible:true});
@@ -45,34 +47,39 @@ export default class ModalContent extends Component {
       })
     })
 }
+/*logSpot(p) {
+  AsyncStorage.setItem("currentSpot", p)
+}*/
 dontSaveSpot(e) {
   this.setState({
     carLoc: null,
-    nearestTen: null
+    nearestThree: null
   })
 }
  getTenSigns(coor) {
   console.log(coor.lat)
- 
- /*   axios.get('http:127.0.0.1:5000/mycar', {*/
+   /*x*/
     axios.get('https://streetparker.herokuapp.com/mycar', {
       params: {
         coordinates: [parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6)]            
       }
   }).then((doc) => {
-    console.log(doc)
+
     this.setState({
-      nearestTen: doc.data
+      nearestThree: doc.data.slice(0,3)
     })
   }) 
  }
  showTenSigns() {
-  if(this.state.nearestTen) {
+  if(this.state.nearestThree) {
+
+
+
       return ( <View style={{height: 240}}>
                <FlatList 
-                  data={this.state.nearestTen.slice(0,3)}
+                  data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
-                    <View style={{height: 26}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View>}
+                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{height: 26}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
@@ -104,6 +111,32 @@ dontSaveSpot(e) {
               </TouchableOpacity>
             </View>)
   }
+ }
+  parseClosest(a) {
+    console.log(a)
+  this.setState({
+    thisSign: a
+  }, () => {
+        var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
+        var reDay= /[A-Z]{3}/g
+        var endTime = this.state.thisSign.match(reEnd)
+        var endDay = this.state.thisSign.match(reDay)
+        var daysArr = []
+        for(let i = 0; i < endDay.length; i++) {
+          var timeLeft = {
+            day: moment(endDay[i] +" "+ endTime, 'dd, h:mm'),
+            now: moment(),
+            diff: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).diff(moment(), 'days', 'hours'),
+            diffb: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).fromNow('days', 'hours'),
+            diffc: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).fromNow('dd h:mm')
+          }
+          daysArr.push(timeLeft)
+        }
+
+        this.setState ({end: daysArr}, alert(`You have to move your car in ${daysArr[0].diffb}`))
+        
+  })
+
  }
   render() {
 
