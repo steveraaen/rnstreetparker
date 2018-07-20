@@ -317,9 +317,7 @@ export default class App extends Component<Props> {
               animationType={'slide'}
               onRequestClose={() => this.closeModal()}
           >
-                   <TouchableOpacity
-            onPress={() => this.closeModal()}
-            >
+          <TouchableOpacity onPress={() => this.closeModal()}>
             <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="black"/></Text>  
         </TouchableOpacity> 
             <ModalContent uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
@@ -343,8 +341,8 @@ export default class App extends Component<Props> {
         region={{
           latitude: this.state.uLatitude,
           longitude: this.state.uLongitude,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.015,
+          latitudeDelta: 0.0125,
+          longitudeDelta: 0.0125,
     }}>
 
          {this.state.todayMarkersArray.map((marker, idx) => (
@@ -366,14 +364,15 @@ export default class App extends Component<Props> {
      />
      ))}
   </MapView>
-    <View style={{flexDirection: 'row'}}>
-      <View style={{alignItems: 'flex-start'}}>
-      <TouchableOpacity
-          onPress={() => this.openModal()}
-          >
+    <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+    
+      <TouchableOpacity onPress={() => this.openModal()}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-menu" size={42} color="white"/></Text>  
       </TouchableOpacity> 
-    </View>
+      <TouchableOpacity onPress={() => this.openModal()}>
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-search-outline" size={42} color="white"/></Text>  
+      </TouchableOpacity> 
+   
     </View>
     <View style={styles.daySwipe}>
         <Picker
@@ -408,13 +407,13 @@ const styles = StyleSheet.create({
   },
   daySwipe: {
     
-    height: 50,
+    height: 35,
     marginRight: 20
   },
   daySwipeText: {
 
     color: 'white',
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: 'bold'
   },
   map: {
