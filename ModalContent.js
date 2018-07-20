@@ -75,11 +75,12 @@ dontSaveSpot(e) {
 
 
 
-      return ( <View style={{height: 240}}>
+      return ( <View style={{height: 240, alignItems: 'center'}}>
                <FlatList 
+
                   data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{height: 26}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View></TouchableOpacity>}
+                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{borderBottomWidth: 2, borderBottomColor: 'black', marginTop: 10}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
@@ -90,11 +91,14 @@ dontSaveSpot(e) {
   if(this.state.carLoc) {
     var splitCarLoc = this.state.carLoc.data.results[0].formatted_address.split(',')
      return( <View>
-            <View>
-                <Text style={{fontSize: 20}}>You are parked next to {splitCarLoc[0] + "," + splitCarLoc[1] }</Text> 
-            </View>  
-            <View>  
-                 <Text>Would you like to save this location? </Text>
+            <View style={{alignItems: 'center'}}>
+                <Text style={{fontSize: 20}}>You are parked next to:</Text>  
+            </View> 
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <Text style={{fontSize: 22, fontWeight: 'bold'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+            </View> 
+            <View style={{marginTop: 20, alignItems: 'center'}}>  
+                 <Text style={{fontSize: 16}}>Would you like to save this location? </Text>
             </View>
               <TouchableOpacity>
                 <Button 
@@ -142,7 +146,7 @@ dontSaveSpot(e) {
 
     return (
      
-        <View style={{marginTop: 20, marginLeft: 30}}> 
+        <View style={{marginTop: 20, marginLeft: 30, marginRight: 30}}> 
           <TouchableOpacity
           onPress={(e) => this.getCarLoc(e)}>                    
           <Text style={{fontSize: 20}}>Tap here before leaving your vehicle to remember where you parked.</Text>

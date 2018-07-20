@@ -27,13 +27,14 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
-      
+      modalVisible: false,      
       uLatitude: null,
       uLongitude: null,
       fullDay: moment().format('dddd'),
       slideTime: moment(),
       appState: AppState.currentState,
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3) 
+             
        }
       this.getSigns = this.getSigns.bind(this);
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
@@ -58,37 +59,40 @@ export default class App extends Component<Props> {
     });
   }
   getNewDay(day) {
-    if(this.state.selDay === "MON") {
+
+    if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.monArray
       })
-    } if(this.state.selDay === "TUE") {
+    } if(this.state.selDay === "TUE" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.tueArray
       })
-    } if(this.state.selDay === "WED") {
+    } if(this.state.selDay === "WED" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.wedArray
       })
-    }  if(this.state.selDay === "THU") {
+    }  if(this.state.selDay === "THU" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.thuArray
       })
-    }  if(this.state.selDay === "FRI") {
+    }  if(this.state.selDay === "FRI" && this.state.markersArray) {
+          console.log(this.state.markersArray)
+    console.log(day)
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.friArray
       })
-    }  if(this.state.selDay === "SAT") {
+    }  if(this.state.selDay === "SAT" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.satArray
       })
-    }  if(this.state.selDay === "SUN") {
+    }  if(this.state.selDay === "SUN" && this.state.markersArray) {
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.sunArray
@@ -123,7 +127,8 @@ export default class App extends Component<Props> {
       }
       
     
-    getSigns() {           
+    getSigns() { 
+
             /*axios.get('http:127.0.0.1:5000/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
@@ -132,6 +137,7 @@ export default class App extends Component<Props> {
             }
         }) 
       .then((doc) => {
+
         var markersArray = []
         for(let i = 0; i < doc.data.length; i++) {
           var marker = {}
@@ -146,6 +152,7 @@ export default class App extends Component<Props> {
        var reDay= /[A-Z]{3}/g
       var endTime = doc.data[i].properties.T.match(reEnd)
       var dayow = doc.data[i].properties.T.match(reDay)
+      var todayArray = []
       var now = moment()
       var monArray = []
       var tueArray = []
@@ -159,7 +166,8 @@ export default class App extends Component<Props> {
                 marker.rawEnd = endTime[1]
                 marker.endTime = moment(endTime[1], 'hh:mm')
                 marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000
-                }             
+                } 
+
         if(marker.dif > 0 && marker.dif < 2) {
           marker.color = 'rgba(3,189,244,' + 1 + ')'
         } else if(marker.dif > 2 && marker.dif < 4) {
@@ -203,13 +211,16 @@ export default class App extends Component<Props> {
           satArray.push(markersArray[i])
         } if(markersArray[i].text.includes("SUN")) {
           sunArray.push(markersArray[i])
-        }
-}
+        } if(markersArray[i].text.includes(this.state.initDay)) {
+        todayArray.push()
+      }
+
+    }console.log(todayArray)
 // ------------- set state of all markers regardless of day
         this.setState({
           signs: doc,
           markersArray: markersArray,
-         /* todayMarkersArray: markersArray,*/
+          todayMarkersArray: todayArray,
           monArray: monArray,
           tueArray: tueArray,
           wedArray: wedArray,
@@ -217,16 +228,18 @@ export default class App extends Component<Props> {
           friArray: friArray,
           satArray: satArray,
           sunArray: sunArray,
+          todayArray: todayArray
         }, () => {
-          this.makeMarker(this.state.todayMarkersArray)
+          console.log(this.state.initDay)
+          this.makeMarker(this.state.initDay)
          /* this.betterMarker(this.state.markersArray)*/
         })
       })}
     componentWillMount() {
      
-        this.setState({
+/*        this.setState({
           dayDisplay: moment().format('HH'),
-        })
+        })*/
     
        AppState.addEventListener('change', this._handleAppStateChange);
       navigator.geolocation.getCurrentPosition(function(pos) {
@@ -257,10 +270,11 @@ export default class App extends Component<Props> {
             )      
         }.bind(this))    
           this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
-            this.getNewDay(this.state.selDay)
+         /*   this.getNewDay(this.state.selDay)*/
           })
     }
     makeMarker(d) {
+      console.log(d)
       var todayMarkersArray = []
         for(let i = 0; i < this.state.markersArray.length; i++) {
           if(this.state.markersArray[i].text.includes(d)) {
@@ -268,10 +282,11 @@ export default class App extends Component<Props> {
           }
       }
       this.setState({
-        todayMarkersArray: []
+        todayMarkersArray: todayMarkersArray
       })
     }
     componentDidMount() {
+      this.getNewDay(this.state.selDay)
       this.getMeters()
       if(this.state.AppState === 'background') {
         navigator.geolocation.clearWatch(this.watchID);
@@ -289,6 +304,7 @@ export default class App extends Component<Props> {
   }
   render() {
     if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
+
     return (
 
     <View style={styles.container}>            
@@ -316,7 +332,7 @@ export default class App extends Component<Props> {
         scrollEnabled={false}   
         pitchEnabled={true}   
         style={styles.map}
-        customMapStyle={niceBlack}
+        customMapStyle={nice}
         showsUserLocation={true}
         followsUserLocation={true}
         animateToBearing={true}
@@ -362,7 +378,7 @@ export default class App extends Component<Props> {
     <View style={styles.daySwipe}>
         <Picker
           selectedValue={this.state.selDay}
-          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.getNewDay(this.state.selDay))}
+          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.makeMarker(itemValue))}
           itemStyle={styles.daySwipeText}>
           <Picker.Item label={"Sunday"} value={"SUN"} />
           <Picker.Item label={"Monday"} value={"MON"} />
