@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   AppState,
+  AsyncStorage,
   Dimensions,
   Modal,
   Picker,
@@ -18,7 +19,7 @@ import MapView, { PROVIDER_GOOGLE, Circle } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
-/*import Swiper from 'react-native-swiper';*/
+import Swiper from 'react-native-swiper';
 import nice from './niceMap.js'
 import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
@@ -40,7 +41,7 @@ export default class App extends Component<Props> {
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
       this.getNewDay = this.getNewDay.bind(this);
       this.makeMarker = this.makeMarker.bind(this);
-      this.getMeters = this.getMeters.bind(this);
+      this.saveCarLocation = this.saveCarLocation.bind(this);
 
   }
     openModal() {
@@ -57,6 +58,11 @@ export default class App extends Component<Props> {
     this.setState({
       appState: nextAppState,
     });
+  }
+  saveCarLocation(car) {
+    this.setState({
+      carLoc: car
+      })    
   }
   getNewDay(day) {
 
@@ -168,9 +174,9 @@ export default class App extends Component<Props> {
                 marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000
                 } 
 
-        if(marker.dif > 0 && marker.dif < 2) {
+        if(marker.dif > 0 /*&& marker.dif < 2*/) {
           marker.color = 'rgba(3,189,244,' + 1 + ')'
-        } else if(marker.dif > 2 && marker.dif < 4) {
+        } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
         } else if(marker.dif > 4 && marker.dif < 6) {
           marker.color = 'rgba(3,189,244,' + .7 + ')'
@@ -180,10 +186,10 @@ export default class App extends Component<Props> {
           marker.color = 'rgba(3,189,244,' + .5 + ')'
         }  else if(marker.dif > 10) {
           marker.color = 'rgba(3,189,244,' + .4 + ')'
-        }  
-          else if(marker.dif  > -2 && marker.dif < 0){
+        } */ 
+          else if(/*marker.dif  > -2 &&*/ marker.dif < 0){
           marker.color = 'rgba(252, 204, 10,'+ 1 + ')'
-        } else if(marker.dif  > -4 && marker.dif < -2){
+        } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
         } else if(marker.dif  > -6 && marker.dif < -4){
           marker.color = 'rgba(252, 204, 10,'+ .7 + ')'
@@ -193,7 +199,7 @@ export default class App extends Component<Props> {
           marker.color = 'rgba(252, 204, 10,'+ .5 + ')'
         } else if(marker.dif  < -10){
           marker.color = 'rgba(252, 204, 10,'+ .4 + ')'
-        }
+        }*/
           markersArray.push(marker)          
         }
         for(let i = 0; i < markersArray.length; i++) {
@@ -288,6 +294,15 @@ export default class App extends Component<Props> {
     componentDidMount() {
       this.getNewDay(this.state.selDay)
       this.getMeters()
+      AsyncStorage.getItem('currentSpot', (err, spot) => {
+        if(err) {
+          console.log(err)
+        } else {
+          console.log(spot)
+        }
+      })
+
+
       if(this.state.AppState === 'background') {
         navigator.geolocation.clearWatch(this.watchID);
       }
@@ -308,11 +323,11 @@ export default class App extends Component<Props> {
     return (
 
     <View style={styles.container}>            
-    <StatusBar barStyle="light-content" hidden ={false} style={{marginTop: 44}}/>
+    <StatusBar barStyle="light-content" hidden ={false}/>
      
           <Modal
               supportedOrientations={['portrait', 'landscape']}
-
+              saveCarLocation={() => this.saveCarLocation(this.state.carLoc)}
               visible={this.state.modalVisible}
               animationType={'slide'}
               onRequestClose={() => this.closeModal()}
@@ -348,7 +363,7 @@ export default class App extends Component<Props> {
          {this.state.todayMarkersArray.map((marker, idx) => (
     <Circle
       center={marker.latlng}
-      radius={8}
+      radius={6}
       strokeColor={marker.color}
       fillColor={marker.color}
       key={idx}
@@ -364,7 +379,7 @@ export default class App extends Component<Props> {
      />
      ))}
   </MapView>
-    <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-menu" size={42} color="white"/></Text>  
@@ -374,8 +389,10 @@ export default class App extends Component<Props> {
       </TouchableOpacity> 
    
     </View>
-    <View style={styles.daySwipe}>
+    <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 16}}>
+
         <Picker
+          style={{width: 120}}
           selectedValue={this.state.selDay}
           onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.makeMarker(itemValue))}
           itemStyle={styles.daySwipeText}>
@@ -386,7 +403,7 @@ export default class App extends Component<Props> {
           <Picker.Item label={"Thursday"} value={"THU"} />
           <Picker.Item label={"Friday"} value={"FRI"} />
           <Picker.Item label={"Saturday"} value={"SAT"} />        
-          </Picker>        
+          </Picker>       
   </View>
 
   </View>
@@ -400,20 +417,19 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,  
-    flexDirection: 'column',
-    backgroundColor: '#F5FCFF',
+/*    flexDirection: 'column',
+    backgroundColor: '#F5FCFF',*/
 
  /*   justifyContent: 'space-between'*/
   },
   daySwipe: {
-    
-    height: 35,
-    marginRight: 20
+
+    justifyContent: 'flex-end'
   },
   daySwipeText: {
 
     color: 'white',
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold'
   },
   map: {

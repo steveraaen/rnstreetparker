@@ -38,18 +38,20 @@ export default class ModalContent extends Component {
     closeModal() {
       this.setState({modalVisible:false});
     }
+
+
     getCarLoc(e) {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {}
   ).then((doc) => {
     console.log(doc)
     this.setState({
       carLoc: doc
+      }, () => {
+        AsyncStorage.setItem("currentSpot", JSON.stringify(this.state.ll))
       })
     })
 }
-/*logSpot(p) {
-  AsyncStorage.setItem("currentSpot", p)
-}*/
+
 dontSaveSpot(e) {
   this.setState({
     carLoc: null,
