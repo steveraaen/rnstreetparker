@@ -1,4 +1,5 @@
 /*rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json*/
+console.disableYellowBox = true;
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -12,6 +13,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  TextInput,
   View
 } from 'react-native';
 
@@ -23,6 +25,7 @@ import Swiper from 'react-native-swiper';
 import nice from './niceMap.js'
 import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
+import Search from './Search.js'
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
@@ -34,6 +37,7 @@ export default class App extends Component<Props> {
       fullDay: moment().format('dddd'),
       slideTime: moment(),
       appState: AppState.currentState,
+      selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3) 
              
        }
@@ -288,6 +292,7 @@ export default class App extends Component<Props> {
           }
       }
       this.setState({
+        selectedDay: d,
         todayMarkersArray: todayMarkersArray
       })
     }
@@ -319,7 +324,34 @@ export default class App extends Component<Props> {
   }
   render() {
     if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
+var searchBox = (
+  <View style={{flex: .4, marginBottom: 64, flexDirection: 'row', flexWrap: 'wrap'}}>
+    <View>
+        <Picker
+          style={{marginLeft: 24, marginRight: 12,  width: 140, height: 30}}
+          selectedValue={this.state.selDay}
+          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.makeMarker(itemValue))}
+          itemStyle={styles.daySwipeText}>
+            <Picker.Item label={"Sunday"} value={"SUN"} />
+            <Picker.Item label={"Monday"} value={"MON"} />
+            <Picker.Item label={"Tuesday"} value={"TUE"} />
+            <Picker.Item label={"Wednesday"} value={"WED"} />
+            <Picker.Item label={"Thursday"} value={"THU"} />
+            <Picker.Item label={"Friday"} value={"FRI"} />
+            <Picker.Item label={"Saturday"} value={"SAT"} />        
+        </Picker>       
+  </View>
+  <View style={{flex: .3, justifyContent: 'flex-end', marginBottom: 16}}>
+  <Text style={{color: 'white'}}>Input Label</Text>
+  <TextInput  
+      placeHolder="Madison Square Garden"
+      autoCorrect={false}
+      value={this.state.input}
+      style={{height: 30, paddingLeft: 20, borderColor: 'gray', borderWidth: 1, width: 220, backgroundColor: 'white'}}></TextInput>
 
+  </View>
+  </View>
+  )
     return (
 
     <View style={styles.container}>            
@@ -389,23 +421,9 @@ export default class App extends Component<Props> {
       </TouchableOpacity> 
    
     </View>
-    <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 16}}>
-
-        <Picker
-          style={{width: 120}}
-          selectedValue={this.state.selDay}
-          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.makeMarker(itemValue))}
-          itemStyle={styles.daySwipeText}>
-          <Picker.Item label={"Sunday"} value={"SUN"} />
-          <Picker.Item label={"Monday"} value={"MON"} />
-          <Picker.Item label={"Tuesday"} value={"TUE"} />
-          <Picker.Item label={"Wednesday"} value={"WED"} />
-          <Picker.Item label={"Thursday"} value={"THU"} />
-          <Picker.Item label={"Friday"} value={"FRI"} />
-          <Picker.Item label={"Saturday"} value={"SAT"} />        
-          </Picker>       
-  </View>
-
+    <View style={{flex: .3, justifyContent: 'flex-end'}}>
+      <Search { ...this.state } makeMarker={this.makeMarker}/>
+    </View>
   </View>
     );
     } else {
@@ -424,7 +442,7 @@ const styles = StyleSheet.create({
   },
   daySwipe: {
 
-    justifyContent: 'flex-end'
+ /*   justifyContent: 'flex-end'*/
   },
   daySwipeText: {
 

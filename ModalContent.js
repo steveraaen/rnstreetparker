@@ -47,7 +47,7 @@ export default class ModalContent extends Component {
     this.setState({
       carLoc: doc
       }, () => {
-        AsyncStorage.setItem("currentSpot", JSON.stringify(this.state.ll))
+        AsyncStorage.setItem("currentSpot", JSON.stringify(this.state.carLoc))
       })
     })
 }
