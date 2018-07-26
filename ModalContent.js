@@ -18,6 +18,7 @@ import {
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
+import gkey from './keys.js';
 export default class ModalContent extends Component {
   constructor(props) {
     super(props);
@@ -41,7 +42,7 @@ export default class ModalContent extends Component {
 
 
     getCarLoc(e) {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {}
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}
   ).then((doc) => {
     console.log(doc)
     this.setState({
