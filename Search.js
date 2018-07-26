@@ -17,7 +17,6 @@ import {
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
-import Swiper from 'react-native-swiper';
 export default class Search extends Component {
   constructor(props) {
     super(props) ;
@@ -28,7 +27,7 @@ export default class Search extends Component {
     this.handleDaySelect = this.handleDaySelect.bind(this)
   }
   handleDaySelect(day) {
-    console.log(this)
+   
     this.setState({
       selectedDay: day
     }, () => this.props.makeMarker(day))

@@ -21,7 +21,6 @@ import MapView, { PROVIDER_GOOGLE, Circle } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
-import Swiper from 'react-native-swiper';
 import nice from './niceMap.js'
 import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
