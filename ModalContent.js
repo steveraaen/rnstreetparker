@@ -47,8 +47,6 @@ export default class ModalContent extends Component {
     console.log(doc)
     this.setState({
       carLoc: doc
-      }, () => {
-        AsyncStorage.setItem("currentSpot", JSON.stringify(this.state.carLoc))
       })
     })
 }
@@ -60,8 +58,7 @@ dontSaveSpot(e) {
   })
 }
  getTenSigns(coor) {
-  console.log(coor.lat)
-   /*x*/
+  this.props.setCarLoc(this.props.uLnglat[1], this.props.uLnglat[0])
     axios.get('https://streetparker.herokuapp.com/mycar', {
       params: {
         coordinates: [parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6)]            
@@ -79,8 +76,8 @@ dontSaveSpot(e) {
 
 
       return ( <View style={{height: 240, alignItems: 'center'}}>
+        <View><Text style={{fontSize: 14}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
-
                   data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
                   <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{borderBottomWidth: 2, borderBottomColor: 'black', marginTop: 10}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View></TouchableOpacity>}
@@ -91,7 +88,11 @@ dontSaveSpot(e) {
     }
  }
  showCarLoc() {
+
   if(this.state.carLoc) {
+    console.log(this.state.ll)
+/*    AsyncStorage.setItem('carSpot', JSON.stringify(this.state.ll))*/
+
     var splitCarLoc = this.state.carLoc.data.results[0].formatted_address.split(',')
      return( <View>
             <View style={{alignItems: 'center'}}>
@@ -114,8 +115,8 @@ dontSaveSpot(e) {
                   onPress={(e) => this.dontSaveSpot()}
                 >
                 </Button>
-
               </TouchableOpacity>
+              <View><Text></Text></View>
             </View>)
   }
  }

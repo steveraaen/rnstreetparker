@@ -17,7 +17,7 @@ import {
   View
 } from 'react-native';
 
-import MapView, { PROVIDER_GOOGLE, Circle } from 'react-native-maps'
+import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -44,7 +44,7 @@ export default class App extends Component<Props> {
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
       this.getNewDay = this.getNewDay.bind(this);
       this.makeMarker = this.makeMarker.bind(this);
-      this.saveCarLocation = this.saveCarLocation.bind(this);
+      this.setCarLoc = this.setCarLoc.bind(this);
 
   }
     openModal() {
@@ -56,19 +56,13 @@ export default class App extends Component<Props> {
     }
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-
     }
     this.setState({
       appState: nextAppState,
     });
   }
-  saveCarLocation(car) {
-    this.setState({
-      carLoc: car
-      })    
-  }
-  getNewDay(day) {
 
+  getNewDay(day) {
     if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
       selDay: day,
@@ -134,10 +128,9 @@ export default class App extends Component<Props> {
         })
         })
       }
-      
+
     
     getSigns() { 
-
             /*axios.get('http:127.0.0.1:5000/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
@@ -175,6 +168,7 @@ export default class App extends Component<Props> {
                 marker.rawEnd = endTime[1]
                 marker.endTime = moment(endTime[1], 'hh:mm')
                 marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000
+       
                 } 
 
         if(marker.dif > 0 /*&& marker.dif < 2*/) {
@@ -244,11 +238,18 @@ export default class App extends Component<Props> {
          /* this.betterMarker(this.state.markersArray)*/
         })
       })}
-    componentWillMount() {
-     
-/*        this.setState({
-          dayDisplay: moment().format('HH'),
-        })*/
+    setCarLoc(la, lo) {
+      this.setState({
+        carMarkLocation: {
+            latitude: la,
+            longitude: lo,
+              }      
+            })
+    }
+    componentWillMount() {    
+/*      AsyncStorage.getItem('carSpot').then (value => {
+        console.log(value)
+      })*/
     
        AppState.addEventListener('change', this._handleAppStateChange);
       navigator.geolocation.getCurrentPosition(function(pos) {
@@ -298,14 +299,6 @@ export default class App extends Component<Props> {
     componentDidMount() {
       this.getNewDay(this.state.selDay)
       this.getMeters()
-      AsyncStorage.getItem('currentSpot', (err, spot) => {
-        if(err) {
-          console.log(err)
-        } else {
-          console.log(spot)
-        }
-      })
-
 
       if(this.state.AppState === 'background') {
         navigator.geolocation.clearWatch(this.watchID);
@@ -321,44 +314,23 @@ export default class App extends Component<Props> {
       slideTime: value
     })
   }
+
   render() {
     if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
-var searchBox = (
-  <View style={{flex: .4, marginBottom: 64, flexDirection: 'row', flexWrap: 'wrap'}}>
-    <View>
-        <Picker
-          style={{marginLeft: 24, marginRight: 12,  width: 140, height: 30}}
-          selectedValue={this.state.selDay}
-          onValueChange={(itemValue, itemIndex) => this.setState({selDay: itemValue},() => this.makeMarker(itemValue))}
-          itemStyle={styles.daySwipeText}>
-            <Picker.Item label={"Sunday"} value={"SUN"} />
-            <Picker.Item label={"Monday"} value={"MON"} />
-            <Picker.Item label={"Tuesday"} value={"TUE"} />
-            <Picker.Item label={"Wednesday"} value={"WED"} />
-            <Picker.Item label={"Thursday"} value={"THU"} />
-            <Picker.Item label={"Friday"} value={"FRI"} />
-            <Picker.Item label={"Saturday"} value={"SAT"} />        
-        </Picker>       
-  </View>
-  <View style={{flex: .3, justifyContent: 'flex-end', marginBottom: 16}}>
-  <Text style={{color: 'white'}}>Input Label</Text>
-  <TextInput  
-      placeHolder="Madison Square Garden"
-      autoCorrect={false}
-      value={this.state.input}
-      style={{height: 30, paddingLeft: 20, borderColor: 'gray', borderWidth: 1, width: 220, backgroundColor: 'white'}}></TextInput>
+/*    console.log(this.state.uLnglat)
+    var carMarkLocation = {
+      latitude: this.state.uLnglat[1],
+      longitude: this.state.uLnglat[0],
+    }*/
 
-  </View>
-  </View>
-  )
     return (
 
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
      
           <Modal
+              transparent={false}
               supportedOrientations={['portrait', 'landscape']}
-              saveCarLocation={() => this.saveCarLocation(this.state.carLoc)}
               visible={this.state.modalVisible}
               animationType={'slide'}
               onRequestClose={() => this.closeModal()}
@@ -366,7 +338,7 @@ var searchBox = (
           <TouchableOpacity onPress={() => this.closeModal()}>
             <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="black"/></Text>  
         </TouchableOpacity> 
-            <ModalContent uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
+            <ModalContent setCarLoc={this.setCarLoc} uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
           </Modal>
        
      <MapView
@@ -409,6 +381,10 @@ var searchBox = (
       key={idx}
      />
      ))}
+     <Marker 
+      coordinate={this.state.carMarkLocation}
+      image={require('./assets/smallCar.png')}
+      />
   </MapView>
     <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
     
