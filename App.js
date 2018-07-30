@@ -22,30 +22,42 @@ import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 import nice from './niceMap.js'
+import aspDays from './asp.js'
 import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
 import Search from './Search.js'
+import FirstUse from './FirstUse.js'
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
+      firstLaunch: null,
       modalVisible: false,      
       uLatitude: null,
       uLongitude: null,
-      fullDay: moment().format('dddd'),
+      fullDay: moment().format('MMM Do YYYY'),
       slideTime: moment(),
       appState: AppState.currentState,
       selectedDay: null,
-      initDay : moment().format("dddd").toUpperCase().substring(0, 3) 
-             
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3), 
+      isTodayASP:  false,
+      nextASP: null          
        }
+       console.log(aspDays)
       this.getSigns = this.getSigns.bind(this);
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
       this.getNewDay = this.getNewDay.bind(this);
       this.makeMarker = this.makeMarker.bind(this);
       this.setCarLoc = this.setCarLoc.bind(this);
-
+      this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
+      this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
+  }
+    ackFirstLaunchIn() {
+    this.setState({firstLaunch: false})
+  }
+  ackFirstLaunchOut() {
+    this.setState({firstLaunch: false})
   }
     openModal() {
       this.setState({modalVisible:true});
@@ -247,10 +259,17 @@ export default class App extends Component<Props> {
             })
     }
     componentWillMount() {    
-/*      AsyncStorage.getItem('carSpot').then (value => {
-        console.log(value)
-      })*/
-    
+      for(let asp in aspDays){
+        console.log(aspDays[asp].date - this.state.fullDay)
+        if(this.state.fullDay === aspDays[asp].date){         
+          this.setState({
+            isTodayASP: true,
+            todaysHoliday: aspDays[asp].holiday
+          })
+        }
+      } 
+
+
        AppState.addEventListener('change', this._handleAppStateChange);
       navigator.geolocation.getCurrentPosition(function(pos) {
             var { longitude, latitude, accuracy, heading } = pos.coords
@@ -297,6 +316,18 @@ export default class App extends Component<Props> {
       })
     }
     componentDidMount() {
+        AsyncStorage.getItem("alreadyLaunched").then(value => {
+            if(value == null){
+                 AsyncStorage.setItem('alreadyLaunched', "yes"); // No need to wait for `setItem` to finish, although you might want to handle errors
+                 this.setState({firstLaunch: true}, () => {
+                   
+                 });
+            }
+            else{
+                 this.setState({firstLaunch: false});
+            }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
+    
+
       this.getNewDay(this.state.selDay)
       this.getMeters()
 
@@ -316,12 +347,11 @@ export default class App extends Component<Props> {
   }
 
   render() {
-    if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
-/*    console.log(this.state.uLnglat)
-    var carMarkLocation = {
-      latitude: this.state.uLnglat[1],
-      longitude: this.state.uLnglat[0],
-    }*/
+    if(this.state.firstLaunch) {
+  return(
+    <FirstUse ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
+    )
+}else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
 
     return (
 
