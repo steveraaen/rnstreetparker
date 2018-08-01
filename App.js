@@ -53,7 +53,8 @@ export default class App extends Component<Props> {
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
   }
-    ackFirstLaunchIn() {
+  
+  ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
   }
   ackFirstLaunchOut() {

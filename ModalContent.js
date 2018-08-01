@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   AppState,
   AsyncStorage,
   Button,
@@ -126,22 +127,50 @@ dontSaveSpot(e) {
     thisSign: a
   }, () => {
         var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
+        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-P]{2}\-)/
         var reDay= /[A-Z]{3}/g
+        var startTime = this.state.thisSign.match(reStart)
         var endTime = this.state.thisSign.match(reEnd)
         var endDay = this.state.thisSign.match(reDay)
         var daysArr = []
+
         for(let i = 0; i < endDay.length; i++) {
-          var timeLeft = {
-            day: moment(endDay[i] +" "+ endTime, 'dd, h:mm'),
-            now: moment(),
-            diff: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).diff(moment(), 'days', 'hours'),
-            diffb: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).fromNow('days', 'hours'),
-            diffc: (moment(endDay[i] +" "+ endTime, 'dd, h:mm')).fromNow('dd h:mm')
+var timeLeft = {}
+          currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
+
+          if(currentDiff < 0) {
+            timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
+            console.log(timeLeft.day._d)
           }
+          else if(currentDiff > 0) {
+
+
+          timeLeft = {
+            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY, h:mm a'),
+            now: moment(),
+            diff: currentDiff,
+            diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
+            diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm')
+          }
+
           daysArr.push(timeLeft)
+          
         }
 
-        this.setState ({end: daysArr}, alert(`You have to move your car in ${daysArr[0].diffb}`))
+ }
+  console.log(daysArr)
+        this.setState ({end: daysArr}, () => {
+          Alert.alert(
+            `You have to move your car before ${timeLeft.day}`,
+            `Would you like to be notified 12 hours before it's time to move your car?`,
+            [
+              {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+        })
         
   })
 
