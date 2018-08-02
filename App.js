@@ -6,7 +6,6 @@ import {
   AppState,
   AsyncStorage,
   Dimensions,
-  Modal,
   Picker,
   Slider,
   StatusBar,
@@ -16,7 +15,7 @@ import {
   TextInput,
   View
 } from 'react-native';
-
+import Modal from "react-native-modal";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
@@ -358,25 +357,28 @@ export default class App extends Component<Props> {
 
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
-     
+      <View>
           <Modal
-              transparent={false}
+              backdropColor={'#1F2C4B'}
+              backdropOpacity= {1}
               supportedOrientations={['portrait', 'landscape']}
-              visible={this.state.modalVisible}
+              isVisible={this.state.modalVisible}
               animationType={'slide'}
               onRequestClose={() => this.closeModal()}
           >
+          <View style={{flex: 1}}>
           <TouchableOpacity onPress={() => this.closeModal()}>
-            <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="black"/></Text>  
+            <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="white"/></Text>  
         </TouchableOpacity> 
             <ModalContent setCarLoc={this.setCarLoc} uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
+          </View>
           </Modal>
-       
+        </View>
      <MapView
       scrollEnabled={true}  
         zoomEnabled={true}   
         rotateEnabled={true}   
-        scrollEnabled={false}   
+        scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
         customMapStyle={nice}
@@ -390,8 +392,8 @@ export default class App extends Component<Props> {
         region={{
           latitude: this.state.uLatitude,
           longitude: this.state.uLongitude,
-          latitudeDelta: 0.0125,
-          longitudeDelta: 0.0125,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
     }}>
 
          {this.state.todayMarkersArray.map((marker, idx) => (
@@ -414,16 +416,17 @@ export default class App extends Component<Props> {
      ))}
      <Marker 
       coordinate={this.state.carMarkLocation}
-      image={require('./assets/smallCar.png')}
-      />
+      >
+      <Icon name="ios-car" size={18} color="white"/>
+      </Marker>
   </MapView>
-    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-menu" size={42} color="white"/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-search-outline" size={42} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car" size={42} color="white"/></Text>  
       </TouchableOpacity> 
    
     </View>
@@ -440,9 +443,9 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,  
-/*    flexDirection: 'column',
-    backgroundColor: '#F5FCFF',*/
+    flex: 1,
+    
+    flexDirection: 'column'
 
  /*   justifyContent: 'space-between'*/
   },

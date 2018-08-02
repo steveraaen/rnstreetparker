@@ -77,11 +77,11 @@ dontSaveSpot(e) {
 
 
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{borderBottomWidth: 2, borderBottomColor: 'black', marginTop: 10}}><Text style={{fontSize: 16}}>{item.properties.T}</Text></View></TouchableOpacity>}
+                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{borderBottomWidth: 2, borderBottomColor: 'black', marginTop: 10}}><Text style={{fontSize: 16, color: 'white'}}>{item.properties.T}</Text></View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
@@ -96,14 +96,14 @@ dontSaveSpot(e) {
 
     var splitCarLoc = this.state.carLoc.data.results[0].formatted_address.split(',')
      return( <View>
-            <View style={{alignItems: 'center'}}>
-                <Text style={{fontSize: 20}}>You are parked next to:</Text>  
+            <View >
+                <Text style={{fontSize: 20, color: 'white'}}>You are parked next to:</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 20}}>
-              <Text style={{fontSize: 22, fontWeight: 'bold'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+              <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
             </View> 
             <View style={{marginTop: 20, alignItems: 'center'}}>  
-                 <Text style={{fontSize: 16}}>Would you like to save this location? </Text>
+                 <Text style={{fontSize: 16, color: 'white'}}>Would you like to save this location? </Text>
             </View>
               <TouchableOpacity>
                 <Button 
@@ -146,7 +146,7 @@ var timeLeft = {}
 
 
           timeLeft = {
-            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY, h:mm a'),
+            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
             now: moment(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
@@ -161,10 +161,10 @@ var timeLeft = {}
   console.log(daysArr)
         this.setState ({end: daysArr}, () => {
           Alert.alert(
-            `You have to move your car before ${timeLeft.day}`,
-            `Would you like to be notified 12 hours before it's time to move your car?`,
+            `Move your car before ${timeLeft.day}`,
+            ``,
             [
-              {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+              {text: 'Add calendar notification', onPress: () => console.log('Ask me later pressed')},
           
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
@@ -179,10 +179,10 @@ var timeLeft = {}
 
     return (
      
-        <View style={{marginTop: 20, marginLeft: 30, marginRight: 30}}> 
+        <View style={{ marginLeft: 30, marginRight: 30, justifyContent: 'flex-start'}}> 
           <TouchableOpacity
           onPress={(e) => this.getCarLoc(e)}>                    
-          <Text style={{fontSize: 20}}>Tap here before leaving your vehicle to remember where you parked.</Text>
+          <Text style={{fontSize: 20, color: 'white'}}>Tap here before leaving your vehicle to remember where you parked.</Text>
           </TouchableOpacity>
           <View style={{marginTop: 20}}>{this.showCarLoc()}</View>
            <View style={{height: 100}}>{this.showTenSigns()}</View>
