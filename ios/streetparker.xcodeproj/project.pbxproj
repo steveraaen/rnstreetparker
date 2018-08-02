@@ -47,6 +47,8 @@
 		D1C337BA6CE24FF382920FDB /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7992EC84779749BD8FD2A811 /* Entypo.ttf */; };
 		D4D1BBFC19D8491FA654C347 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BE24B9448FF4406B3C1106D /* Octicons.ttf */; };
 		E6CF3DE6E91E4FAABD0969B7 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F10CC05F45104C87862F0B7D /* EvilIcons.ttf */; };
+		ECF3613721139EED00808D01 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECF3611121139EEC00808D01 /* EventKit.framework */; };
+		ECF3613E2113A30600808D01 /* libRNCalendarEvents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECF3613D2113A29F00808D01 /* libRNCalendarEvents.a */; };
 		F04F4DF282444C83ADEAB407 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8A994AA2B6B244149B9AE4D0 /* Zocial.ttf */; };
 /* End PBXBuildFile section */
 
@@ -324,6 +326,13 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
+		ECF3613C2113A29F00808D01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECF361382113A29E00808D01 /* RNCalendarEvents.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BEC43C6A1C723089001221C6;
+			remoteInfo = RNCalendarEvents;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -364,6 +373,8 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BF87530A829C46C0B7C0B11D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		C4365A2CCD5B460DA4157147 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		ECF3611121139EEC00808D01 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		ECF361382113A29E00808D01 /* RNCalendarEvents.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCalendarEvents.xcodeproj; path = "../node_modules/react-native-calendar-events/RNCalendarEvents.xcodeproj"; sourceTree = "<group>"; };
 		F10CC05F45104C87862F0B7D /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		F226EF05D7EE4F498ACC64DE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -381,6 +392,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECF3613721139EED00808D01 /* EventKit.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -394,6 +406,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				ECF3613E2113A30600808D01 /* libRNCalendarEvents.a in Frameworks */,
 				9BD438F86A855A5FBC5E61ED /* libPods-streetparker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,6 +554,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ECF3611121139EEC00808D01 /* EventKit.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				48CA13F73C3D8D1F2932343D /* libPods-streetparker.a */,
 			);
@@ -595,6 +609,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				ECF361382113A29E00808D01 /* RNCalendarEvents.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -652,6 +667,14 @@
 			children = (
 				ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */,
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ECF361392113A29E00808D01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ECF3613D2113A29F00808D01 /* libRNCalendarEvents.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -821,6 +844,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = ECF361392113A29E00808D01 /* Products */;
+					ProjectRef = ECF361382113A29E00808D01 /* RNCalendarEvents.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1091,6 +1118,13 @@
 			fileType = archive.ar;
 			path = "libprivatedata-tvOS.a";
 			remoteRef = EC62779E2038EAC6001593FA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ECF3613D2113A29F00808D01 /* libRNCalendarEvents.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCalendarEvents.a;
+			remoteRef = ECF3613C2113A29F00808D01 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

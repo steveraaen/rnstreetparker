@@ -16,6 +16,7 @@ import {
   Text,
   View
 } from 'react-native';
+import RNCalendarEvents from 'react-native-calendar-events';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
@@ -26,6 +27,13 @@ export default class ModalContent extends Component {
     this.state={
       ll: this.props.uLnglat
     }
+    var isauth = RNCalendarEvents.authorizeEventStore()
+    var test = RNCalendarEvents.authorizationStatus()
+    var calList = RNCalendarEvents.findCalendars()
+    console.log(isauth)
+    console.log(test)
+    console.log(calList)
+
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.getCarLoc = this.getCarLoc.bind(this)
@@ -33,6 +41,7 @@ export default class ModalContent extends Component {
     this.getTenSigns = this.getTenSigns.bind(this)
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
     this.parseClosest = this.parseClosest.bind(this)
+    this.addToCal = this.addToCal.bind(this)
   }
       openModal() {
       this.setState({modalVisible:true});
@@ -51,7 +60,12 @@ export default class ModalContent extends Component {
       })
     })
 }
-
+    addToCal(s,e) {
+          RNCalendarEvents.saveEvent('Move Car', {
+            startDate: s,
+            endDate: e
+}) 
+    }
 dontSaveSpot(e) {
   this.setState({
     carLoc: null,
@@ -143,7 +157,8 @@ var timeLeft = {}
           else if(currentDiff > 0) {
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
-            endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
+            endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
+            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
             nowISO: moment().toISOString(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
@@ -161,7 +176,7 @@ var timeLeft = {}
             `Move your car before ${timeLeft.day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => console.log('Ask me later pressed')},
+              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO,)},
           
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
