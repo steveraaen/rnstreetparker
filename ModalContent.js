@@ -133,21 +133,18 @@ dontSaveSpot(e) {
         var endTime = this.state.thisSign.match(reEnd)
         var endDay = this.state.thisSign.match(reDay)
         var daysArr = []
-
         for(let i = 0; i < endDay.length; i++) {
 var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
-
           if(currentDiff < 0) {
             timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
             console.log(timeLeft.day._d)
           }
           else if(currentDiff > 0) {
-
-
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
-            now: moment(),
+            endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
+            nowISO: moment().toISOString(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm')

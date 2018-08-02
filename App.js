@@ -420,13 +420,13 @@ export default class App extends Component<Props> {
       <Icon name="ios-car" size={18} color="white"/>
       </Marker>
   </MapView>
-    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44}}>
+    <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-menu" size={42} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={42} color="white"/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car" size={42} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={42} color="white"/></Text>  
       </TouchableOpacity> 
    
     </View>
