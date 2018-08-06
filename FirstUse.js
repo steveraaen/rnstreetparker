@@ -6,13 +6,16 @@ import gkey from './keys.js'
 
 var sixMonthsAgo = moment().subtract(180, 'days').format('MMMM Do YYYY')
 
-var blurb = `Streetparker is for New Yorkers who park on the street.\n\nThere are approximately one million non-metered parking spaces in the five boros, with only restriction being that drivers must move their cars at least once per week so that street sweepers can do their job.`
+var blurb = `Streetparker is for New Yorkers who park on the street.\n\nThere are approximately one million non-metered parking spaces in the five boros, with only restriction being that drivers must move their cars at least once per week so that street sweepers can do their job.
+             `
 export default class FirstUse extends Component {
 	constructor(props) {
 		super(props);
 
 	}
-	componentWillReceiveProps() {
+	componentWillMount() {
+
+
 		if(this.props.uLngLat) {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.props.uLngLat[1]).toFixed(5) +',' + parseFloat(this.props.uLngLat[0]).toFixed(5) + '&key=' + gkey, {}
   ).then((doc) => {
@@ -38,12 +41,7 @@ export default class FirstUse extends Component {
 				color="#FF6B4E"
 				accessibilityLabel="I have been to Europe in the past six months"
 			/>
-			<Button	
-				onPress={() => this.props.ackOut()} 
-				title="No"
-				color="#58FF67"
-				accessibilityLabel="I have not been to Europe in the past six months"
-			/>
+
 			</View>
 			)
 	}

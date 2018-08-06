@@ -26,6 +26,8 @@ import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
 import Search from './Search.js'
 import FirstUse from './FirstUse.js'
+import Summary from './Summary.js'
+import ASPCalendar from './ASPCalendar.js'
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
@@ -39,9 +41,7 @@ export default class App extends Component<Props> {
       slideTime: moment(),
       appState: AppState.currentState,
       selectedDay: null,
-      initDay : moment().format("dddd").toUpperCase().substring(0, 3), 
-      isTodayASP:  false,
-      nextASP: null          
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3),     
        }
        console.log(aspDays)
       this.getSigns = this.getSigns.bind(this);
@@ -432,6 +432,10 @@ export default class App extends Component<Props> {
     </View>
     <View style={{flex: .3, justifyContent: 'flex-end'}}>
       <Search { ...this.state } makeMarker={this.makeMarker}/>
+    </View>
+    <Summary />
+    <View>
+      <ASPCalendar />
     </View>
   </View>
     );

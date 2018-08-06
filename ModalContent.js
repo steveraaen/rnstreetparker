@@ -60,10 +60,11 @@ export default class ModalContent extends Component {
       })
     })
 }
-    addToCal(s,e) {
+    addToCal(s,e, a) {
           RNCalendarEvents.saveEvent('Move Car', {
             startDate: s,
-            endDate: e
+            endDate: e,
+            location: a
 }) 
     }
 dontSaveSpot(e) {
@@ -140,19 +141,24 @@ dontSaveSpot(e) {
   this.setState({
     thisSign: a
   }, () => {
-        var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
-        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-P]{2}\-)/
+        var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-Z]{2})/
+        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-Z]{2}\-)/
         var reDay= /[A-Z]{3}/g
         var startTime = this.state.thisSign.match(reStart)
         var endTime = this.state.thisSign.match(reEnd)
         var endDay = this.state.thisSign.match(reDay)
         var daysArr = []
+
         for(let i = 0; i < endDay.length; i++) {
+
 var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
           if(currentDiff < 0) {
             timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
-            console.log(timeLeft.day._d)
+            timeLeft.startISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
+            timeLeft.endISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
+daysArr.push(timeLeft)
+            console.log(daysArr)
           }
           else if(currentDiff > 0) {
           timeLeft = {
@@ -164,7 +170,7 @@ var timeLeft = {}
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm')
           }
-
+console.log(timeLeft)
           daysArr.push(timeLeft)
           
         }
@@ -172,11 +178,12 @@ var timeLeft = {}
  }
   console.log(daysArr)
         this.setState ({end: daysArr}, () => {
+          console.log(this.state.carLoc.data.results[0].formatted_address)
           Alert.alert(
             `Move your car before ${timeLeft.day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO,)},
+              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted_address)},
           
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
