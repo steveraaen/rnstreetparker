@@ -153,14 +153,15 @@ dontSaveSpot(e) {
 
 var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
-          if(currentDiff < 0) {
+/*          if(currentDiff < 0) {
             timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
             timeLeft.startISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
             timeLeft.endISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
 daysArr.push(timeLeft)
             console.log(daysArr)
+            console.log(currentDiff)
           }
-          else if(currentDiff > 0) {
+          else */if(currentDiff > 0) {
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
@@ -172,7 +173,7 @@ daysArr.push(timeLeft)
           }
 console.log(timeLeft)
           daysArr.push(timeLeft)
-          
+console.log(daysArr)          
         }
 
  }
