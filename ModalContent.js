@@ -181,7 +181,7 @@ console.log(daysArr)
         this.setState ({end: daysArr}, () => {
           console.log(this.state.carLoc.data.results[0].formatted_address)
           Alert.alert(
-            `Move your car before ${timeLeft.day}`,
+            `Move your car before ${this.state.end[0].day}`,
             ``,
             [
               {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted_address)},
