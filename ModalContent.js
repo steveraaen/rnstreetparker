@@ -52,7 +52,8 @@ export default class ModalContent extends Component {
 
 
     getCarLoc(e) {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}
+    /*axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}*/
+    axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key=7972b0994b65ec093e1dfb49909b9667', {}
   ).then((doc) => {
     console.log(doc)
     this.setState({
@@ -60,11 +61,11 @@ export default class ModalContent extends Component {
       })
     })
 }
-    addToCal(s,e, a) {
+    addToCal(s,e,l) {
           RNCalendarEvents.saveEvent('Move Car', {
             startDate: s,
             endDate: e,
-            location: a
+            location: l
 }) 
     }
 dontSaveSpot(e) {
@@ -92,7 +93,7 @@ dontSaveSpot(e) {
 
 
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
@@ -109,21 +110,21 @@ dontSaveSpot(e) {
     console.log(this.state.ll)
 /*    AsyncStorage.setItem('carSpot', JSON.stringify(this.state.ll))*/
 
-    var splitCarLoc = this.state.carLoc.data.results[0].formatted_address.split(',')
+    var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')
      return( <View>
             <View >
-                <Text style={{fontSize: 20, color: 'white'}}>You are parked next to:</Text>  
+                <Text style={{fontSize: 20, color: 'yellow'}}>You are parked next to:</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 20}}>
               <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
             </View> 
             <View style={{marginTop: 20, alignItems: 'center'}}>  
-                 <Text style={{fontSize: 16, color: 'white'}}>Would you like to save this location? </Text>
+                 <Text style={{fontSize: 16, color: 'yellow'}}>Would you like to save this location? </Text>
             </View>
               <TouchableOpacity>
                 <Button 
                   title="Yes"
-                  onPress={(e) => this.getTenSigns(this.state.carLoc.data.results[0].geometry.location)}
+                  onPress={(e) => this.getTenSigns(this.state.carLoc.data.results[0].geometry)}
                 >
                 </Button>
                 <Button 
@@ -134,7 +135,7 @@ dontSaveSpot(e) {
               </TouchableOpacity>
               <View><Text></Text></View>
             </View>)
-  }
+  } else {return null}
  }
   parseClosest(a) {
     console.log(a)
@@ -153,7 +154,8 @@ dontSaveSpot(e) {
 
 var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
-/*          if(currentDiff < 0) {
+          console.log(currentDiff)
+          if(currentDiff < 0) {
             timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
             timeLeft.startISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
             timeLeft.endISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
@@ -161,7 +163,7 @@ daysArr.push(timeLeft)
             console.log(daysArr)
             console.log(currentDiff)
           }
-          else */if(currentDiff > 0) {
+          else if(currentDiff > 0) {
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
@@ -202,7 +204,7 @@ console.log(daysArr)
         <View style={{ marginLeft: 30, marginRight: 30, justifyContent: 'flex-start'}}> 
           <TouchableOpacity
           onPress={(e) => this.getCarLoc(e)}>                    
-          <Text style={{fontSize: 20, color: 'white'}}>Tap here before leaving your vehicle to remember where you parked.</Text>
+          <Text style={{fontSize: 20, color: 'yellow'}}>Tap here before leaving your vehicle to remember where you parked.</Text>
           </TouchableOpacity>
           <View style={{marginTop: 20}}>{this.showCarLoc()}</View>
            <View style={{height: 100}}>{this.showTenSigns()}</View>

@@ -11,20 +11,34 @@ export default class ASPCalendar extends Component {
 	constructor(props) {
 		super(props)
 		this.state={
-			showASPList: true
+			showASPList: true,
+			aspArray: aspDays
 		}
 		this.closeList = this.closeList.bind(this)
 	}
 	closeList() {
 		this.setState({showASPList: false})
 	}
+	componentWillMount() {
+		var nextArr = []
+		for(let i = 0; i < this.state.aspArray.length; i++) {
+			if(this.state.aspArray[i].date.isAfter(this.state.today)){
+				nextArr.push(this.state.aspArray[i])
+			}
+			if(this.state.aspArray[i].date === this.state.today) {
+				this.setState({todayIsASP: true})
+			}
+		}
+		console.log(nextArr)
+		this.setState({nextArr: nextArr})
+	}
 	render() {
-		var ASPList = aspDays.map((day, idx) => {
+		var ASPList = this.state.nextArr.map((day, idx) => {
 			return(
-				<View>
+				<View style={{backgroundColor: 'rgba(31,44,75,.9)', }}>
 
 				<ScrollView>
-					<View><Text style={{color: 'white', fontWeight: 'bold'}} key={idx}>{day.date.format('ddd, MMM Do')}<Text style={{color: 'coral'}}>   {day.holiday}</Text></Text></View>
+					<View style={{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 8, marginRight: 8}}><Text style={{color: 'white', fontWeight: 'bold'}} key={idx}>{day.date.format('ddd, MMM Do')}</Text><Text style={{color: 'coral'}}>   {day.holiday}</Text></View>
 					
 				</ScrollView>
 				</View>
@@ -32,7 +46,7 @@ export default class ASPCalendar extends Component {
 		})
 		if(this.state.showASPList) {
 		return(
-			<View>
+			<View style={{marginTop: 24}}>
 				<TouchableOpacity onPress={() => this.closeList()}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="white"/></Text> 
 				 </TouchableOpacity>

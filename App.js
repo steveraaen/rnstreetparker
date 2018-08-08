@@ -6,6 +6,7 @@ import {
   AppState,
   AsyncStorage,
   Dimensions,
+  Image,
   Picker,
   Slider,
   StatusBar,
@@ -15,6 +16,7 @@ import {
   TextInput,
   View
 } from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 import Modal from "react-native-modal";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
@@ -24,7 +26,7 @@ import nice from './niceMap.js'
 import aspDays from './asp.js'
 import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
-import Search from './Search.js'
+import SearchB from './SearchB.js'
 import FirstUse from './FirstUse.js'
 import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
@@ -33,6 +35,7 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
+      selectedIndex: 2,
       firstLaunch: null,
       modalVisible: false,      
       uLatitude: null,
@@ -41,7 +44,8 @@ export default class App extends Component<Props> {
       slideTime: moment(),
       appState: AppState.currentState,
       selectedDay: null,
-      initDay : moment().format("dddd").toUpperCase().substring(0, 3),     
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3),   
+      showASP: false  
        }
        console.log(aspDays)
       this.getSigns = this.getSigns.bind(this);
@@ -51,8 +55,12 @@ export default class App extends Component<Props> {
       this.setCarLoc = this.setCarLoc.bind(this);
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
+      this.showAspList = this.showAspList.bind(this)
+      this.updateIndex = this.updateIndex.bind(this)
   }
-  
+  updateIndex (selectedIndex) {
+  this.setState({selectedIndex})
+}
   ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
   }
@@ -314,6 +322,7 @@ export default class App extends Component<Props> {
         selectedDay: d,
         todayMarkersArray: todayMarkersArray
       })
+
     }
     componentDidMount() {
         AsyncStorage.getItem("alreadyLaunched").then(value => {
@@ -345,7 +354,11 @@ export default class App extends Component<Props> {
       slideTime: value
     })
   }
-
+  showAspList() {
+    if(this.state.showASP) {
+      return(<ASPCalendar />)
+    } else {return null}
+  }
   render() {
     if(this.state.firstLaunch) {
   return(
@@ -425,17 +438,21 @@ export default class App extends Component<Props> {
       <TouchableOpacity onPress={() => this.openModal()}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={42} color="white"/></Text>  
       </TouchableOpacity> 
+      <TouchableOpacity onPress={() => this.setState({showASP: true})}>
+          <Image style={{marginTop: 32, paddingLeft: 16, height: 40, width: 40}}source={require('./assets/aspIcon.png')}/> 
+      </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openModal()}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={42} color="white"/></Text>  
       </TouchableOpacity> 
+
    
     </View>
     <View style={{flex: .3, justifyContent: 'flex-end'}}>
-      <Search { ...this.state } makeMarker={this.makeMarker}/>
+      <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
     <Summary />
     <View>
-      <ASPCalendar />
+      {this.showAspList()}
     </View>
   </View>
     );

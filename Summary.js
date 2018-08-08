@@ -36,17 +36,28 @@ export default class Summary extends Component {
 	}
 	render() {
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
+		var blurbText = `Next ASP holiday:`
+		var nextHoliday = this.state.nextArr[0].holiday
+		var nextHolidayDate = this.state.nextArr[0].date.format('ddd, MMM Do')
 		if(this.state.showComp) {
 		return(
-			<View style={{backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24}}>
-			<View style={{justifyContent: 'flex-end'}}>
+			<View style={{flex: .1, flexDirection: 'row', backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24}}>
+			<View style={{flex: .2}}>
 			 <TouchableOpacity onPress={() => this.closeASPWindow()}>
-			 <Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="white"/></Text> 
+			 <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={24} color="white"/></Text> 
 			 </TouchableOpacity>
-				<View><Text style={{color: 'white', backgroundColor: 'black', fontSize: 18, fontWeight: 'bold'}}>{blurb}</Text>
+			 </View>
+				<View style={{marginLeft: 12, marginTop: 6}}><Text style={{color: 'yellow',  fontSize: 14, fontWeight: 'bold'}}>{blurbText}</Text>
 			</View>
-			<View><Text></Text></View>
+			<View style={{flexDirection: 'column', marginLeft: 6}}>
+			<View>
+				<Text style={{marginTop: 6, color: 'white', fontSize: 16, fontWeight: 'bold'}}>{nextHolidayDate}</Text>
 			</View>
+			<View>
+				<Text style={{marginTop: 6, color: 'coral', fontSize: 14}}>{nextHoliday}</Text>
+			</View>
+			</View>
+		
 			</View>
 			)
 	} else{
