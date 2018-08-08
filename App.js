@@ -16,7 +16,7 @@ import {
   TextInput,
   View
 } from 'react-native';
-import { ButtonGroup } from 'react-native-elements';
+
 import Modal from "react-native-modal";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
@@ -35,7 +35,7 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 2,
+      
       firstLaunch: null,
       modalVisible: false,      
       uLatitude: null,
@@ -56,11 +56,9 @@ export default class App extends Component<Props> {
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
       this.showAspList = this.showAspList.bind(this)
-      this.updateIndex = this.updateIndex.bind(this)
+      
   }
-  updateIndex (selectedIndex) {
-  this.setState({selectedIndex})
-}
+
   ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
   }
@@ -447,7 +445,7 @@ export default class App extends Component<Props> {
 
    
     </View>
-    <View style={{flex: .3, justifyContent: 'flex-end'}}>
+    <View style={{flex: .2, justifyContent: 'flex-start'}}>
       <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
     <Summary />
