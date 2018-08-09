@@ -41,22 +41,23 @@ export default class Summary extends Component {
 		var nextHolidayDate = this.state.nextArr[0].date.format('ddd, MMM Do')
 		if(this.state.showComp) {
 		return(
-			<View style={{flex: .1, flexDirection: 'row', backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24}}>
-			<View style={{flex: .2}}>
-			 <TouchableOpacity onPress={() => this.closeASPWindow()}>
-			 <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={24} color="white"/></Text> 
-			 </TouchableOpacity>
-			 </View>
-				<View style={{marginLeft: 12, marginTop: 6}}><Text style={{color: 'yellow',  fontSize: 14, fontWeight: 'bold'}}>{blurbText}</Text>
-			</View>
-			<View style={{flexDirection: 'column', marginLeft: 6}}>
-			<View>
-				<Text style={{marginTop: 6, color: 'white', fontSize: 16, fontWeight: 'bold'}}>{nextHolidayDate}</Text>
-			</View>
-			<View>
-				<Text style={{marginTop: 6, color: 'coral', fontSize: 14}}>{nextHoliday}</Text>
-			</View>
-			</View>
+			<View style={{flex: .15, backgroundColor: '#1F2C4B', marginLeft: 64, marginRight: 64, justifyContent: 'flex-start'}}>
+				<View>		
+					 <TouchableOpacity onPress={() => this.closeASPWindow()}>
+					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={28} color="white"/></Text> 
+					 </TouchableOpacity>		
+				</View>	 
+				<View style={{marginLeft:24}}>
+					<Text style={{color: 'yellow',  fontSize: 14, fontWeight: 'bold'}}>{blurbText}</Text>
+				</View>
+				<View style={{flexDirection: 'column'}}>
+					<View>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 16, fontWeight: 'bold'}}>{nextHolidayDate}</Text>
+					</View>
+					<View >
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 14}}>{nextHoliday}</Text>
+					</View>
+				</View>
 		
 			</View>
 			)

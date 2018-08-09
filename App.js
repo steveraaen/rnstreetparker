@@ -434,18 +434,18 @@ export default class App extends Component<Props> {
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={42} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={32} color="white"/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.setState({showASP: true})}>
-          <Image style={{marginTop: 32, paddingLeft: 16, height: 40, width: 40}}source={require('./assets/aspIcon.png')}/> 
+          <Image style={{marginTop: 32, paddingLeft: 16, height: 32, width: 32}}source={require('./assets/aspIcon.png')}/> 
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={42} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={32} color="white"/></Text>  
       </TouchableOpacity> 
 
    
     </View>
-    <View style={{flex: .2, justifyContent: 'flex-start'}}>
+    <View>
       <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
     <Summary />

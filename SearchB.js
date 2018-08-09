@@ -20,13 +20,17 @@ import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 
+var todayOW = moment().format('ddd').toUpperCase()
+console.log(todayOW)
 export default class SearchB extends Component {
   constructor(props) {
     super(props) ;
     this.state={
       currentDay: props.initDay,
       selectedDay: props.selDay,
-      selectedIndex: 2,
+      selectedIndex: null,
+      daysArray: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+      indexArray:[0,1,2,3,4,5,6]
     }
     this.handleDaySelect = this.handleDaySelect.bind(this)
     this.updateIndex = this.updateIndex.bind(this)
@@ -72,7 +76,13 @@ export default class SearchB extends Component {
       selectedDay: day
     }, () => this.props.makeMarker(day))
   }
-
+componentWillMount() {
+      for(let i = 0; i < this.state.daysArray.length; i++) {    
+      if(this.state.daysArray[i] === todayOW) {
+        this.setState({selectedIndex: i})
+      }
+    }
+}
   render() {
     const buttons = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat' ]
     const { selectedIndex } = this.state
@@ -88,8 +98,11 @@ export default class SearchB extends Component {
       onPress={this.updateIndex}
       selectedIndex={selectedIndex}
       buttons={buttons}
-      containerStyle={{height: 40}}
+      containerStyle={{height: 30}}
       disableSelected={true}
+      selectedButtonStyle={{backgroundColor: 'rgba(31,44,75,.9)'}}
+      selectedTextStyle={{color: 'coral'}}
+      containerStyle={{backgroundColor: 'rgba(31,44,75,.9)'}}
     />    
 
       )

@@ -20,7 +20,7 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import gkey from './keys.js';
+import ckey from './keys.js';
 export default class ModalContent extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +53,7 @@ export default class ModalContent extends Component {
 
     getCarLoc(e) {
     /*axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}*/
-    axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key=7972b0994b65ec093e1dfb49909b9667', {}
+    axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key='+ ckey, {}
   ).then((doc) => {
     console.log(doc)
     this.setState({
@@ -62,6 +62,7 @@ export default class ModalContent extends Component {
     })
 }
     addToCal(s,e,l) {
+      console.log(l)
           RNCalendarEvents.saveEvent('Move Car', {
             startDate: s,
             endDate: e,
@@ -89,9 +90,6 @@ dontSaveSpot(e) {
  }
  showTenSigns() {
   if(this.state.nearestThree) {
-
-
-
       return ( <View style={{height: 240, alignItems: 'center'}}>
         <View><Text style={{fontSize: 14, color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
@@ -108,7 +106,8 @@ dontSaveSpot(e) {
 
   if(this.state.carLoc) {
     console.log(this.state.ll)
-/*    AsyncStorage.setItem('carSpot', JSON.stringify(this.state.ll))*/
+      AsyncStorage.setItem('carSpot', JSON.stringify(this.state.ll));
+      console.log(AsyncStorage.getItem('carSpot'));
 
     var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')
      return( <View>
