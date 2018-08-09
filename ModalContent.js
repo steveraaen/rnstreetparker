@@ -106,7 +106,11 @@ dontSaveSpot(e) {
 
   if(this.state.carLoc) {
     console.log(this.state.ll)
-      AsyncStorage.setItem('carSpot', JSON.stringify(this.state.ll));
+      var savedCarLoc = {
+        latitude: this.state.ll[1],
+        longitude: this.state.ll[0],
+      }
+      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc));
       console.log(AsyncStorage.getItem('carSpot'));
 
     var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')

@@ -56,6 +56,8 @@ export default class App extends Component<Props> {
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
       this.showAspList = this.showAspList.bind(this)
+      this.mapToCar = this.mapToCar.bind(this)
+      this.mapFromCar = this.mapFromCar.bind(this)
       
   }
 
@@ -263,7 +265,8 @@ export default class App extends Component<Props> {
             longitude: lo,
               }      
             })
-    }
+        }
+
     componentWillMount() {    
       for(let asp in aspDays){
         console.log(aspDays[asp].date - this.state.fullDay)
@@ -323,17 +326,18 @@ export default class App extends Component<Props> {
 
     }
     componentDidMount() {
-        AsyncStorage.getItem("alreadyLaunched").then(value => {
-            if(value == null){
-                 AsyncStorage.setItem('alreadyLaunched', "yes"); // No need to wait for `setItem` to finish, although you might want to handle errors
-                 this.setState({firstLaunch: true}, () => {
-                   
-                 });
-            }
-            else{
-                 this.setState({firstLaunch: false});
-            }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
-    
+      AsyncStorage.getItem("alreadyLaunched").then(value => {
+        if(value == null){
+         AsyncStorage.setItem('alreadyLaunched', "yes");
+         this.setState({firstLaunch: true}, () => {                   
+         });
+        }
+        else{
+         this.setState({firstLaunch: false});
+        }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
+      AsyncStorage.getItem("carSpot").then((val, err) =>{
+        this.setState({carSpot: JSON.parse(val)})
+      })
 
       this.getNewDay(this.state.selDay)
       this.getMeters()
@@ -356,6 +360,18 @@ export default class App extends Component<Props> {
     if(this.state.showASP) {
       return(<ASPCalendar />)
     } else {return null}
+  }
+  mapToCar() {
+    this.setState({
+      uLatitude: this.state.carSpot.latitude,
+      uLongitude: this.state.carSpot.longitude,
+    })
+  }
+  mapFromCar() {
+    this.setState({
+      uLatitude: this.state.uPosition.latitude,
+      uLongitude: this.state.uPosition.longitude,
+    })    
   }
   render() {
     if(this.state.firstLaunch) {
@@ -426,7 +442,7 @@ export default class App extends Component<Props> {
      />
      ))}
      <Marker 
-      coordinate={this.state.carMarkLocation}
+      coordinate={this.state.carSpot}
       >
       <Icon name="ios-car" size={18} color="white"/>
       </Marker>
@@ -434,13 +450,16 @@ export default class App extends Component<Props> {
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={32} color="white"/></Text>  
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.setState({showASP: true})}>
-          <Image style={{marginTop: 32, paddingLeft: 16, height: 32, width: 32}}source={require('./assets/aspIcon.png')}/> 
+          <Image style={{marginTop: 32, paddingLeft: 16, height: 28, width: 28}}source={require('./assets/aspIcon.png')}/> 
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={32} color="white"/></Text>  
+      <TouchableOpacity onPress={() => this.mapFromCar()}>
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-navigate" size={28} color="white"/></Text>  
+      </TouchableOpacity> 
+      <TouchableOpacity onPress={() => this.mapToCar()}>
+          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
 
    
