@@ -35,22 +35,36 @@ export default class SearchB extends Component {
   this.setState({selectedIndex}, () => {
     
     if(this.state.selectedIndex === 0) {
-      this.setState({selectedDay: 'SUN'})
+      this.setState({selectedDay: 'SUN'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 1) {
-      this.setState({selectedDay: 'MON'})
+      this.setState({selectedDay: 'MON'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 2) {
-      this.setState({selectedDay: 'TUE'})
+      this.setState({selectedDay: 'TUE'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 3) {
-      this.setState({selectedDay: 'WED'})
+      this.setState({selectedDay: 'WED'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 4) {
-      this.setState({selectedDay: 'THU'})
+      this.setState({selectedDay: 'THU'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 5) {
-      this.setState({selectedDay: 'FRI'})
+      this.setState({selectedDay: 'FRI'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     } else if(this.state.selectedIndex === 6) {
-      this.setState({selectedDay: 'SAT'})
+      this.setState({selectedDay: 'SAT'}, () => {
+        this.props.makeMarker(this.state.selectedDay)
+      })
     }
   })
-  this.props.makeMarker(this.state.selectedDay)
+
 }
   handleDaySelect(day) {
    
