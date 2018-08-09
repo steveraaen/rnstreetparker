@@ -286,7 +286,11 @@ export default class App extends Component<Props> {
                 uLongitude: pos.coords.longitude,
                 uLatitude: pos.coords.latitude,
                 uLnglat: [pos.coords.longitude, pos.coords.latitude],
-                uPosition: pos.coords
+                uPosition: pos.coords,
+                carSpot: {
+                  latitude: pos.coords.latitude,
+                  longitude: pos.coords.longitude,
+                }
             })
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {

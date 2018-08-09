@@ -4,10 +4,9 @@ import moment from 'moment'
 import axios from 'axios'
 import gkey from './keys.js'
 
-var sixMonthsAgo = moment().subtract(180, 'days').format('MMMM Do YYYY')
 
-var blurb = `Streetparker is for New Yorkers who park on the street.\n\nThere are approximately one million non-metered parking spaces in the five boros, with only restriction being that drivers must move their cars at least once per week so that street sweepers can do their job.
-             `
+var blurbOne = `Streetparker is for New Yorkers who park on the street.\n\nThere are approximately one million non-metered parking spaces in the five boros, with only restriction being that drivers must move their cars at least once per week so that street sweepers can do their job.`
+var blurbTwo = ``
 export default class FirstUse extends Component {
 	constructor(props) {
 		super(props);
@@ -33,7 +32,7 @@ export default class FirstUse extends Component {
 			<View style={{flex: 1, justifyContent: 'center', backgroundColor: 'black'}}>
 			
 			<View style={{backgroundColor: 'black', margin: 2}}>
-				<Text style={{textAlign: 'center', fontSize: 14, color: '#F6FEAC'}}>{blurb}<Text style={{color: 'white', fontWeight: 'bold'}}>{sixMonthsAgo}?</Text></Text>
+				<Text style={{textAlign: 'center', fontSize: 16, color: '#F6FEAC'}}>{blurbOne}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
 			</View>
 			<Button	
 				onPress={() => this.props.ackIn()}

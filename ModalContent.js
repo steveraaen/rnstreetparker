@@ -61,12 +61,15 @@ export default class ModalContent extends Component {
       })
     })
 }
-    addToCal(s,e,l) {
+    addToCal(s,e,l,a) {
       console.log(l)
           RNCalendarEvents.saveEvent('Move Car', {
             startDate: s,
             endDate: e,
-            location: l
+            location: l,
+            alarms: [{
+              date: a
+    }]
 }) 
     }
 dontSaveSpot(e) {
@@ -170,6 +173,7 @@ daysArr.push(timeLeft)
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
+            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').subtract(2, 'hours').toISOString(),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
             nowISO: moment().toISOString(),
             diff: currentDiff,
@@ -182,14 +186,14 @@ console.log(daysArr)
         }
 
  }
-  console.log(daysArr)
+ 
         this.setState ({end: daysArr}, () => {
-          console.log(this.state.carLoc.data.results[0].formatted_address)
+          console.log(moment(this.state.end[0].day).subtract(2, 'hours'))
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted_address)},
+              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, moment(this.state.end[0].alarmISO))},
           
               {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
