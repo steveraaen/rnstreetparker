@@ -160,21 +160,24 @@ dontSaveSpot(e) {
 
 var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
-          console.log(currentDiff)
+
           if(currentDiff < 0) {
-            timeLeft.day = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a')
-            timeLeft.startISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
-            timeLeft.endISO = moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString()
-daysArr.push(timeLeft)
-            console.log(daysArr)
-            console.log(currentDiff)
+            timeLeft={
+            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a'),
+            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
+            endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
+            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').subtract(2, 'hours').toISOString(),
+            }
+          daysArr.push(timeLeft)
+
           }
           else if(currentDiff > 0) {
           timeLeft = {
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
+            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').subtract(2, 'hours').toISOString(),
-            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
+            
             nowISO: moment().toISOString(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
