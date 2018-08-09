@@ -94,11 +94,11 @@ dontSaveSpot(e) {
  showTenSigns() {
   if(this.state.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.state.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{borderBottomWidth: 2, borderBottomColor: 'black', marginTop: 10}}><Text style={{fontSize: 16, color: 'white'}}>{item.properties.T}</Text></View></TouchableOpacity>}
+                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}><Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text></View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
