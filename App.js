@@ -365,13 +365,13 @@ export default class App extends Component<Props> {
     this.setState({
       uLatitude: this.state.carSpot.latitude,
       uLongitude: this.state.carSpot.longitude,
-    })
+    }, () => this.getSigns())
   }
   mapFromCar() {
     this.setState({
       uLatitude: this.state.uPosition.latitude,
       uLongitude: this.state.uPosition.longitude,
-    })    
+    }, () => this.getSigns())    
   }
   render() {
     if(this.state.firstLaunch) {
