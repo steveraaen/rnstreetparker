@@ -57,10 +57,8 @@ export default class App extends Component<Props> {
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
       this.showAspList = this.showAspList.bind(this)
       this.mapToCar = this.mapToCar.bind(this)
-      this.mapFromCar = this.mapFromCar.bind(this)
-      
+      this.mapFromCar = this.mapFromCar.bind(this)      
   }
-
   ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
   }
@@ -81,7 +79,6 @@ export default class App extends Component<Props> {
       appState: nextAppState,
     });
   }
-
   getNewDay(day) {
     if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
@@ -173,6 +170,7 @@ export default class App extends Component<Props> {
        var reStart= /\s|^([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
        var reDay= /[A-Z]{3}/g
       var endTime = doc.data[i].properties.T.match(reEnd)
+      var noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
       var dayow = doc.data[i].properties.T.match(reDay)
       var todayArray = []
       var now = moment()
@@ -183,15 +181,20 @@ export default class App extends Component<Props> {
       var friArray = []
       var satArray = []
       var sunArray = []
+      
           if(Array.isArray(endTime)){
                 marker.dayow = dayow
                 marker.rawEnd = endTime[1]
-                marker.endTime = moment(endTime[1], 'hh:mm')
-                marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000
-       
-                } 
-
-        if(marker.dif > 0 /*&& marker.dif < 2*/) {
+                marker.endTime = moment(endTime[1], 'hh:mma')
+                marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
+                marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
+                    
+  
+console.log(marker.endTime)
+console.log(marker.noonTime)
+/*console.log(marker.endTime.isBefore(marker.noonTime));*/
+       /* if(marker.dif > 0 && marker.dif < 2) {*/
+        if(marker.endTime.isBefore(marker.noonTime)) {
           marker.color = 'rgba(3,189,244,' + 1 + ')'
         } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
@@ -204,7 +207,8 @@ export default class App extends Component<Props> {
         }  else if(marker.dif > 10) {
           marker.color = 'rgba(3,189,244,' + .4 + ')'
         } */ 
-          else if(/*marker.dif  > -2 &&*/ marker.dif < 0){
+          else if(marker.endTime.isAfter(marker.noonTime)){
+        /*  else if(marker.dif  > -2 && marker.dif < 0){*/
           marker.color = 'rgba(252, 204, 10,'+ 1 + ')'
         } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
@@ -219,6 +223,7 @@ export default class App extends Component<Props> {
         }*/
           markersArray.push(marker)          
         }
+                      } 
         for(let i = 0; i < markersArray.length; i++) {
           if(markersArray[i].text.includes("MON")) {
           monArray.push(markersArray[i])
@@ -362,7 +367,7 @@ export default class App extends Component<Props> {
   }
   showAspList() {
     if(this.state.showASP) {
-      return(<ASPCalendar />)
+      return(<View style={{height: 400}}><ASPCalendar /></View>)
     } else {return null}
   }
   mapToCar() {

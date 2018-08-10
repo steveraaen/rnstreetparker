@@ -35,10 +35,15 @@ export default class ASPCalendar extends Component {
 	render() {
 		var ASPList = this.state.nextArr.map((day, idx) => {
 			return(
-				<View style={{backgroundColor: 'rgba(31,44,75,.9)', }}>
+				<View style={{backgroundColor: 'rgba(31,44,75,.9)'}}>
 
 				<ScrollView>
-					<View style={{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 8, marginRight: 8}}><Text style={{color: 'white', fontWeight: 'bold'}} key={idx}>{day.date.format('ddd, MMM Do')}</Text><Text style={{color: 'coral'}}>   {day.holiday}</Text></View>
+					 <View key={idx}>
+					<View style={{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 16, marginRight: 16}}>
+					<Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>{day.date.format('ddd, MMM Do')}</Text>
+					<Text style={{color: 'coral'}}>   {day.holiday}</Text>
+					</View>
+					</View>
 					
 				</ScrollView>
 				</View>
@@ -50,7 +55,9 @@ export default class ASPCalendar extends Component {
 				<TouchableOpacity onPress={() => this.closeList()}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="white"/></Text> 
 				 </TouchableOpacity>
+			
 				{ASPList}
+			
 			</View>
 			)
 	} else {

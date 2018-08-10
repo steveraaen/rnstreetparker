@@ -41,7 +41,7 @@ export default class Summary extends Component {
 		var nextHolidayDate = this.state.nextArr[0].date.format('ddd, MMM Do')
 		if(this.state.showComp) {
 		return(
-			<View style={{flex: .15, backgroundColor: '#1F2C4B', marginLeft: 64, marginRight: 64, justifyContent: 'flex-start'}}>
+			<View style={{flex: .2, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.closeASPWindow()}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={28} color="white"/></Text> 
