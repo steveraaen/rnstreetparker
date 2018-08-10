@@ -223,7 +223,7 @@ console.log(marker.noonTime)
         }*/
           markersArray.push(marker)          
         }
-                      } 
+      } 
         for(let i = 0; i < markersArray.length; i++) {
           if(markersArray[i].text.includes("MON")) {
           monArray.push(markersArray[i])
@@ -237,8 +237,8 @@ console.log(marker.noonTime)
           friArray.push(markersArray[i])
         } if(markersArray[i].text.includes("SAT")) {
           satArray.push(markersArray[i])
-        } if(markersArray[i].text.includes("SUN")) {
-          sunArray.push(markersArray[i])
+        } if(markersArray[i].text.includes("SUN")) {          sunArray.push(markersArray[i])
+
         } if(markersArray[i].text.includes(this.state.initDay)) {
         todayArray.push()
       }
@@ -367,7 +367,7 @@ console.log(marker.noonTime)
   }
   showAspList() {
     if(this.state.showASP) {
-      return(<View style={{height: 400}}><ASPCalendar /></View>)
+      return(<ASPCalendar />)
     } else {return null}
   }
   mapToCar() {
@@ -396,7 +396,7 @@ console.log(marker.noonTime)
       <View>
           <Modal
               backdropColor={'#1F2C4B'}
-              backdropOpacity= {1}
+              backdropOpacity= {.8}
               supportedOrientations={['portrait', 'landscape']}
               isVisible={this.state.modalVisible}
               animationType={'slide'}
@@ -477,9 +477,9 @@ console.log(marker.noonTime)
       <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
     <Summary />
-    <View>
+
       {this.showAspList()}
-    </View>
+
   </View>
     );
     } else {
