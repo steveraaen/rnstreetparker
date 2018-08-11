@@ -62,15 +62,16 @@ export default class ModalContent extends Component {
     })
 }
     addToCal(s,e,l,a) {
-      console.log(l)
-          RNCalendarEvents.saveEvent('Move Car', {
-            startDate: s,
-            endDate: e,
-            location: l,
-            alarms: [{
-              date: a
+ 
+      RNCalendarEvents.saveEvent('Move Car', {
+        startDate: s,
+        endDate: e,
+        location: l,
+        alarms: [{
+          date: a
     }]
 }) 
+      /*console.log(AsyncStorage.getItem('carObject'))*/
     }
 dontSaveSpot(e) {
   this.setState({
@@ -108,15 +109,17 @@ dontSaveSpot(e) {
  showCarLoc() {
 
   if(this.state.carLoc) {
-    console.log(this.state.ll)
+      var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')
       var savedCarLoc = {
         latitude: this.state.ll[1],
         longitude: this.state.ll[0],
+        location: splitCarLoc[0] + "," + splitCarLoc[1]
       }
       AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc));
       console.log(AsyncStorage.getItem('carSpot'));
 
-    var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')
+
+    console.log(splitCarLoc)
      return( <View>
             <View >
                 <Text style={{fontSize: 20, color: 'yellow'}}>You are parked next to:</Text>  

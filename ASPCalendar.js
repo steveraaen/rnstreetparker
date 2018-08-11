@@ -33,7 +33,7 @@ export default class ASPCalendar extends Component {
 		this.setState({nextArr: nextArr})
 	}
 	render() {
-		var keyExtractor = (item, index) => item.id;
+		var keyExtractor = (item, index) => item.date.format('MMMM, Do');
 		if(this.state.showASPList) {
 		return(
 			<View style={{marginTop: 4}}>
@@ -57,7 +57,10 @@ export default class ASPCalendar extends Component {
 			</View>
 			<View style={{marginLeft: 24, marginRight: 24, backgroundColor: 'rgba(31,44,75,.9)', marginTop: 12}}>
 				<Text style={{color: 'yellow', fontSize: 14, fontWeight: 'bold'}}>Save this list to your phone's native calendar?</Text>
-				<Button title={"Save List"}/>
+				<Button 
+				title={"Save List"}
+				onPress={()=> console.log('save asp list')}
+				/>
 			</View>
 			</View>
 			)

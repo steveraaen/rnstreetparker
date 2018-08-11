@@ -47,7 +47,7 @@ export default class App extends Component<Props> {
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),   
       showASP: false  
        }
-       console.log(aspDays)
+  /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
       this.getNewDay = this.getNewDay.bind(this);
@@ -58,6 +58,7 @@ export default class App extends Component<Props> {
       this.showAspList = this.showAspList.bind(this)
       this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
+      this.makeCarMarker = this.makeCarMarker.bind(this)      
   }
   ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
@@ -101,8 +102,8 @@ export default class App extends Component<Props> {
       todayMarkersArray: this.state.thuArray
       })
     }  if(this.state.selDay === "FRI" && this.state.markersArray) {
-          console.log(this.state.markersArray)
-    console.log(day)
+     /*     console.log(this.state.markersArray)*/
+  /*  console.log(day)*/
     this.setState({
       selDay: day,
       todayMarkersArray: this.state.friArray
@@ -118,7 +119,7 @@ export default class App extends Component<Props> {
       todayMarkersArray: this.state.sunArray
       })
     }
-    console.log(this.state.todayMarkersArray)
+   /* console.log(this.state.todayMarkersArray)*/
 
   }
     getMeters(ln, la) {
@@ -128,7 +129,7 @@ export default class App extends Component<Props> {
                 coordinates: [parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6)],           
             } 
       }).then((docm) => {
-        console.log(docm.data)
+       /* console.log(docm.data)*/
         var metersArray= []
         for(let i = 0; i < docm.data.length; i++) {
           var meter = {}
@@ -148,7 +149,7 @@ export default class App extends Component<Props> {
 
     
     getSigns() { 
-            /*axios.get('http:127.0.0.1:5000/mon', {*/
+           /* axios.get('http:127.0.0.1:5001/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
               coordinates: [parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6)],
@@ -190,12 +191,12 @@ export default class App extends Component<Props> {
                 marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
                     
   
-console.log(marker.endTime)
-console.log(marker.noonTime)
+/*console.log(marker.endTime)
+console.log(marker.noonTime)*/
 /*console.log(marker.endTime.isBefore(marker.noonTime));*/
        /* if(marker.dif > 0 && marker.dif < 2) {*/
         if(marker.endTime.isBefore(marker.noonTime)) {
-          marker.color = 'rgba(3,189,244,' + 1 + ')'
+          marker.color = 'rgba(22,56,123,.9)'
         } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
         } else if(marker.dif > 4 && marker.dif < 6) {
@@ -209,7 +210,7 @@ console.log(marker.noonTime)
         } */ 
           else if(marker.endTime.isAfter(marker.noonTime)){
         /*  else if(marker.dif  > -2 && marker.dif < 0){*/
-          marker.color = 'rgba(252, 204, 10,'+ 1 + ')'
+          marker.color = 'rgba(223, 117, 63,.9)'
         } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
         } else if(marker.dif  > -6 && marker.dif < -4){
@@ -237,13 +238,14 @@ console.log(marker.noonTime)
           friArray.push(markersArray[i])
         } if(markersArray[i].text.includes("SAT")) {
           satArray.push(markersArray[i])
-        } if(markersArray[i].text.includes("SUN")) {          sunArray.push(markersArray[i])
+        } if(markersArray[i].text.includes("SUN")) {          
+          sunArray.push(markersArray[i])
 
         } if(markersArray[i].text.includes(this.state.initDay)) {
         todayArray.push()
       }
 
-    }console.log(todayArray)
+    }/*console.log(todayArray)*/
 // ------------- set state of all markers regardless of day
         this.setState({
           signs: doc,
@@ -258,7 +260,7 @@ console.log(marker.noonTime)
           sunArray: sunArray,
           todayArray: todayArray
         }, () => {
-          console.log(this.state.initDay)
+         /* console.log(this.state.initDay)*/
           this.makeMarker(this.state.initDay)
          /* this.betterMarker(this.state.markersArray)*/
         })
@@ -274,7 +276,7 @@ console.log(marker.noonTime)
 
     componentWillMount() {    
       for(let asp in aspDays){
-        console.log(aspDays[asp].date - this.state.fullDay)
+       /* console.log(aspDays[asp].date - this.state.fullDay)*/
         if(this.state.fullDay === aspDays[asp].date){         
           this.setState({
             isTodayASP: true,
@@ -292,10 +294,7 @@ console.log(marker.noonTime)
                 uLatitude: pos.coords.latitude,
                 uLnglat: [pos.coords.longitude, pos.coords.latitude],
                 uPosition: pos.coords,
-                carSpot: {
-                  latitude: pos.coords.latitude,
-                  longitude: pos.coords.longitude,
-                }
+               
             })
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {
@@ -307,7 +306,7 @@ console.log(marker.noonTime)
           
          error: null,
         }, () => {
-          this.getSigns(this.state.uLatitude, this.state.uLongitude)
+          this.getSigns()
           this.getMeters(this.state.uLatitude, this.state.uLongitude)          
         });
        
@@ -321,7 +320,7 @@ console.log(marker.noonTime)
           })
     }
     makeMarker(d) {
-      console.log(d)
+    /*  console.log(d)*/
       var todayMarkersArray = []
         for(let i = 0; i < this.state.markersArray.length; i++) {
           if(this.state.markersArray[i].text.includes(d)) {
@@ -349,7 +348,7 @@ console.log(marker.noonTime)
       })
 
       this.getNewDay(this.state.selDay)
-      this.getMeters()
+      this.getMeters(this.state.uLatitude, this.state.uLongitude)
 
       if(this.state.AppState === 'background') {
         navigator.geolocation.clearWatch(this.watchID);
@@ -374,15 +373,31 @@ console.log(marker.noonTime)
     this.setState({
       uLatitude: this.state.carSpot.latitude,
       uLongitude: this.state.carSpot.longitude,
-    }, () => this.getSigns())
+    }, () => this.getSigns(), ()=> {
+      this.getMeters(this.state.uLatitude, this.state.uLongitude)
+    })
   }
   mapFromCar() {
     this.setState({
       uLatitude: this.state.uPosition.latitude,
       uLongitude: this.state.uPosition.longitude,
-    }, () => this.getSigns())    
+    }, () => this.getSigns(), ()=> {
+      this.getMeters(this.state.uLatitude, this.state.uLongitude)
+    })    
+  }
+  makeCarMarker() {
+    if(this.state.carSpot) {
+      return(
+       <Marker 
+        coordinate={this.state.carSpot}
+        >
+        <Icon name="ios-car" size={18} color="black"/>
+        </Marker>
+        )
+    } else return null
   }
   render() {
+
     if(this.state.firstLaunch) {
   return(
     <FirstUse ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
@@ -417,7 +432,7 @@ console.log(marker.noonTime)
         scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
-        customMapStyle={nice}
+        
         showsUserLocation={true}
         followsUserLocation={true}
         animateToBearing={true}
@@ -428,8 +443,8 @@ console.log(marker.noonTime)
         region={{
           latitude: this.state.uLatitude,
           longitude: this.state.uLongitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
     }}>
 
          {this.state.todayMarkersArray.map((marker, idx) => (
@@ -444,17 +459,14 @@ console.log(marker.noonTime)
      {this.state.meters.map((meter, idx) => (
     <Circle
       center={meter.latlng}
-      radius={8}
+      radius={6}
       strokeColor={meter.color}
       fillColor={meter.color}
       key={idx}
      />
      ))}
-     <Marker 
-      coordinate={this.state.carSpot}
-      >
-      <Icon name="ios-car" size={18} color="white"/>
-      </Marker>
+
+     {this.makeCarMarker()}
   </MapView>
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     

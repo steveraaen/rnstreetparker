@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   AppState,
   AsyncStorage,
-  Button,
   Dimensions,
   Modal,
   Picker,
