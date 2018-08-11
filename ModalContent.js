@@ -30,9 +30,9 @@ export default class ModalContent extends Component {
     var isauth = RNCalendarEvents.authorizeEventStore()
     var test = RNCalendarEvents.authorizationStatus()
     var calList = RNCalendarEvents.findCalendars()
-    console.log(isauth)
+/*    console.log(isauth)
     console.log(test)
-    console.log(calList)
+    console.log(calList)*/
 
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -55,7 +55,7 @@ export default class ModalContent extends Component {
     /*axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}*/
     axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key='+ ckey, {}
   ).then((doc) => {
-    console.log(doc)
+  /*  console.log(doc)*/
     this.setState({
       carLoc: doc
       })
@@ -116,10 +116,10 @@ dontSaveSpot(e) {
         location: splitCarLoc[0] + "," + splitCarLoc[1]
       }
       AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc));
-      console.log(AsyncStorage.getItem('carSpot'));
+  /*    console.log(AsyncStorage.getItem('carSpot'));*/
 
 
-    console.log(splitCarLoc)
+  /*  console.log(splitCarLoc)*/
      return( <View>
             <View >
                 <Text style={{fontSize: 20, color: 'yellow'}}>You are parked next to:</Text>  
@@ -147,7 +147,7 @@ dontSaveSpot(e) {
   } else {return null}
  }
   parseClosest(a) {
-    console.log(a)
+   /* console.log(a)*/
   this.setState({
     thisSign: a
   }, () => {
@@ -186,15 +186,15 @@ var timeLeft = {}
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm')
           }
-console.log(timeLeft)
+/*console.log(timeLeft)*/
           daysArr.push(timeLeft)
-console.log(daysArr)          
+/*console.log(daysArr)  */        
         }
 
  }
  
         this.setState ({end: daysArr}, () => {
-          console.log(moment(this.state.end[0].day).subtract(2, 'hours'))
+          /*console.log(moment(this.state.end[0].day).subtract(2, 'hours'))*/
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
             ``,

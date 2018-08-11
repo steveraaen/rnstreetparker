@@ -28,7 +28,7 @@ export default class Summary extends Component {
 				this.setState({todayIsASP: true})
 			}
 		}
-		console.log(nextArr)
+	/*	console.log(nextArr)*/
 		this.setState({nextArr: nextArr})
 	}
 	closeASPWindow() {
