@@ -8,3 +8,50 @@
           <Picker.Item label={"Thursday"}  value={[this.state.thuArray, "Friday"]} dow={"Thursday"}/>
           <Picker.Item label={"Friday"}  value={[this.state.friArray, "Saturday"]} dow={"Friday"}/>
           <Picker.Item label={"Saturday"}  value={[this.state.satArray, "Sunday"]} dow={"Saturday"}/>
+
+
+
+ showCarLoc() {
+
+  if(this.state.carLoc) {
+      var splitCarLoc = this.state.carLoc.data.results[0].formatted.split(',')
+      var savedCarLoc = {
+        latitude: this.state.ll[1],
+        longitude: this.state.ll[0],
+        location: splitCarLoc[0] + "," + splitCarLoc[1]
+      }
+      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
+        AsyncStorage.getItem('carSpot', (err, res) => {
+          console.log(JSON.parse(res))
+        })
+      })
+      
+
+
+  /*  console.log(splitCarLoc)*/
+     return( <View>
+            <View >
+                <Text style={{fontSize: 20, color: 'yellow'}}>You are parked next to:</Text>  
+            </View> 
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+            </View> 
+            <View style={{marginTop: 20, alignItems: 'center'}}>  
+                 <Text style={{fontSize: 16, color: 'yellow'}}>Would you like to save this location? </Text>
+            </View>
+              <TouchableOpacity>
+                <Button 
+                  title="Yes"
+                  onPress={(e) => this.getTenSigns(this.state.carLoc.data.results[0].geometry)}
+                >
+                </Button>
+                <Button 
+                  title="No"
+                  onPress={(e) => this.dontSaveSpot()}
+                >
+                </Button>
+              </TouchableOpacity>
+              <View><Text></Text></View>
+            </View>)
+  } else {return null}
+ }

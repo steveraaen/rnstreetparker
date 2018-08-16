@@ -23,15 +23,15 @@ var nice = [
       }
     ]
   },
-  {
+  /*{
     "featureType": "administrative",
     "elementType": "geometry",
     "stylers": [
       {
-        "visibility": "off"
+        "visibility": "on"
       }
     ]
-  },
+  },*/
   {
     "featureType": "administrative.country",
     "elementType": "geometry.stroke",

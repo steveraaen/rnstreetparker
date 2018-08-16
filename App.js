@@ -16,7 +16,7 @@ import {
   TextInput,
   View
 } from 'react-native';
-
+import RNCalendarEvents from 'react-native-calendar-events';
 import Modal from "react-native-modal";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
@@ -31,6 +31,12 @@ import FirstUse from './FirstUse.js'
 import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
 type Props = {};
+    var isauth = RNCalendarEvents.authorizeEventStore()
+    var test = RNCalendarEvents.authorizationStatus()
+    var calList = RNCalendarEvents.findCalendars()
+    console.log(isauth)
+    console.log(test)
+    console.log(calList)
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
@@ -56,10 +62,37 @@ export default class App extends Component<Props> {
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
       this.showAspList = this.showAspList.bind(this)
-      this.mapToCar = this.mapToCar.bind(this)
+      this.addToCal = this.addToCal.bind(this)
+      this.getTenSigns = this.getTenSigns.bind(this)
+      this.getCarLoc = this.getCarLoc.bind(this)
+      this.getASPStatus = this.getASPStatus.bind(this)
+      this.getSignText = this.getSignText.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+/*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
-      this.makeCarMarker = this.makeCarMarker.bind(this)      
+      this.makeCarMarker = this.makeCarMarker.bind(this) 
+      this._retrieveData = this._retrieveData.bind(this)     
+      this.spotListener = this.spotListener.bind(this)  */   
   }
+/*      _retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('moveCar');
+        if (value !== null) {
+          // We have data!!
+          console.log(JSON.parse(value));
+          this.setState({savedSpot: JSON.parse(value)})
+        }
+       } catch (error) {
+         // Error retrieving data
+       }
+    }*/
+    openModal() {
+      this.setState({modalVisible:true});
+    }
+    closeModal() {
+      this.setState({modalVisible:false});
+    }  
   ackFirstLaunchIn() {
     this.setState({firstLaunch: false})
   }
@@ -74,8 +107,20 @@ export default class App extends Component<Props> {
       this.setState({modalVisible:false});
     }
   _handleAppStateChange = (nextAppState) => {
+
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-    }
+      console.log('app state changed')
+    }  
+
+/*    if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
+      console.log(this.state.parkingObject)
+      AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.parkingObject), () => {
+        AsyncStorage.getItem('parkingObject', (err, value) => {
+          this.setState({parkingObject: JSON.parse(value)})
+        })
+      })
+      
+    }*/
     this.setState({
       appState: nextAppState,
     });
@@ -265,16 +310,19 @@ console.log(marker.noonTime)*/
          /* this.betterMarker(this.state.markersArray)*/
         })
       })}
-    setCarLoc(la, lo) {
+    setCarLoc(la, ln, lo) {
       this.setState({
         carMarkLocation: {
             latitude: la,
-            longitude: lo,
+            longitude: ln,
+            location: lo,
               }      
             })
         }
 
-    componentWillMount() {    
+    componentWillMount() { 
+/*      this.spotListener()
+    this._retrieveData()  */ 
       for(let asp in aspDays){
        /* console.log(aspDays[asp].date - this.state.fullDay)*/
         if(this.state.fullDay === aspDays[asp].date){         
@@ -287,6 +335,7 @@ console.log(marker.noonTime)*/
 
 
        AppState.addEventListener('change', this._handleAppStateChange);
+
       navigator.geolocation.getCurrentPosition(function(pos) {
             var { longitude, latitude, accuracy, heading } = pos.coords
             this.setState({
@@ -312,7 +361,7 @@ console.log(marker.noonTime)*/
        
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true,  distanceFilter: 20 },
+      { enableHighAccuracy: true,  distanceFilter: 100 },
             )      
         }.bind(this))    
           this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
@@ -333,19 +382,9 @@ console.log(marker.noonTime)*/
       })
 
     }
+
     componentDidMount() {
-      AsyncStorage.getItem("alreadyLaunched").then(value => {
-        if(value == null){
-         AsyncStorage.setItem('alreadyLaunched', "yes");
-         this.setState({firstLaunch: true}, () => {                   
-         });
-        }
-        else{
-         this.setState({firstLaunch: false});
-        }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
-      AsyncStorage.getItem("carSpot").then((val, err) =>{
-        this.setState({carSpot: JSON.parse(val)})
-      })
+
 
       this.getNewDay(this.state.selDay)
       this.getMeters(this.state.uLatitude, this.state.uLongitude)
@@ -369,7 +408,7 @@ console.log(marker.noonTime)*/
       return(<ASPCalendar />)
     } else {return null}
   }
-  mapToCar() {
+/*  mapToCar() {
     this.setState({
       uLatitude: this.state.carSpot.latitude,
       uLongitude: this.state.carSpot.longitude,
@@ -395,9 +434,73 @@ console.log(marker.noonTime)*/
         </Marker>
         )
     } else return null
-  }
-  render() {
+  }*/
+      getCarLoc() {
+    /*axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}*/
+    axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key='+ ckey, {}
+  ).then((doc) => {
+    this.setState({
+      carAddress: doc.data.results[0].components,
+      carLoc: {
+        carAddress: doc.data.results[0].formatted,
+        latitude: doc.data.results[0].geometry.lat,
+        longitude: doc.data.results[0].geometry.lng,
+      }
+      })
+    })
+}
+   getTenSigns(coor) {
+    this.setCarLoc(parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6))
+      axios.get('https://streetparker.herokuapp.com/mycar', {
+        params: {
+          coordinates: [parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6)]            
+        }
+    }).then((doc) => {
 
+      this.setState({
+        nearestThree: doc.data.slice(0,3)
+      })
+    }, () => this.getCarLoc()) 
+ }
+    makeCarMarker() {
+    if(this.state.carMarkLocation) {
+      return(
+       <Marker 
+        coordinate={this.state.carMarkLocation}
+        >
+        <Icon name="ios-car" size={18} color="black"/>
+        </Marker>
+        )
+    } else return null
+  }
+    addToCal(s,e,l,a) {
+      var parkingObject = {
+        startDate: s,
+        endDate: e,
+        location: l,
+        alarms: [{
+          date: a
+    }]        
+      }
+      RNCalendarEvents.saveEvent('Move Car', {
+        startDate: s,
+        endDate: e,
+        location: l,
+        alarms: [{
+          date: a
+    }]
+  }) 
+      this.closeModal()
+}
+getASPStatus(obj) {
+  this.setState({ASPObject: obj})
+}
+getSignText(signtext) {
+  this.setState({signText: signtext})
+
+}
+  render() {
+ 
     if(this.state.firstLaunch) {
   return(
     <FirstUse ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
@@ -421,7 +524,7 @@ console.log(marker.noonTime)*/
           <TouchableOpacity onPress={() => this.closeModal()}>
             <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="white"/></Text>  
         </TouchableOpacity> 
-            <ModalContent setCarLoc={this.setCarLoc} uLnglat={this.state.uLnglat} fullDay={this.state.fullDay}/>
+            <ModalContent  {...this.state}  openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc}/>
           </View>
           </Modal>
         </View>
@@ -432,7 +535,7 @@ console.log(marker.noonTime)*/
         scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
-        
+        customMapStyle={niceBlack}
         showsUserLocation={true}
         followsUserLocation={true}
         animateToBearing={true}
@@ -465,8 +568,8 @@ console.log(marker.noonTime)*/
       key={idx}
      />
      ))}
-
      {this.makeCarMarker()}
+    
   </MapView>
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
@@ -476,10 +579,10 @@ console.log(marker.noonTime)*/
       <TouchableOpacity onPress={() => this.setState({showASP: true})}>
           <Image style={{marginTop: 32, paddingLeft: 16, height: 28, width: 28}}source={require('./assets/aspIcon.png')}/> 
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.mapFromCar()}>
+      <TouchableOpacity onPress={() => console.log('car icon pressed')}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-navigate" size={28} color="white"/></Text>  
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.mapToCar()}>
+      <TouchableOpacity onPress={() => console.log('car icon pressed')}>
           <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
 
@@ -488,7 +591,7 @@ console.log(marker.noonTime)*/
     <View>
       <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
-    <Summary />
+    <Summary { ...this.state } />
 
       {this.showAspList()}
 

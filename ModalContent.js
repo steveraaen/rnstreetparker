@@ -20,6 +20,7 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
+import aspDays from './asp.js';
 import ckey from './keys.js';
 export default class ModalContent extends Component {
   constructor(props) {
@@ -30,56 +31,37 @@ export default class ModalContent extends Component {
     var isauth = RNCalendarEvents.authorizeEventStore()
     var test = RNCalendarEvents.authorizationStatus()
     var calList = RNCalendarEvents.findCalendars()
-/*    console.log(isauth)
+    console.log(isauth)
     console.log(test)
-    console.log(calList)*/
+    console.log(calList)
 
-    this.openModal = this.openModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-    this.getCarLoc = this.getCarLoc.bind(this)
+/*    this.getCarLoc = this.getCarLoc.bind(this)*/
     this.showCarLoc = this.showCarLoc.bind(this)
-    this.getTenSigns = this.getTenSigns.bind(this)
+ /*   this.getTenSigns = this.getTenSigns.bind(this)*/
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
     this.parseClosest = this.parseClosest.bind(this)
-    this.addToCal = this.addToCal.bind(this)
+    this.setAsyncSummary = this.setAsyncSummary.bind(this)
+   /* this.addToCal = this.addToCal.bind(this)*/
   }
-      openModal() {
-      this.setState({modalVisible:true});
-    }
-    closeModal() {
-      this.setState({modalVisible:false});
-    }
 
-
-    getCarLoc(e) {
-    /*axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}*/
+/*    getCarLoc() {
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.state.ll[1]).toFixed(6) +',' + parseFloat(this.state.ll[0]).toFixed(6) + '&key=' + gkey, {}
     axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key='+ ckey, {}
   ).then((doc) => {
-  /*  console.log(doc)*/
     this.setState({
+      carAddress: doc.data.results[0].components,
       carLoc: doc
       })
     })
-}
-    addToCal(s,e,l,a) {
- 
-      RNCalendarEvents.saveEvent('Move Car', {
-        startDate: s,
-        endDate: e,
-        location: l,
-        alarms: [{
-          date: a
-    }]
-}) 
-      /*console.log(AsyncStorage.getItem('carObject'))*/
-    }
+}*/
+
 dontSaveSpot(e) {
   this.setState({
     carLoc: null,
     nearestThree: null
   })
 }
- getTenSigns(coor) {
+/* getTenSigns(coor) {
   this.props.setCarLoc(this.props.uLnglat[1], this.props.uLnglat[0])
     axios.get('https://streetparker.herokuapp.com/mycar', {
       params: {
@@ -90,14 +72,15 @@ dontSaveSpot(e) {
     this.setState({
       nearestThree: doc.data.slice(0,3)
     })
-  }) 
- }
+  }, () => this.getCarLoc()) 
+ }*/
  showTenSigns() {
-  if(this.state.nearestThree) {
+  console.log(this.props.nearestThree)
+  if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
         <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
-                  data={this.state.nearestThree.slice(0,3)}
+                  data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
                   <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}><Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text></View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
@@ -115,9 +98,11 @@ dontSaveSpot(e) {
         longitude: this.state.ll[0],
         location: splitCarLoc[0] + "," + splitCarLoc[1]
       }
-      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc));
-  /*    console.log(AsyncStorage.getItem('carSpot'));*/
-
+      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
+        AsyncStorage.getItem('carSpot', (err, res) => {
+          console.log(JSON.parse(res))
+        })
+      })
 
   /*  console.log(splitCarLoc)*/
      return( <View>
@@ -133,7 +118,7 @@ dontSaveSpot(e) {
               <TouchableOpacity>
                 <Button 
                   title="Yes"
-                  onPress={(e) => this.getTenSigns(this.state.carLoc.data.results[0].geometry)}
+                  onPress={(e) => this.props.getTenSigns(this.state.carLoc.data.results[0].geometry)}
                 >
                 </Button>
                 <Button 
@@ -151,6 +136,7 @@ dontSaveSpot(e) {
   this.setState({
     thisSign: a
   }, () => {
+        this.props.getSignText(this.state.thisSign)
         var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-Z]{2})/
         var reStart = /([0-9]{1,2}\:[0-9]{2}[A-Z]{2}\-)/
         var reDay= /[A-Z]{3}/g
@@ -161,21 +147,23 @@ dontSaveSpot(e) {
 
         for(let i = 0; i < endDay.length; i++) {
 
-var timeLeft = {}
+        var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
-
           if(currentDiff < 0) {
             timeLeft={
+            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY, h:mm a'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').subtract(2, 'hours').toISOString(),
+            isASPHoliday: 'no'
             }
           daysArr.push(timeLeft)
 
           }
           else if(currentDiff > 0) {
           timeLeft = {
+            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('dddd, MMM Do YYYY, h:mm a'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
@@ -184,31 +172,65 @@ var timeLeft = {}
             nowISO: moment().toISOString(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
-            diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm')
+            diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
+            isASPHoliday: 'no'
           }
 /*console.log(timeLeft)*/
           daysArr.push(timeLeft)
-/*console.log(daysArr)  */        
+        
         }
+          for(let i = 0; i < aspDays.length; i++) {
+            var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')
+            if(timeLeft.justDay === formDate) {
+              timeLeft.isASPHoliday = 'This is an Alternate Side Parking Holiday'
+            }
+          }
 
  }
  
-        this.setState ({end: daysArr}, () => {
-          /*console.log(moment(this.state.end[0].day).subtract(2, 'hours'))*/
+        this.setState ({
+          end: daysArr,
+            asyncCarObject: {
+              parkedAt: this.state.carLoc.data.results[0].formatted,
+              goodTill: timeLeft.day,
+              isASPHoliday: timeLeft.isASPHoliday
+            }
+        }, () => {
+          this.props.getASPStatus(this.state.asyncCarObject)
+           this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))
+         
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => this.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, moment(this.state.end[0].alarmISO))},
+              {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, moment(this.state.end[0].alarmISO))},
           
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
+              {text: 'OK', onPress: () => this.props.closeModal()},
             ],
             { cancelable: false }
           )
-        })
+        }
+        )
         
   })
 
+ }
+ async setAsyncSummary(a) {
+  await AsyncStorage.setItem('asyncCarObject', a, ()=> {
+            console.log(a)
+          })
+ }
+ componentWillMount() {
+
+ }
+ componentDidMount() {
+      axios.get('https://api.opencagedata.com/geocode/v1/json?q=' + parseFloat(this.state.ll[1]).toFixed(6)+'+'+parseFloat(this.state.ll[0]).toFixed(6)+'&key='+ ckey, {}
+  ).then((doc) => {
+    this.setState({
+      carAddress: doc.data.results[0].components,
+      carLoc: doc
+      })
+    })
  }
   render() {
 
@@ -216,8 +238,8 @@ var timeLeft = {}
      
         <View style={{ marginLeft: 30, marginRight: 30, justifyContent: 'flex-start'}}> 
           <TouchableOpacity
-          onPress={(e) => this.getCarLoc(e)}>                    
-          <Text style={{fontSize: 20, color: 'yellow'}}>Tap here before leaving your vehicle to remember where you parked.</Text>
+          onPress={() => this.props.getTenSigns()}>                    
+        
           </TouchableOpacity>
           <View style={{marginTop: 20}}>{this.showCarLoc()}</View>
            <View style={{height: 100}}>{this.showTenSigns()}</View>
