@@ -173,7 +173,7 @@ dontSaveSpot(e) {
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
-            isASPHoliday: 'no'
+            isASPHoliday: 'This is not an Alternate Side Parking Holiday'
           }
 /*console.log(timeLeft)*/
           daysArr.push(timeLeft)
@@ -187,11 +187,15 @@ dontSaveSpot(e) {
           }
 
  }
- 
+ console.log(this.state.carLoc.data.results[0])
+ var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]
+ var neighborhood = this.state.carLoc.data.results[0].components.neighbourhood
+ var boro = this.state.carLoc.data.results[0].components.suburb
         this.setState ({
           end: daysArr,
             asyncCarObject: {
-              parkedAt: this.state.carLoc.data.results[0].formatted,
+             /* parkedAt: this.state.carLoc.data.results[0].formatted,*/
+              parkedAt: streetAddress + ", " + neighborhood + ", " + boro,
               goodTill: timeLeft.day,
               isASPHoliday: timeLeft.isASPHoliday
             }

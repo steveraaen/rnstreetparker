@@ -18,7 +18,7 @@ export default class Summary extends Component {
 				showComp: true
 			}
 		this.closeASPWindow = this.closeASPWindow.bind(this)
-		this.fetchSummary = this.fetchSummary.bind(this)
+		this.fetchSummary = this.fetchSummary.bind(this) 
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
 	/*	this._retrieveData = this._retrieveData.bind(this)*/
@@ -63,7 +63,7 @@ export default class Summary extends Component {
 			var signText = this.props.signText
 
 			return(
-			<View style={{marginLeft: 42, marginRight: 42, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
+			<View style={{marginLeft: 32, marginRight: 32, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
 			<Text  style={{ textAlign: 'center', color: 'black', fontSize: 16, fontWeight: 'bold'}}>{signText}</Text>
 			</View>
 			)
@@ -73,28 +73,19 @@ export default class Summary extends Component {
 	render() {
 		console.log(this.state.savedSpot)
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
-		var blurbText = `Next ASP holiday:`
+		var blurbText = `The next street sweeping holiday is:`
 		var nextHoliday = this.state.nextArr[0].holiday
-		var nextHolidayDate = this.state.nextArr[0].date.format('ddd, MMM Do')
-		var parkedBlurb = `You are parked at:`
-		var parkedAddress
-		if(!this.props.ASPObject) {
-			parkedAddress = 'No parking spot saved'
-		} else {
-			parkedAddress = this.props.ASPObject.parkedAt
-		}
-		var goodTill
-		if(!this.props.ASPObject) {
-			goodTill = ''
-		} else {
-			goodTill = this.props.ASPObject.goodTill
-		}
-		var isHol 
-		if(!this.props.ASPObject) {
-			isHol = ''
-		} else {
-			isHol = this.props.ASPObject.isASPHoliday
-		}
+		var nextHolidayDate = this.state.nextArr[0].date.format('dddd, MMMM Do')
+
+		
+		if(this.props.ASPObject) {
+			var moveBlurb = 'You can park there until:'
+			var parkedBlurb = 'You are parked at:'
+			var parkedAddress = this.props.ASPObject.parkedAt
+			var goodTill = this.props.ASPObject.goodTill
+			var isHol = this.props.ASPObject.isASPHoliday
+		}	
+
 
 
 		if(this.state.showComp) {
@@ -104,17 +95,18 @@ export default class Summary extends Component {
 					 <TouchableOpacity onPress={() => this.closeASPWindow()}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={28} color="white"/></Text> 
 					 </TouchableOpacity>		
-				</View>	 
+				</View>	
 				<View>
-				<View style={{marginLeft:24}}>
-					<Text style={{color: 'yellow',  fontSize: 14, fontWeight: 'bold'}}>{blurbText}</Text>
+			
+				<View style={{marginLeft:12}}>
+					<Text style={{color: 'yellow',  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
-						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 16, fontWeight: 'bold'}}>{nextHolidayDate}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
 					<View style={{marginBottom: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 14}}>{nextHoliday}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
 					</View>
 					<View
 					  style={{
@@ -122,8 +114,16 @@ export default class Summary extends Component {
 					    borderBottomWidth: 1,
 					  }}
 					/>
+					 
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 14}}>{parkedAddress}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'yellow', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
+					</View>
+
+					<View style={{marginTop: 4}}>
+						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{parkedAddress}</Text>
+					</View>
+					<View style={{marginTop: 12}}>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'yellow', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 					<View >
 						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{goodTill}</Text>

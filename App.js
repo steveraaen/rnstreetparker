@@ -87,6 +87,7 @@ export default class App extends Component<Props> {
          // Error retrieving data
        }
     }*/
+
     openModal() {
       this.setState({modalVisible:true});
     }
@@ -384,7 +385,16 @@ console.log(marker.noonTime)*/
     }
 
     componentDidMount() {
-
+        AsyncStorage.getItem("alreadyLaunched").then(value => {
+            if(value == null){
+                 AsyncStorage.setItem('alreadyLaunched', "yes"); // No need to wait for `setItem` to finish, although you might want to handle errors
+                 this.setState({firstLaunch: true}, () => {
+                   
+                 });
+            }
+            else{
+                 this.setState({firstLaunch: false});
+            }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
 
       this.getNewDay(this.state.selDay)
       this.getMeters(this.state.uLatitude, this.state.uLongitude)
