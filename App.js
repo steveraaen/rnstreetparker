@@ -51,7 +51,8 @@ export default class App extends Component<Props> {
       appState: AppState.currentState,
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),   
-      showASP: false  
+      showASPList: false,
+      showSummary: true
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -61,7 +62,7 @@ export default class App extends Component<Props> {
       this.setCarLoc = this.setCarLoc.bind(this);
       this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
       this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
-      this.showAspList = this.showAspList.bind(this)
+
       this.addToCal = this.addToCal.bind(this)
       this.getTenSigns = this.getTenSigns.bind(this)
       this.getCarLoc = this.getCarLoc.bind(this)
@@ -69,6 +70,9 @@ export default class App extends Component<Props> {
       this.getSignText = this.getSignText.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    this.openCloseSummary = this.openCloseSummary.bind(this)
+    this.openCloseASP = this.openCloseASP.bind(this)
+
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
       this.makeCarMarker = this.makeCarMarker.bind(this) 
@@ -385,16 +389,7 @@ console.log(marker.noonTime)*/
     }
 
     componentDidMount() {
-        AsyncStorage.getItem("alreadyLaunched").then(value => {
-            if(value == null){
-                 AsyncStorage.setItem('alreadyLaunched', "yes"); // No need to wait for `setItem` to finish, although you might want to handle errors
-                 this.setState({firstLaunch: true}, () => {
-                   
-                 });
-            }
-            else{
-                 this.setState({firstLaunch: false});
-            }}) // Add some error handling, also you can simply do this.setState({fistLaunch: value == null})
+
 
       this.getNewDay(this.state.selDay)
       this.getMeters(this.state.uLatitude, this.state.uLongitude)
@@ -413,11 +408,7 @@ console.log(marker.noonTime)*/
       slideTime: value
     })
   }
-  showAspList() {
-    if(this.state.showASP) {
-      return(<ASPCalendar />)
-    } else {return null}
-  }
+
 /*  mapToCar() {
     this.setState({
       uLatitude: this.state.carSpot.latitude,
@@ -507,8 +498,14 @@ getASPStatus(obj) {
 }
 getSignText(signtext) {
   this.setState({signText: signtext})
-
 }
+openCloseSummary(tf) {
+  this.setState({showSummary: tf})
+}
+openCloseASP(tf) {
+  this.setState({showASPList: tf})
+}
+
   render() {
  
     if(this.state.firstLaunch) {
@@ -584,26 +581,27 @@ getSignText(signtext) {
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
       <TouchableOpacity onPress={() => this.openModal()}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-alarm-outline" size={28} color="white"/></Text>  
+          <Text style={{paddingTop: 32}}>  <Icon name="ios-alarm-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.setState({showASP: true})}>
-          <Image style={{marginTop: 32, paddingLeft: 16, height: 28, width: 28}}source={require('./assets/aspIcon.png')}/> 
+      <TouchableOpacity onPress={() => this.openCloseASP(true)}>
+ <Text style={{paddingTop: 32}}>  <Icon name="ios-calendar-outline" size={28} color="white"/></Text>            
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => console.log('car icon pressed')}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-navigate" size={28} color="white"/></Text>  
+      <TouchableOpacity onPress={() => this.openCloseSummary(true)}>
+          <Text style={{paddingTop: 32}}>  <Icon name="ios-bookmark-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => console.log('car icon pressed')}>
-          <Text style={{paddingTop: 32, paddingLeft: 16}}>  <Icon name="ios-car-outline" size={28} color="white"/></Text>  
-      </TouchableOpacity> 
+
 
    
     </View>
     <View>
       <SearchB { ...this.state } makeMarker={this.makeMarker}/>
     </View>
-    <Summary { ...this.state } />
-
-      {this.showAspList()}
+  
+    <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
+   
+    <View>
+    <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP}/>
+    </View>   
 
   </View>
     );

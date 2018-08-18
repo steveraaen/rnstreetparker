@@ -11,14 +11,10 @@ export default class ASPCalendar extends Component {
 	constructor(props) {
 		super(props)
 		this.state={
-			showASPList: true,
 			aspArray: aspDays
 		}
-		this.closeList = this.closeList.bind(this)
 	}
-	closeList() {
-		this.setState({showASPList: false})
-	}
+
 	componentWillMount() {
 		var nextArr = []
 		for(let i = 0; i < this.state.aspArray.length; i++) {
@@ -34,10 +30,10 @@ export default class ASPCalendar extends Component {
 	}
 	render() {
 		var keyExtractor = (item, index) => item.date.format('MMMM, Do');
-		if(this.state.showASPList) {
+		if(this.props.showASPList) {
 		return(
 			<View style={{marginTop: 4}}>
-				<TouchableOpacity onPress={() => this.closeList()}>
+				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="white"/></Text> 
 				 </TouchableOpacity>
 				<View style={{marginLeft: 24, marginRight: 24,backgroundColor: 'rgba(31,44,75,.9)'}}>
@@ -46,7 +42,7 @@ export default class ASPCalendar extends Component {
 				 	data={this.state.nextArr}
 				 	keyExtractor={keyExtractor}
 				 	renderItem={({ item }) => (
-				 		<View style={{flexDirection: 'column'}}>
+				 		<View style={{flexDirection: 'column', paddingLeft: 6, paddingRight: 6}}>
 				 			<View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 4}}>
 				 				<View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.holiday}</Text></View>
 				 				<View><Text style={{color: 'coral', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>

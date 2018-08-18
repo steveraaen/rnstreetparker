@@ -11,6 +11,7 @@ import aspDays from './asp.js'
 export default class Summary extends Component {
 	constructor(props) {
 		super(props)
+		console.log(props)
 			this.state={
 				aspArray: aspDays,
 				today: moment(),
@@ -88,11 +89,11 @@ export default class Summary extends Component {
 
 
 
-		if(this.state.showComp) {
+		if(this.props.showSummary) {
 		return(
 			<View style={{flex: 1, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
 				<View>		
-					 <TouchableOpacity onPress={() => this.closeASPWindow()}>
+					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={28} color="white"/></Text> 
 					 </TouchableOpacity>		
 				</View>	
