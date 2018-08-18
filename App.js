@@ -394,9 +394,9 @@ console.log(marker.noonTime)*/
       this.getNewDay(this.state.selDay)
       this.getMeters(this.state.uLatitude, this.state.uLongitude)
 
-      if(this.state.AppState === 'background') {
+/*      if(this.state.AppState === 'background') {
         navigator.geolocation.clearWatch(this.watchID);
-      }
+      }*/
     }
 
     componentWillUnmount() {
@@ -613,8 +613,7 @@ openCloseASP(tf) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    
+    flex: 1,   
     flexDirection: 'column'
 
  /*   justifyContent: 'space-between'*/

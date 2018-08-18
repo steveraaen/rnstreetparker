@@ -11,7 +11,7 @@ import aspDays from './asp.js'
 export default class Summary extends Component {
 	constructor(props) {
 		super(props)
-		console.log(props)
+
 			this.state={
 				aspArray: aspDays,
 				today: moment(),
