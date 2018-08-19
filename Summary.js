@@ -72,7 +72,7 @@ export default class Summary extends Component {
 	}
 
 	render() {
-		console.log(this.state.savedSpot)
+		/*console.log(this.state.savedSpot)*/
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
 		var blurbText = `The next street sweeping holiday is:`
 		var nextHoliday = this.state.nextArr[0].holiday
@@ -89,7 +89,7 @@ export default class Summary extends Component {
 
 
 
-		if(this.props.showSummary) {
+		if(this.props.toggleSum) {
 		return(
 			<View style={{flex: 1, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
 				<View>		

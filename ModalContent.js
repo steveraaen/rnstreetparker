@@ -187,7 +187,7 @@ dontSaveSpot(e) {
           }
 
  }
- console.log(this.state.carLoc.data.results[0])
+/* console.log(this.state.carLoc.data.results[0])*/
  var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]
  var neighborhood = this.state.carLoc.data.results[0].components.neighbourhood
  var boro = this.state.carLoc.data.results[0].components.suburb
@@ -209,7 +209,7 @@ dontSaveSpot(e) {
             [
               {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, moment(this.state.end[0].alarmISO))},
           
-              {text: 'Go Back', onPress: () => this.props.closeModal()},
+              {text: 'Go Back', onPress: () => this.props.openCloseSave()},
             ],
             { cancelable: false }
           )
@@ -237,10 +237,10 @@ dontSaveSpot(e) {
     })
  }
   render() {
-
+if(this.props.toggleSave) {
     return (
      
-        <View style={{ marginLeft: 30, marginRight: 30, justifyContent: 'flex-start'}}> 
+        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'rgba(31,44,75,.9)'}}> 
           <TouchableOpacity
           onPress={() => this.props.getTenSigns()}>                    
         
@@ -250,6 +250,7 @@ dontSaveSpot(e) {
         </View>
       
       )
+  } else return null
   }
 }
 

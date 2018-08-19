@@ -41,7 +41,9 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      
+      toggleASP: false,
+      toggleSum: true,
+      toggleSave: false,
       firstLaunch: null,
       modalVisible: false,      
       uLatitude: null,
@@ -50,9 +52,7 @@ export default class App extends Component<Props> {
       slideTime: moment(),
       appState: AppState.currentState,
       selectedDay: null,
-      initDay : moment().format("dddd").toUpperCase().substring(0, 3),   
-      showASPList: false,
-      showSummary: true
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3)
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -72,6 +72,8 @@ export default class App extends Component<Props> {
     this.closeModal = this.closeModal.bind(this)
     this.openCloseSummary = this.openCloseSummary.bind(this)
     this.openCloseASP = this.openCloseASP.bind(this)
+    this.openCloseSave = this.openCloseSave.bind(this)
+
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
@@ -474,6 +476,7 @@ console.log(marker.noonTime)*/
         )
     } else return null
   }
+
     addToCal(s,e,l,a) {
       var parkingObject = {
         startDate: s,
@@ -491,7 +494,7 @@ console.log(marker.noonTime)*/
           date: a
     }]
   }) 
-      this.closeModal()
+      this.openCloseSave()
 }
 getASPStatus(obj) {
   this.setState({ASPObject: obj})
@@ -500,10 +503,25 @@ getSignText(signtext) {
   this.setState({signText: signtext})
 }
 openCloseSummary(tf) {
-  this.setState({showSummary: tf})
+    this.setState(prevState => ({
+  toggleSum: !prevState.toggleSum,
+  toggleASP: false,
+  toggleSave: false
+}));
 }
 openCloseASP(tf) {
-  this.setState({showASPList: tf})
+  this.setState(prevState => ({
+  toggleASP: !prevState.toggleASP,
+  toggleSum: false,
+  toggleSave: false
+}));
+}
+openCloseSave(tf) {
+    this.setState(prevState => ({
+  toggleSave: !prevState.toggleSave,
+  toggleASP: false,
+  toggleSum: false
+}));
 }
 
   render() {
@@ -519,21 +537,9 @@ openCloseASP(tf) {
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
       <View>
-          <Modal
-              backdropColor={'#1F2C4B'}
-              backdropOpacity= {.8}
-              supportedOrientations={['portrait', 'landscape']}
-              isVisible={this.state.modalVisible}
-              animationType={'slide'}
-              onRequestClose={() => this.closeModal()}
-          >
-          <View style={{flex: 1}}>
-          <TouchableOpacity onPress={() => this.closeModal()}>
-            <Text style={{paddingTop: 14}}>  <Icon name="ios-arrow-back" size={24} color="white"/></Text>  
-        </TouchableOpacity> 
-            <ModalContent  {...this.state}  openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc}/>
-          </View>
-          </Modal>
+
+
+    
         </View>
      <MapView
       scrollEnabled={true}  
@@ -580,7 +586,7 @@ openCloseASP(tf) {
   </MapView>
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 44, backgroundColor: '#1F2C4B'}}>
     
-      <TouchableOpacity onPress={() => this.openModal()}>
+      <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 32}}>  <Icon name="ios-alarm-outline" size={28} color="white"/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseASP(true)}>
@@ -599,10 +605,10 @@ openCloseASP(tf) {
   
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
    
-    <View>
+  
     <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP}/>
-    </View>   
-
+      
+    <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc}/>
   </View>
     );
     } else {
