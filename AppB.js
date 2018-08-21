@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   Picker,
+  Platform,
   Slider,
   StatusBar,
   StyleSheet,
@@ -37,7 +38,7 @@ type Props = {};
     console.log(isauth)
     console.log(test)
     console.log(calList)
-export default class App extends Component<Props> {
+export default class AppB extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +57,7 @@ export default class App extends Component<Props> {
       slideTime: moment(),
       appState: AppState.currentState,
       selectedDay: null,
-      initDay : moment().format("dddd").toUpperCase().substring(0, 3)
+      initDay : moment().format("dddd").toUpperCase().substring(0, 3),
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -78,6 +79,8 @@ export default class App extends Component<Props> {
     this.openCloseASP = this.openCloseASP.bind(this)
     this.openCloseSave = this.openCloseSave.bind(this)
     this.colorizeIcons = this.colorizeIcons.bind(this)
+    this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
+    this.onMapReady = this.onMapReady.bind(this)
 
 
 /*      this.mapToCar = this.mapToCar.bind(this)
@@ -205,11 +208,12 @@ export default class App extends Component<Props> {
       }
 
     
-    getSigns() { 
+    getSigns(lo, la) { 
+
          /*   axios.get('http:127.0.0.1:5001/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
-              coordinates: [parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6)],
+              coordinates: [lo, la],
               /*day: this.state.selDay */             
             }
         }) 
@@ -321,7 +325,8 @@ console.log(marker.noonTime)*/
           this.makeMarker(this.state.initDay)
          /* this.betterMarker(this.state.markersArray)*/
         })
-      })}
+      })
+}
     setCarLoc(la, ln, lo) {
       this.setState({
         carMarkLocation: {
@@ -349,14 +354,6 @@ console.log(marker.noonTime)*/
        AppState.addEventListener('change', this._handleAppStateChange);
 
       navigator.geolocation.getCurrentPosition(function(pos) {
-            var { longitude, latitude, accuracy, heading } = pos.coords
-            this.setState({
-                uLongitude: pos.coords.longitude,
-                uLatitude: pos.coords.latitude,
-                uLnglat: [pos.coords.longitude, pos.coords.latitude],
-                uPosition: pos.coords,
-               
-            })
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {
         this.setState({
@@ -364,16 +361,22 @@ console.log(marker.noonTime)*/
           uLongitude: position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
-          
+          initRegion: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: .03,
+            longitudeDelta: .03,
+          },         
          error: null,
         }, () => {
-          this.getSigns()
-          this.getMeters(this.state.uLatitude, this.state.uLongitude)          
+          this.getSigns(parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6))
+          this.getMeters(this.state.uLatitude, this.state.uLongitude)   
+      
         });
        
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true,  distanceFilter: 100 },
+      { enableHighAccuracy: true,  distanceFilter: 50, timeout: 10 },
             )      
         }.bind(this))    
           this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
@@ -561,9 +564,14 @@ openCloseSave(tf) {
       toggleSum: false
     }), () => this.colorizeIcons());
 }
-
+onRegionChangeComplete(region) {
+ this.getSigns(region.longitude, region.latitude)
+}
+    onMapReady = () => {
+        Platform.OS === 'ios' && this.map.animateToRegion(this.state.initRegion, 0.1); // TODO remove once the initialRegion is fixed in the module
+    };
   render() {
- 
+
     if(this.state.firstLaunch) {
   return(
     <FirstUse ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
@@ -574,12 +582,11 @@ openCloseSave(tf) {
 
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
-      <View>
-
-
-    
+      <View>   
         </View>
      <MapView
+
+     onMapReady={this.onMapReady}
       scrollEnabled={true}  
         zoomEnabled={true}   
         rotateEnabled={true}   
@@ -587,19 +594,19 @@ openCloseSave(tf) {
         pitchEnabled={true}   
         style={styles.map}
         customMapStyle={niceBlack}
-        showsUserLocation={true}
+
         followsUserLocation={true}
         animateToBearing={true}
          animateToViewingAngle={true} 
          showsCompass = {true}
          showScale = {true}
         provider={PROVIDER_GOOGLE}
-        region={{
-          latitude: this.state.uLatitude,
-          longitude: this.state.uLongitude,
-          latitudeDelta: 0.06,
-          longitudeDelta: 0.06,
-    }}>
+        initialRegion={this.state.initRegion}
+        onRegionChangeComplete={this.onRegionChangeComplete}
+        ref={map => {
+               this.map = map;
+          }}
+        >
 
          {this.state.todayMarkersArray.map((marker, idx) => (
     <Circle

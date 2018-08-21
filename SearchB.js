@@ -100,7 +100,8 @@ componentWillMount() {
       containerStyle={{height: 30}}
       disableSelected={true}
       selectedButtonStyle={{backgroundColor: 'rgba(31,44,75,.9)'}}
-      selectedTextStyle={{color: 'coral'}}
+      selectedTextStyle={{color: 'coral', fontWeight: 'bold'}}
+      textStyle={{color: 'white', fontWeight: 'bold'}}
       containerStyle={{backgroundColor: 'rgba(31,44,75,.9)'}}
     />    
 

@@ -36,7 +36,7 @@ export default class ASPCalendar extends Component {
 
 				<View style={{flex: 1, marginLeft: 24, marginRight: 24,backgroundColor: 'rgba(31,44,75,.9)'}}>
 				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
-				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="white"/></Text> 
+				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
 				 </TouchableOpacity>
 				<View style={{marginBottom: 12}}><Text style={{color: 'yellow', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>Remaining 2018 ASP holidays</Text></View>
 				 <FlatList 

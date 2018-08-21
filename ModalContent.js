@@ -40,7 +40,7 @@ export default class ModalContent extends Component {
  /*   this.getTenSigns = this.getTenSigns.bind(this)*/
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
     this.parseClosest = this.parseClosest.bind(this)
-    this.setAsyncSummary = this.setAsyncSummary.bind(this)
+   /* this.setAsyncSummary = this.setAsyncSummary.bind(this)*/
    /* this.addToCal = this.addToCal.bind(this)*/
   }
 
@@ -75,7 +75,7 @@ dontSaveSpot(e) {
   }, () => this.getCarLoc()) 
  }*/
  showTenSigns() {
-  console.log(this.props.nearestThree)
+ /* console.log(this.props.nearestThree)*/
   if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
         <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
@@ -98,11 +98,11 @@ dontSaveSpot(e) {
         longitude: this.state.ll[0],
         location: splitCarLoc[0] + "," + splitCarLoc[1]
       }
-      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
+/*      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
         AsyncStorage.getItem('carSpot', (err, res) => {
           console.log(JSON.parse(res))
         })
-      })
+      })*/
 
   /*  console.log(splitCarLoc)*/
      return( <View>
@@ -200,8 +200,8 @@ dontSaveSpot(e) {
               isASPHoliday: timeLeft.isASPHoliday
             }
         }, () => {
-          this.props.getASPStatus(this.state.asyncCarObject)
-           this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))
+/*          this.props.getASPStatus(this.state.asyncCarObject)
+           this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))*/
          
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
@@ -219,11 +219,11 @@ dontSaveSpot(e) {
   })
 
  }
- async setAsyncSummary(a) {
+/* async setAsyncSummary(a) {
   await AsyncStorage.setItem('asyncCarObject', a, ()=> {
             console.log(a)
           })
- }
+ }*/
  componentWillMount() {
 
  }
@@ -241,6 +241,9 @@ if(this.props.toggleSave) {
     return (
      
         <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'rgba(31,44,75,.9)'}}> 
+           <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
+            <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
+           </TouchableOpacity>  
           <TouchableOpacity
           onPress={() => this.props.getTenSigns()}>                    
         

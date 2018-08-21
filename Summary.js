@@ -19,19 +19,19 @@ export default class Summary extends Component {
 				showComp: true
 			}
 		this.closeASPWindow = this.closeASPWindow.bind(this)
-		this.fetchSummary = this.fetchSummary.bind(this) 
+	/*	this.fetchSummary = this.fetchSummary.bind(this) */
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
 	/*	this._retrieveData = this._retrieveData.bind(this)*/
 	}
-	 fetchSummary() {
+/*	 fetchSummary() {
 			AsyncStorage.getItem('asyncCarObject', (err, val) => {
 			console.log(val)
 				this.setState({asyncCarObject: JSON.parse(val)})
 })
-}
+}*/
 	componentWillMount() {
-		this.fetchSummary()
+	/*	this.fetchSummary()*/
 		var nextArr = []
 		for(let i = 0; i < this.state.aspArray.length; i++) {
 			if(this.state.aspArray[i].date.isAfter(this.state.today)){
@@ -91,10 +91,10 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{flex: 1, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
+			<View style={{display: 'flex', flex: 1, marginBottom:20, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
-					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={28} color="white"/></Text> 
+					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
 					 </TouchableOpacity>		
 				</View>	
 				<View>
