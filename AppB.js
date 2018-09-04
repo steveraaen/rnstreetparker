@@ -31,6 +31,7 @@ import SearchB from './SearchB.js'
 import FirstUse from './FirstUse.js'
 import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
+import ColorKey from './ColorKey.js'
 type Props = {};
     var isauth = RNCalendarEvents.authorizeEventStore()
     var test = RNCalendarEvents.authorizationStatus()
@@ -49,7 +50,7 @@ export default class AppB extends Component<Props> {
       colorASP: 'white',
       colorSum: 'white',
       colorSave: 'white',
-      firstLaunch: null,
+      firstLaunch: true,
       modalVisible: false,      
       uLatitude: null,
       uLongitude: null,
@@ -58,6 +59,7 @@ export default class AppB extends Component<Props> {
       appState: AppState.currentState,
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
+      showKey: true
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -81,6 +83,7 @@ export default class AppB extends Component<Props> {
     this.colorizeIcons = this.colorizeIcons.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
     this.onMapReady = this.onMapReady.bind(this)
+    this.hideKey = this.hideKey.bind(this)
 
 
 /*      this.mapToCar = this.mapToCar.bind(this)
@@ -101,7 +104,11 @@ export default class AppB extends Component<Props> {
          // Error retrieving data
        }
     }*/
-
+    hideKey(tf) {
+      this.setState({
+        showKey: tf
+      })
+    }
     openModal() {
       this.setState({modalVisible:true});
     }
@@ -198,7 +205,7 @@ export default class AppB extends Component<Props> {
             longitude: parseFloat(docm.data[i].geometry.coordinates[0].toFixed(6))
           }
           meter.name='meter';
-          meter.color= 'green'
+          meter.color= 'rgb(244, 65, 205)'
           metersArray.push(meter)
         }
         this.setState({
@@ -210,7 +217,7 @@ export default class AppB extends Component<Props> {
     
     getSigns(lo, la) { 
 
-         /*   axios.get('http:127.0.0.1:5001/mon', {*/
+          /*  axios.get('http:127.0.0.1:5001/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
               coordinates: [lo, la],
@@ -257,7 +264,7 @@ console.log(marker.noonTime)*/
 /*console.log(marker.endTime.isBefore(marker.noonTime));*/
        /* if(marker.dif > 0 && marker.dif < 2) {*/
         if(marker.endTime.isBefore(marker.noonTime)) {
-          marker.color = 'yellow'
+          marker.color = 'rgb(244, 203, 66)'
         } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
         } else if(marker.dif > 4 && marker.dif < 6) {
@@ -271,7 +278,7 @@ console.log(marker.noonTime)*/
         } */ 
           else if(marker.endTime.isAfter(marker.noonTime)){
         /*  else if(marker.dif  > -2 && marker.dif < 0){*/
-          marker.color = 'rgba(223, 162, 255,.9)'
+          marker.color = 'rgb(65, 244, 202)'
         } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
         } else if(marker.dif  > -6 && marker.dif < -4){
@@ -364,8 +371,8 @@ console.log(marker.noonTime)*/
           initRegion: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            latitudeDelta: .03,
-            longitudeDelta: .03,
+            latitudeDelta: .015,
+            longitudeDelta: .015,
           },         
          error: null,
         }, () => {
@@ -474,7 +481,7 @@ console.log(marker.noonTime)*/
       })
     }, () => this.getCarLoc()) 
  }
-    makeCarMarker() {
+/*    makeCarMarker() {
     if(this.state.carMarkLocation) {
       return(
        <Marker 
@@ -484,7 +491,7 @@ console.log(marker.noonTime)*/
         </Marker>
         )
     } else return null
-  }
+  }*/
 
     addToCal(s,e,l,a) {
       var parkingObject = {
@@ -495,6 +502,10 @@ console.log(marker.noonTime)*/
           date: a
     }]        
       }
+      console.log(s)
+      console.log(e)
+      console.log(l)
+      console.log(a)
       RNCalendarEvents.saveEvent('Move Car', {
         startDate: s,
         endDate: e,
@@ -502,8 +513,8 @@ console.log(marker.noonTime)*/
         alarms: [{
           date: a
     }]
-  }) 
-      this.openCloseSave()
+  }/*, ()  => this.openCloseSave()*/) 
+      
 }
 getASPStatus(obj) {
   this.setState({ASPObject: obj})
@@ -566,15 +577,16 @@ openCloseSave(tf) {
 }
 onRegionChangeComplete(region) {
  this.getSigns(region.longitude, region.latitude)
+ this.getMeters(region.longitude, region.latitude)
 }
     onMapReady = () => {
-        Platform.OS === 'ios' && this.map.animateToRegion(this.state.initRegion, 0.1); // TODO remove once the initialRegion is fixed in the module
+        Platform.OS === 'ios' && this.map.animateToRegion(this.state.initRegion, 0.03); // TODO remove once the initialRegion is fixed in the module
     };
   render() {
 
     if(this.state.firstLaunch) {
   return(
-    <FirstUse ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
+    <FirstUse { ...this.state } ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
     )
 }else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
 
@@ -593,8 +605,8 @@ onRegionChangeComplete(region) {
         scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
-        customMapStyle={niceBlack}
-
+        customMapStyle={nice}
+        showsUserLocation={true}
         followsUserLocation={true}
         animateToBearing={true}
          animateToViewingAngle={true} 
@@ -626,7 +638,7 @@ onRegionChangeComplete(region) {
       key={idx}
      />
      ))}
-     {this.makeCarMarker()}
+    {/* {this.makeCarMarker()}*/}
     
   </MapView>
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 38, backgroundColor: '#1F2C4B'}}>
@@ -654,6 +666,8 @@ onRegionChangeComplete(region) {
     <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP}/>
       
     <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc}/>
+ 
+    <ColorKey { ...this.state } hideKey={this.hideKey}/>
   </View>
     );
     } else {

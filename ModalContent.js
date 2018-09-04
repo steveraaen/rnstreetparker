@@ -98,22 +98,22 @@ dontSaveSpot(e) {
         longitude: this.state.ll[0],
         location: splitCarLoc[0] + "," + splitCarLoc[1]
       }
-/*      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
+      AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
         AsyncStorage.getItem('carSpot', (err, res) => {
-          console.log(JSON.parse(res))
+         /* console.log(JSON.parse(res))*/
         })
-      })*/
+      })
 
   /*  console.log(splitCarLoc)*/
      return( <View>
             <View >
-                <Text style={{fontSize: 20, color: 'yellow'}}>You are parked next to:</Text>  
+                <Text style={{fontSize: 20, color: 'coral', textAlign: 'center'}}>You are parked next to:</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 20}}>
               <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
             </View> 
             <View style={{marginTop: 20, alignItems: 'center'}}>  
-                 <Text style={{fontSize: 16, color: 'yellow'}}>Would you like to save this location? </Text>
+                 <Text style={{fontSize: 16, color: 'coral', textAlign: 'center'}}>Would you like to save this location? </Text>
             </View>
               <TouchableOpacity>
                 <Button 
@@ -181,8 +181,9 @@ dontSaveSpot(e) {
         }
           for(let i = 0; i < aspDays.length; i++) {
             var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')
+            console.log((timeLeft.justDay === formDate))
             if(timeLeft.justDay === formDate) {
-              timeLeft.isASPHoliday = 'This is an Alternate Side Parking Holiday'
+              timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
             }
           }
 
@@ -200,14 +201,14 @@ dontSaveSpot(e) {
               isASPHoliday: timeLeft.isASPHoliday
             }
         }, () => {
-/*          this.props.getASPStatus(this.state.asyncCarObject)
-           this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))*/
+          this.props.getASPStatus(this.state.asyncCarObject)
+           /*this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))*/
          
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, moment(this.state.end[0].alarmISO))},
+              {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, this.state.end[0].alarmISO)},
           
               {text: 'Go Back', onPress: () => this.props.openCloseSave()},
             ],
@@ -240,8 +241,8 @@ dontSaveSpot(e) {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'rgba(31,44,75,.9)'}}> 
-           <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
+        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'black'}}> 
+           <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
            </TouchableOpacity>  
           <TouchableOpacity

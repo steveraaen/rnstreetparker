@@ -37,7 +37,7 @@ export default class Summary extends Component {
 			if(this.state.aspArray[i].date.isAfter(this.state.today)){
 				nextArr.push(this.state.aspArray[i])
 			}
-			if(this.state.aspArray[i].date === this.state.today) {
+			if(moment(this.state.aspArray[i].date).format('MMM Do, YYYY') === moment(this.state.today).format('MMM Do, YYYY')) {
 				this.setState({todayIsASP: true})
 			}
 		}
@@ -46,13 +46,17 @@ export default class Summary extends Component {
 	}
 	showASPHol(a) {
 
-				if(a.isASPHoliday) {
+				if(this.state.todayIsASP) {
 			return  (
-				<View>
-					<Text> There is no street sweeping today</Text>
+				<View style={{marginBottom: 12}}>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'red', textAlign: 'center'}}> ASP IS SUSPENDED TODAY!</Text>
 				</View>
 				)
-		} else { return null}
+		} else { return (
+				<View style={{marginBottom: 12}}>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}> ASP is in effect today</Text>
+				</View>
+			)}
 	}
 
 	
@@ -91,50 +95,60 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{display: 'flex', flex: 1, marginBottom:20, backgroundColor: '#1F2C4B', marginLeft: 24, marginRight: 24, justifyContent: 'flex-start'}}>
+			<View style={{display: 'flex', flex: 1, marginBottom:4, backgroundColor: 'black', marginLeft: 20, marginRight: 20, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
 					 </TouchableOpacity>		
 				</View>	
 				<View>
-			
+					{this.showASPHol()}
+				<View
+					  style={{
+					    borderBottomColor: 'coral',
+					    borderBottomWidth: 1,
+					    margin: 14
+					  }}
+				/>
 				<View style={{marginLeft:12}}>
-					<Text style={{color: 'yellow',  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
+					<Text style={{color: 'coral',  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
 						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
 					<View style={{marginBottom: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
+						<Text style={{marginTop: 6,  marginLeft:24, color: 'coral', fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
 					</View>
 					<View
 					  style={{
 					    borderBottomColor: 'coral',
 					    borderBottomWidth: 1,
+					    margin: 14
 					  }}
 					/>
 					 
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'yellow', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{parkedAddress}</Text>
 					</View>
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'yellow', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
+
 					<View >
 						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{goodTill}</Text>
 					</View>
 				</View>
 				</View>
-				<View style={{marginBottom: 18}}>
-			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 14, fontWeight: 'bold', paddingTop: 14}}>{isHol}</Text>
-				</View>
 				{this.showSignOnSummary()}
+				<View style={{marginBottom: 18}}>
+			<Text style={{textAlign: 'center', color: 'red',  fontSize: 14, fontWeight: 'bold', paddingTop: 14}}>{isHol}</Text>
+				</View>
+				
 			</View>
 
 			)

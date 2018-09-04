@@ -28,13 +28,22 @@ export default class ASPCalendar extends Component {
 		/*console.log(nextArr)*/
 		this.setState({nextArr: nextArr})
 	}
+/*	importASPList() {
+		      RNCalendarEvents.saveEvent('ASP Is Suspended Today', {
+        startDate: s,
+        endDate: e,
+        alarms: [{
+          date: a
+    }]
+  })
+	}*/
 	render() {
 		var keyExtractor = (item, index) => item.date.format('MMMM, Do');
 		if(this.props.toggleASP) {
 		return(
 		
 
-				<View style={{flex: 1, marginLeft: 24, marginRight: 24,backgroundColor: 'rgba(31,44,75,.9)'}}>
+				<View style={{flex: 1, marginLeft: 20, marginRight: 20,backgroundColor: 'black'}}>
 				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
 				 </TouchableOpacity>
@@ -43,17 +52,17 @@ export default class ASPCalendar extends Component {
 				 	data={this.state.nextArr}
 				 	keyExtractor={keyExtractor}
 				 	renderItem={({ item }) => (
-				 		<View style={{flexDirection: 'column', paddingLeft: 6, paddingRight: 6}}>
+				 		<View style={{flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
 				 			<View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
 
-				 				<View><Text style={{color: 'white', fontSize: 14, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
-				 				<View><Text style={{color: 'coral', fontSize: 12, fontWeight: 'bold'}}>{item.holiday}</Text></View>				 			
+				 				<View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
+				 				<View><Text style={{color: 'coral', fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>				 			
 				 			</View>
 				 		</View>
 				 		)}
 				 	/>			
 		
-			<View style={{marginLeft: 24, marginRight: 24, backgroundColor: 'rgba(31,44,75,.9)', marginTop: 12}}>
+			<View style={{marginLeft: 24, marginRight: 24, backgroundColor: 'black', marginTop: 12}}>
 				<Text style={{color: 'yellow', fontSize: 14, fontWeight: 'bold'}}>Save this list to your phone's native calendar?</Text>
 				<Button 
 				title={"Save List"}

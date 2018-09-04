@@ -3,16 +3,23 @@ import { Alert, Animated, AsyncStorage, Button,  NetInfo, Platform, ScrollView, 
 import moment from 'moment'
 import axios from 'axios'
 import gkey from './keys.js'
+import Icon from 'react-native-vector-icons/Ionicons';
+import { CheckBox } from 'react-native-elements';
 
-
-var blurbOne = `Streetparker is for New Yorkers who park on the street.\n\nThere are approximately one million non-metered parking spaces in the five boros, with only restriction being that drivers must move their cars at least once per week so that street sweepers can do their job.`
-var blurbTwo = `Each dot represents a color-coded "No Parking - Street Sweeping" sign.`
-var blurbAM = `Morning ASP turnover.`
-var blurbPM = `Afternoon ASP turnover.`
-var blurbMeters = `Paid parking meters.`
+var blurbOne = `Alternate Side Parking (ASP) manager for New Yorkers.`
+var blurbTwo = `Features:`
+var blurbMap = `Shows where ASP turnover is occurring for any day of the week, near your location.`
+var blurbSave = `Saves the location and parking rules for exactly where you are parked.`
+var blurbCal = `Adds the next time & date you must next move your car to your iOS Calendar, along with your car's location.`
+var blurbAdjust = `Adjusts if your next-move date falls on an ASP holiday.`
+var blurbAlarm = `Generates an iOS notification two hours before the next-move time.`
+var blurbImport = `Lets you import the entire ASP suspention schedule into your iOS calendar.`
 export default class FirstUse extends Component {
 	constructor(props) {
 		super(props);
+		this.state={
+			checked: false
+		}
 
 	}
 	componentWillMount() {
@@ -30,28 +37,19 @@ export default class FirstUse extends Component {
 	}
 	render() {
 		const styles = StyleSheet.create({
-			amDot: {
-				height: 20,
-				width: 20,
-				borderRadius: 10,
-				backgroundColor: 'rgba(22,56,123,.9)'
-			},
-			pmDot: {
-				height: 20,
-				width: 20,
-				borderRadius: 10,
+			meterDot: {
+				marginLeft: 24, 
+				height: 8,
+				width: 8,
+				borderRadius: 4,
 				backgroundColor: 'rgba(223, 117, 63,.9)'
 			},
-			meterDot: {
-				height: 20,
-				width: 20,
-				borderRadius: 10,
-				backgroundColor: 'red'
-			},
 			eachRow: {
-				marginLeft: 48, 
-				marginRight: 48, 
-				marginTop: 12, 
+				
+				
+				marginRight: 24, 
+				marginTop: 12,
+				
 				flexDirection: 'row', 
 				flexWrap: 'wrap', 
 				justifyContent: 'space-between', 
@@ -61,34 +59,56 @@ export default class FirstUse extends Component {
 	/*	const { navigate } = this.props.navigation;*/
 		return(
 			<View style={{flex: 1, justifyContent: 'center', backgroundColor: 'black'}}>
-			<View style={{alignItems: 'center', marginBottom: 36}}>
-				<Image style={{marginTop: 32, paddingLeft: 16, height: 72, width: 72, borderRadius: 8}}source={require('./assets/sp60*3.png')}/>
+			<View style={{alignItems: 'center', marginTop: 30, marginBottom: 30}}>
+				<Image style={{paddingLeft: 16, height: 56, width: 56, borderRadius: 8}}source={require('./assets/sp60*3.png')}/>
 			</View>
 			<View style={{backgroundColor: 'black'}}>
-				<Text style={{textAlign: 'center', fontSize: 16, color: '#F6FEAC'}}>{blurbOne}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
+				<Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold',color: '#F6FEAC'}}>{blurbOne}</Text>
 			</View>
+			
 			<View style={{backgroundColor: 'black', marginTop: 16, marginBottom: 16}}>
-				<Text style={{textAlign: 'center', fontSize: 16, color: 'white', fontWeight: 'bold', fontStyle: 'italic'}}>{blurbTwo}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
+				<Text style={{textAlign: 'center', fontSize: 20, color: 'rgba(223, 117, 63,.9)', fontWeight: 'bold'}}>{blurbTwo}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
 			</View>
+			<View    >
 			<View style={styles.eachRow}>
-				<View style={styles.amDot}></View>
-				<View><Text style={{textAlign: 'center', fontSize: 16, color: 'white'}}>{blurbAM}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
-			</View>
-			<View style={styles.eachRow}>
-				<View style={styles.pmDot}></View>
-				<View><Text style={{textAlign: 'center', fontSize: 16, color: 'white'}}>{blurbPM}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+				<View style={styles.meterDot}></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbMap}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
 			</View>
 			<View style={styles.eachRow}>
 				<View style={styles.meterDot}></View>
-				<View><Text style={{textAlign: 'center', fontSize: 16, color: 'white'}}>{blurbMeters}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbSave}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
 			</View>
-			<View style={{marginTop: 24}}>
-			<Button	
-				onPress={() => this.props.ackIn()}
-				title="Go to the map"
-				color="green"
-				accessibilityLabel="I have been to Europe in the past six months"
+			<View style={styles.eachRow}>
+				<View style={styles.meterDot}></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbCal}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+			</View>
+			<View style={styles.eachRow}>
+				<View style={styles.meterDot}></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbAdjust}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+			</View>
+			<View style={styles.eachRow}>
+				<View style={styles.meterDot}></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbAlarm}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+			</View>
+			<View style={styles.eachRow}>
+				<View style={styles.meterDot}></View>
+				<View style={{flex: .9}}><Text style={{textAlign: 'justify', fontSize: 16,fontWeight: 'bold', color: 'white'}}>{blurbImport}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text></View>
+			</View>
+			</View>
+			<View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: 24, marginBottom: 12}}>
+			<CheckBox
+			checked={this.state.checked}
+			onPress={() => this.setState({checked: !this.state.checked})}
+			  title="Don't show this again"
+			  containerStyle={{backgroundColor: 'black'}}
+			  textStyle={{color: "#F6FEAC"}}
+			  checkedColor='red'
 			/>
+
+			<TouchableOpacity onPress={() => this.props.ackIn()}>
+			<Text style={{paddingTop: 4, textAlign: 'right', marginRight: 36}}>  <Icon name="ios-arrow-round-forward" size={48} color="#F6FEAC"/></Text> 				
+			</TouchableOpacity>
+
 			</View>
 			</View>
 			)
