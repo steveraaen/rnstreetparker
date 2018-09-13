@@ -19,19 +19,14 @@ export default class Summary extends Component {
 				showComp: true
 			}
 		this.closeASPWindow = this.closeASPWindow.bind(this)
-	/*	this.fetchSummary = this.fetchSummary.bind(this) */
+
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
-	/*	this._retrieveData = this._retrieveData.bind(this)*/
+
 	}
-/*	 fetchSummary() {
-			AsyncStorage.getItem('asyncCarObject', (err, val) => {
-			console.log(val)
-				this.setState({asyncCarObject: JSON.parse(val)})
-})
-}*/
+
 	componentWillMount() {
-	/*	this.fetchSummary()*/
+
 		var nextArr = []
 		for(let i = 0; i < this.state.aspArray.length; i++) {
 			if(this.state.aspArray[i].date.isAfter(this.state.today)){
@@ -86,8 +81,8 @@ export default class Summary extends Component {
 		if(this.props.ASPObject) {
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
-			var parkedAddress = this.props.ASPObject.parkedAt
-			var goodTill = this.props.ASPObject.goodTill
+			var parkedAddress = this.props.ASPObject.location
+			var goodTill = moment(this.props.ASPObject.endDate).format('dddd, MMMM do')
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
 

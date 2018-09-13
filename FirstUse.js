@@ -20,11 +20,10 @@ export default class FirstUse extends Component {
 		this.state={
 			checked: false
 		}
-
+		this.handleCheck = this.handleCheck.bind(this)
 	}
+
 	componentWillMount() {
-
-
 		if(this.props.uLngLat) {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.props.uLngLat[1]).toFixed(5) +',' + parseFloat(this.props.uLngLat[0]).toFixed(5) + '&key=' + gkey, {}
   ).then((doc) => {
@@ -35,6 +34,20 @@ export default class FirstUse extends Component {
     })
   }
 	}
+	handleCheck() {
+		this.setState({checked: !this.state.checked}, () => {
+			if(this.state.checked) {
+				console.log('checked')
+				AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
+			} else {
+				console.log('unchecked')
+				AsyncStorage.setItem('prevLaunched', JSON.stringify(false))
+			}
+		})
+	}
+	savePrevStatus() {
+
+	}
 	render() {
 		const styles = StyleSheet.create({
 			meterDot: {
@@ -44,12 +57,9 @@ export default class FirstUse extends Component {
 				borderRadius: 4,
 				backgroundColor: 'rgba(223, 117, 63,.9)'
 			},
-			eachRow: {
-				
-				
+			eachRow: {				
 				marginRight: 24, 
-				marginTop: 12,
-				
+				marginTop: 12,				
 				flexDirection: 'row', 
 				flexWrap: 'wrap', 
 				justifyContent: 'space-between', 
@@ -98,14 +108,14 @@ export default class FirstUse extends Component {
 			<View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: 24, marginBottom: 12}}>
 			<CheckBox
 			checked={this.state.checked}
-			onPress={() => this.setState({checked: !this.state.checked})}
+			onPress={() => this.handleCheck()}
 			  title="Don't show this again"
 			  containerStyle={{backgroundColor: 'black'}}
 			  textStyle={{color: "#F6FEAC"}}
 			  checkedColor='red'
 			/>
 
-			<TouchableOpacity onPress={() => this.props.ackIn()}>
+			<TouchableOpacity onPress={() => this.props.ackPrevLaunched()}>
 			<Text style={{paddingTop: 4, textAlign: 'right', marginRight: 36}}>  <Icon name="ios-arrow-round-forward" size={48} color="#F6FEAC"/></Text> 				
 			</TouchableOpacity>
 

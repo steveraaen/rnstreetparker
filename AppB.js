@@ -1,4 +1,5 @@
 /*rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json*/
+// org.reactjs.native.example.streetparker
 console.disableYellowBox = true;
 import React, { Component } from 'react';
 import {
@@ -19,7 +20,7 @@ import {
 } from 'react-native';
 import RNCalendarEvents from 'react-native-calendar-events';
 import Modal from "react-native-modal";
-import MapView, { PROVIDER_GOOGLE, Circle, Marker } from 'react-native-maps'
+import MapView, { Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -50,7 +51,6 @@ export default class AppB extends Component<Props> {
       colorASP: 'white',
       colorSum: 'white',
       colorSave: 'white',
-      firstLaunch: true,
       modalVisible: false,      
       uLatitude: null,
       uLongitude: null,
@@ -59,7 +59,8 @@ export default class AppB extends Component<Props> {
       appState: AppState.currentState,
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
-      showKey: true
+      showKey: true,
+      prevLaunched: false
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -67,9 +68,8 @@ export default class AppB extends Component<Props> {
       this.getNewDay = this.getNewDay.bind(this);
       this.makeMarker = this.makeMarker.bind(this);
       this.setCarLoc = this.setCarLoc.bind(this);
-      this.ackFirstLaunchIn = this.ackFirstLaunchIn.bind(this)
-      this.ackFirstLaunchOut = this.ackFirstLaunchOut.bind(this)
 
+this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
       this.addToCal = this.addToCal.bind(this)
       this.getTenSigns = this.getTenSigns.bind(this)
       this.getCarLoc = this.getCarLoc.bind(this)
@@ -104,6 +104,11 @@ export default class AppB extends Component<Props> {
          // Error retrieving data
        }
     }*/
+    ackPrevLaunched() {
+      this.setState({
+        prevLaunched: true
+      })
+    }
     hideKey(tf) {
       this.setState({
         showKey: tf
@@ -115,12 +120,8 @@ export default class AppB extends Component<Props> {
     closeModal() {
       this.setState({modalVisible:false});
     }  
-  ackFirstLaunchIn() {
-    this.setState({firstLaunch: false})
-  }
-  ackFirstLaunchOut() {
-    this.setState({firstLaunch: false})
-  }
+
+
     openModal() {
       this.setState({modalVisible:true});
     }
@@ -131,18 +132,23 @@ export default class AppB extends Component<Props> {
   _handleAppStateChange = (nextAppState) => {
 
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('app state changed')
+      
+      AsyncStorage.getItem('prevLaunched', (err, val) => {
+        console.log(JSON.parse(val))
+        this.setState({prevLaunched: JSON.parse(val)})
+      })
     }  
 
-/*    if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
-      console.log(this.state.parkingObject)
+    if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
+/*      console.log(this.state.parkingObject)
       AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.parkingObject), () => {
         AsyncStorage.getItem('parkingObject', (err, value) => {
           this.setState({parkingObject: JSON.parse(value)})
         })
-      })
+      })*/
+     
       
-    }*/
+    }
     this.setState({
       appState: nextAppState,
     });
@@ -344,9 +350,18 @@ console.log(marker.noonTime)*/
             })
         }
 
-    componentWillMount() { 
-/*      this.spotListener()
-    this._retrieveData()  */ 
+    componentDidMount() { 
+   AppState.addEventListener('change', this._handleAppStateChange);
+
+   AsyncStorage.getItem('prevLaunched', (err, value) => {
+    console.log(value)
+    this.setState({
+      prevLaunched: true
+    })
+   })
+   AsyncStorage.getItem('parkingObject', (error, value) => {
+    this.setState({ASPObject: JSON.parse(value)})
+   })
       for(let asp in aspDays){
        /* console.log(aspDays[asp].date - this.state.fullDay)*/
         if(this.state.fullDay === aspDays[asp].date){         
@@ -355,10 +370,7 @@ console.log(marker.noonTime)*/
             todaysHoliday: aspDays[asp].holiday
           })
         }
-      } 
-
-
-       AppState.addEventListener('change', this._handleAppStateChange);
+      }    
 
       navigator.geolocation.getCurrentPosition(function(pos) {
       this.watchId = navigator.geolocation.watchPosition(
@@ -368,7 +380,7 @@ console.log(marker.noonTime)*/
           uLongitude: position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
-          initRegion: {
+          region: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: .015,
@@ -405,18 +417,6 @@ console.log(marker.noonTime)*/
       })
 
     }
-
-    componentDidMount() {
-
-
-      this.getNewDay(this.state.selDay)
-      this.getMeters(this.state.uLatitude, this.state.uLongitude)
-
-/*      if(this.state.AppState === 'background') {
-        navigator.geolocation.clearWatch(this.watchID);
-      }*/
-    }
-
     componentWillUnmount() {
       navigator.geolocation.clearWatch(this.watchID);
     }
@@ -502,6 +502,8 @@ console.log(marker.noonTime)*/
           date: a
     }]        
       }
+
+      AsyncStorage.setItem('parkingObject', JSON.stringify(parkingObject))
       console.log(s)
       console.log(e)
       console.log(l)
@@ -513,11 +515,16 @@ console.log(marker.noonTime)*/
         alarms: [{
           date: a
     }]
-  }/*, ()  => this.openCloseSave()*/) 
+  }).then((res) => {
+    console.log(res)
+  }) 
       
 }
 getASPStatus(obj) {
-  this.setState({ASPObject: obj})
+  this.setState({ASPObject: obj}, () => {
+     AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.ASPObject))
+  })
+
 }
 getSignText(signtext) {
   this.setState({signText: signtext})
@@ -570,23 +577,20 @@ openCloseASP(tf) {
 }
 openCloseSave(tf) {  
     this.setState(prevState => ({
-      toggleSave: !prevState.toggleSave,
+      toggleSave: !prevState.toggleSave, 
       toggleASP: false,
       toggleSum: false
     }), () => this.colorizeIcons());
 }
 onRegionChangeComplete(region) {
- this.getSigns(region.longitude, region.latitude)
- this.getMeters(region.longitude, region.latitude)
+console.log(region)
 }
-    onMapReady = () => {
-        Platform.OS === 'ios' && this.map.animateToRegion(this.state.initRegion, 0.03); // TODO remove once the initialRegion is fixed in the module
-    };
+
   render() {
 
-    if(this.state.firstLaunch) {
+    if(!this.state.prevLaunched) {
   return(
-    <FirstUse { ...this.state } ackIn={this.ackFirstLaunchIn} ackOut={this.ackFirstLaunchOut} uLnglat={this.state.uLnglat}/>
+    <FirstUse { ...this.state }  ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
 }else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
 
@@ -597,8 +601,10 @@ onRegionChangeComplete(region) {
       <View>   
         </View>
      <MapView
-
-     onMapReady={this.onMapReady}
+        ref={map => {
+               this.map = map;
+          }}
+     
       scrollEnabled={true}  
         zoomEnabled={true}   
         rotateEnabled={true}   
@@ -612,12 +618,10 @@ onRegionChangeComplete(region) {
          animateToViewingAngle={true} 
          showsCompass = {true}
          showScale = {true}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={this.state.initRegion}
+      
+        initialRegion={this.state.region}
         onRegionChangeComplete={this.onRegionChangeComplete}
-        ref={map => {
-               this.map = map;
-          }}
+
         >
 
          {this.state.todayMarkersArray.map((marker, idx) => (
@@ -639,7 +643,7 @@ onRegionChangeComplete(region) {
      />
      ))}
     {/* {this.makeCarMarker()}*/}
-    
+
   </MapView>
     <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 38, backgroundColor: '#1F2C4B'}}>
     

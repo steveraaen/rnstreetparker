@@ -37,6 +37,9 @@ type Props = {};
     console.log(isauth)
     console.log(test)
     console.log(calList)
+
+
+
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
@@ -492,14 +495,14 @@ console.log(marker.noonTime)*/
           date: a
     }]        
       }
-      RNCalendarEvents.saveEvent('Move Car', {
+/*      RNCalendarEvents.saveEvent('Move Car', {
         startDate: s,
         endDate: e,
         location: l,
         alarms: [{
           date: a
     }]
-  }) 
+  })*/
       this.openCloseSave()
 }
 getASPStatus(obj) {

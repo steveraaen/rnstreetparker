@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import aspDays from './asp.js';
 import ckey from './keys.js';
+
 export default class ModalContent extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +76,7 @@ dontSaveSpot(e) {
   }, () => this.getCarLoc()) 
  }*/
  showTenSigns() {
- /* console.log(this.props.nearestThree)*/
+  console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
         <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
@@ -100,7 +101,7 @@ dontSaveSpot(e) {
       }
       AsyncStorage.setItem('carSpot', JSON.stringify(savedCarLoc), () => {
         AsyncStorage.getItem('carSpot', (err, res) => {
-         /* console.log(JSON.parse(res))*/
+          console.log(JSON.parse(res))
         })
       })
 
@@ -196,7 +197,7 @@ dontSaveSpot(e) {
           end: daysArr,
             asyncCarObject: {
              /* parkedAt: this.state.carLoc.data.results[0].formatted,*/
-              parkedAt: streetAddress + ", " + neighborhood + ", " + boro,
+              location: streetAddress + ", " + neighborhood + ", " + boro,
               goodTill: timeLeft.day,
               isASPHoliday: timeLeft.isASPHoliday
             }

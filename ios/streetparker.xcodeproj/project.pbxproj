@@ -348,7 +348,7 @@
 		036B4B73D7CF4AF99BCAD37D /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* streetparker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = streetparker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* streetparker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = streetparker.app; path = ASPManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = streetparker/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = streetparker/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = streetparker/Images.xcassets; sourceTree = "<group>"; };
@@ -1383,7 +1383,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = streetparker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ndrblt.aspmanager;
+				PRODUCT_NAME = ASPManager;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1404,7 +1405,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = streetparker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ndrblt.aspmanager;
+				PRODUCT_NAME = ASPManager;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
