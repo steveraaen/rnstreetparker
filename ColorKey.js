@@ -15,7 +15,7 @@ export default class ColorKey extends Component {
 				height: 12,
 				width: 12,
 				borderRadius: 6,
-				backgroundColor: 'rgb(244, 203, 66)',
+				backgroundColor: 'rgb(0, 59, 255)',
 				marginBottom: 6
 			},
 			PMDot: {
@@ -23,7 +23,7 @@ export default class ColorKey extends Component {
 				height: 12,
 				width: 12,
 				borderRadius: 6,
-				backgroundColor: 'rgb(65, 244, 202)',
+				backgroundColor: 'rgb(255, 147, 0)',
 				marginBottom: 6
 			},
 			nightDot: {
@@ -31,7 +31,7 @@ export default class ColorKey extends Component {
 				height: 12,
 				width: 12,
 				borderRadius: 6,
-				backgroundColor: 'rgb(244, 65, 205)',
+				backgroundColor: 'rgb(156, 42, 168)',
 				marginBottom: 6
 			},
 			txt: {

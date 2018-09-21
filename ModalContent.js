@@ -39,7 +39,7 @@ export default class ModalContent extends Component {
 /*    this.getCarLoc = this.getCarLoc.bind(this)*/
     this.showCarLoc = this.showCarLoc.bind(this)
  /*   this.getTenSigns = this.getTenSigns.bind(this)*/
-    this.dontSaveSpot = this.dontSaveSpot.bind(this)
+    
     this.parseClosest = this.parseClosest.bind(this)
    /* this.setAsyncSummary = this.setAsyncSummary.bind(this)*/
    /* this.addToCal = this.addToCal.bind(this)*/
@@ -56,12 +56,7 @@ export default class ModalContent extends Component {
     })
 }*/
 
-dontSaveSpot(e) {
-  this.setState({
-    carLoc: null,
-    nearestThree: null
-  })
-}
+
 /* getTenSigns(coor) {
   this.props.setCarLoc(this.props.uLnglat[1], this.props.uLnglat[0])
     axios.get('https://streetparker.herokuapp.com/mycar', {
@@ -124,7 +119,7 @@ dontSaveSpot(e) {
                 </Button>
                 <Button 
                   title="No"
-                  onPress={(e) => this.dontSaveSpot()}
+                  onPress={(e) => this.props.dontSaveSpot()}
                 >
                 </Button>
               </TouchableOpacity>
@@ -211,9 +206,9 @@ dontSaveSpot(e) {
             [
               {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, this.state.end[0].alarmISO)},
           
-              {text: 'Go Back', onPress: () => this.props.openCloseSave()},
+              {text: 'Go Back', onPress: () => console.log('dismissed alert')},
             ],
-            { cancelable: false }
+            { cancelable: true }
           )
         }
         )

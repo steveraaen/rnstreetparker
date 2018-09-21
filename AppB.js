@@ -84,7 +84,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
 /*    this.onMapReady = this.onMapReady.bind(this)*/
     this.hideKey = this.hideKey.bind(this)
-
+    this.dontSaveSpot = this.dontSaveSpot.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
@@ -211,7 +211,8 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
             longitude: parseFloat(docm.data[i].geometry.coordinates[0].toFixed(6))
           }
           meter.name='meter';
-          meter.color= 'rgb(244, 65, 205)'
+          meter.dotImage = require('./assets/purpleDot12pt.png');
+          meter.text = "Parking Meter"
           metersArray.push(meter)
         }
         this.setState({
@@ -270,7 +271,7 @@ console.log(marker.noonTime)*/
 /*console.log(marker.endTime.isBefore(marker.noonTime));*/
        /* if(marker.dif > 0 && marker.dif < 2) {*/
         if(marker.endTime.isBefore(marker.noonTime)) {
-          marker.color = require('./assets/blueDot12pt.png')
+          marker.dotImage = require('./assets/blueDot12pt.png')
         } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
         } else if(marker.dif > 4 && marker.dif < 6) {
@@ -284,7 +285,7 @@ console.log(marker.noonTime)*/
         } */ 
           else if(marker.endTime.isAfter(marker.noonTime)){
         /*  else if(marker.dif  > -2 && marker.dif < 0){*/
-          marker.color = require('./assets/redDot12pt.png')
+          marker.dotImage = require('./assets/orangeDot12pt.png')
         } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
         } else if(marker.dif  > -6 && marker.dif < -4){
@@ -579,14 +580,21 @@ openCloseSave(tf) {
     this.setState(prevState => ({
       toggleSave: !prevState.toggleSave, 
       toggleASP: false,
-      toggleSum: false
+      toggleSum: false, 
+      nearestThree: null
     }), () => this.colorizeIcons());
 }
 onRegionChangeComplete(region) {
   this.setState({ region })
 console.log(region)
 }
-
+dontSaveSpot(e) {
+  this.setState({
+    carLoc: null,
+    nearestThree: null,
+    toggleSave: false
+  })
+}
   render() {
 
     if(!this.state.prevLaunched) {
@@ -628,22 +636,24 @@ console.log(region)
          {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
       coordinate={marker.latlng}
-      image={marker.color}
+      image={marker.dotImage}
       key={idx}
      >
-        <Callout>
+        <Callout style={{borderWidth: 2, borderColor: 'red', borderRadius: 12, padding: 8}}>
           <Text>{marker.text}</Text>
         </Callout>
      </Marker>
      ))}
      {this.state.meters.map((meter, idx) => (
-    <Circle
-      center={meter.latlng}
-      radius={3}
-      strokeColor={meter.color}
-      fillColor={meter.color}
+    <Marker
+      coordinate={meter.latlng}
+      image={meter.dotImage}
       key={idx}
-     />
+     >
+        <Callout>
+          <Text>{meter.text}</Text>
+        </Callout>
+     </Marker>
      ))}
     {/* {this.makeCarMarker()}*/}
 
@@ -672,7 +682,7 @@ console.log(region)
   
     <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP}/>
       
-    <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc}/>
+    <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  
     <ColorKey { ...this.state } hideKey={this.hideKey}/>
   </View>

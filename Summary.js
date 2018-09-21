@@ -82,7 +82,7 @@ export default class Summary extends Component {
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
 			var parkedAddress = this.props.ASPObject.location
-			var goodTill = moment(this.props.ASPObject.endDate).format('dddd, MMMM do')
+			var goodTill = moment(this.props.ASPObject.endDate).format('dddd, MMMM Do')
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
 
