@@ -73,7 +73,7 @@ export default class SearchB extends Component {
    
     this.setState({
       selectedDay: day
-    }, () => this.props.makeMarker(day))
+    }, () => this.props.getNewDay(day))
   }
 componentWillMount() {
       for(let i = 0; i < this.state.daysArray.length; i++) {    

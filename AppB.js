@@ -82,7 +82,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.openCloseSave = this.openCloseSave.bind(this)
     this.colorizeIcons = this.colorizeIcons.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
-    this.onMapReady = this.onMapReady.bind(this)
+/*    this.onMapReady = this.onMapReady.bind(this)*/
     this.hideKey = this.hideKey.bind(this)
 
 
@@ -270,7 +270,7 @@ console.log(marker.noonTime)*/
 /*console.log(marker.endTime.isBefore(marker.noonTime));*/
        /* if(marker.dif > 0 && marker.dif < 2) {*/
         if(marker.endTime.isBefore(marker.noonTime)) {
-          marker.color = 'rgb(244, 203, 66)'
+          marker.color = require('./assets/blueDot12pt.png')
         } /*else if(marker.dif > 2 && marker.dif < 4) {
           marker.color = 'rgba(3,189,244,' + .8 + ')'
         } else if(marker.dif > 4 && marker.dif < 6) {
@@ -284,7 +284,7 @@ console.log(marker.noonTime)*/
         } */ 
           else if(marker.endTime.isAfter(marker.noonTime)){
         /*  else if(marker.dif  > -2 && marker.dif < 0){*/
-          marker.color = 'rgb(65, 244, 202)'
+          marker.color = require('./assets/redDot12pt.png')
         } /*else if(marker.dif  > -4 && marker.dif < -2){
           marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
         } else if(marker.dif  > -6 && marker.dif < -4){
@@ -383,8 +383,8 @@ console.log(marker.noonTime)*/
           region: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            latitudeDelta: .015,
-            longitudeDelta: .015,
+            latitudeDelta: .01,
+            longitudeDelta: .01,
           },         
          error: null,
         }, () => {
@@ -583,6 +583,7 @@ openCloseSave(tf) {
     }), () => this.colorizeIcons());
 }
 onRegionChangeComplete(region) {
+  this.setState({ region })
 console.log(region)
 }
 
@@ -593,7 +594,7 @@ console.log(region)
     <FirstUse { ...this.state }  ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
 }else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
-
+  console.log(this.state.todayMarkersArray)
     return (
 
     <View style={styles.container}>            
@@ -604,7 +605,7 @@ console.log(region)
         ref={map => {
                this.map = map;
           }}
-     
+      mapType={'mutedStandard'}
       scrollEnabled={true}  
         zoomEnabled={true}   
         rotateEnabled={true}   
@@ -625,18 +626,16 @@ console.log(region)
         >
 
          {this.state.todayMarkersArray.map((marker, idx) => (
-    <Circle
-      center={marker.latlng}
-      radius={6}
-      strokeColor={marker.color}
-      fillColor={marker.color}
+    <Marker
+      coordinate={marker.latlng}
+      image={marker.color}
       key={idx}
-     />
+     ></Marker>
      ))}
      {this.state.meters.map((meter, idx) => (
     <Circle
       center={meter.latlng}
-      radius={6}
+      radius={3}
       strokeColor={meter.color}
       fillColor={meter.color}
       key={idx}
@@ -661,7 +660,7 @@ console.log(region)
    
     </View>
     <View>
-      <SearchB { ...this.state } makeMarker={this.makeMarker}/>
+      <SearchB { ...this.state } makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
   
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
