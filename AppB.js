@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import RNCalendarEvents from 'react-native-calendar-events';
 import Modal from "react-native-modal";
-import MapView, { Circle, Marker } from 'react-native-maps'
+import MapView, { Callout, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -630,7 +630,11 @@ console.log(region)
       coordinate={marker.latlng}
       image={marker.color}
       key={idx}
-     ></Marker>
+     >
+        <Callout>
+          <Text>{marker.text}</Text>
+        </Callout>
+     </Marker>
      ))}
      {this.state.meters.map((meter, idx) => (
     <Circle
