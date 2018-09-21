@@ -135,7 +135,7 @@ export default class Summary extends Component {
 					</View>
 
 					<View >
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{goodTill}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{goodTill}</Text>
 					</View>
 				</View>
 				</View>

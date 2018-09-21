@@ -13,6 +13,7 @@ export default class ASPCalendar extends Component {
 		this.state={
 			aspArray: aspDays
 		}
+		this.saveAllASP = this.saveAllASP.bind(this)
 	}
 
 	componentWillMount() {
@@ -28,15 +29,20 @@ export default class ASPCalendar extends Component {
 		/*console.log(nextArr)*/
 		this.setState({nextArr: nextArr})
 	}
-/*	importASPList() {
-		      RNCalendarEvents.saveEvent('ASP Is Suspended Today', {
-        startDate: s,
-        endDate: e,
-        alarms: [{
-          date: a
-    }]
-  })
-	}*/
+saveAllASP() {
+	for(let i = 0; i < this.state.nextArr.length; i++) {
+		this.props.importASPList(this.state.nextArr[i].date, this.state.nextArr[i].date, this.state.nextArr[i].holiday)
+	}
+    Alert.alert(
+   `${this.state.nextArr.length} ASP holidays added to your iPhone Calendar`,
+   ``,
+   [
+     {text: 'Okay', onPress: () => console.log('added')},
+   ],
+   { cancelable: true }
+ )
+
+}
 	render() {
 		var keyExtractor = (item, index) => item.date.format('MMMM, Do');
 		if(this.props.toggleASP) {
@@ -66,7 +72,7 @@ export default class ASPCalendar extends Component {
 				<Text style={{color: 'yellow', fontSize: 14, fontWeight: 'bold'}}>Save this list to your phone's native calendar?</Text>
 				<Button 
 				title={"Save List"}
-				onPress={()=> console.log('save asp list')}
+				onPress={()=> this.saveAllASP()}
 				/>
 			</View>
 			</View>

@@ -4,6 +4,7 @@ console.disableYellowBox = true;
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   AppState,
   AsyncStorage,
   Dimensions,
@@ -85,6 +86,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
 /*    this.onMapReady = this.onMapReady.bind(this)*/
     this.hideKey = this.hideKey.bind(this)
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
+    this.importASPList = this.importASPList.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
@@ -104,6 +106,14 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
          // Error retrieving data
        }
     }*/
+    importASPList(s,e,h) {
+      RNCalendarEvents.saveEvent('ASP Is Suspended Today', {
+      startDate: s,
+      endDate: e,
+      allDay: true, 
+      title: h
+    })
+      }
     ackPrevLaunched() {
       this.setState({
         prevLaunched: true
@@ -518,7 +528,7 @@ console.log(marker.noonTime)*/
     }]
   }).then((res) => {
     console.log(res)
-  }) 
+  })
       
 }
 getASPStatus(obj) {
@@ -593,7 +603,7 @@ dontSaveSpot(e) {
     carLoc: null,
     nearestThree: null,
     toggleSave: false
-  })
+  }, ()=> this.colorizeIcons())
 }
   render() {
 
@@ -680,7 +690,7 @@ dontSaveSpot(e) {
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
    
   
-    <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP}/>
+    <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP} importASPList={this.importASPList}/>
       
     <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  
