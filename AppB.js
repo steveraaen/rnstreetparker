@@ -528,6 +528,16 @@ console.log(marker.noonTime)*/
     }]
   }).then((res) => {
     console.log(res)
+    if(res) {
+      Alert.alert(
+            `Parking info saved to calendar`,
+            ``,
+            [
+              {text: 'Go', onPress: () => console.log('dismissed alert')},
+            ],
+            { cancelable: true }
+          )
+    }
   })
       
 }

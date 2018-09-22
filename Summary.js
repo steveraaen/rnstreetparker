@@ -23,8 +23,6 @@ export default class Summary extends Component {
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
 
-	}
-
 	componentWillMount() {
 
 		var nextArr = []

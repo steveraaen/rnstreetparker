@@ -152,7 +152,7 @@ export default class ModalContent extends Component {
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').subtract(2, 'hours').toISOString(),
-            isASPHoliday: 'no'
+            isASPHoliday: 'ASP is in effect'
             }
           daysArr.push(timeLeft)
 
@@ -171,16 +171,19 @@ export default class ModalContent extends Component {
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
             isASPHoliday: 'This is not an Alternate Side Parking Holiday'
           }
-/*console.log(timeLeft)*/
+
           daysArr.push(timeLeft)
         
         }
           for(let i = 0; i < aspDays.length; i++) {
             var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')
-            console.log((timeLeft.justDay === formDate))
+          
             if(timeLeft.justDay === formDate) {
               timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
+            } else {
+              timeLeft.isASPHoliday = 'ASP is in effect'
             }
+            console.log(timeLeft)
           }
 
  }
