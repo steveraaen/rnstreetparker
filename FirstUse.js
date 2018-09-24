@@ -6,11 +6,11 @@ import gkey from './keys.js'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements';
 
-var blurbOne = `Alternate Side Parking (ASP) manager for New Yorkers.`
+var blurbOne = `Alternate Side Parking Manager.`
 var blurbTwo = `Features:`
-var blurbMap = `Shows where ASP turnover is occurring for any day of the week, near your location.`
-var blurbSave = `Saves the location and parking rules for exactly where you are parked.`
-var blurbCal = `Adds the next time & date you must next move your car to your iOS Calendar, along with your car's location.`
+var blurbMap = `ASP turnover for any day of the week, near your location.`
+var blurbSave = `Saves location and parking rules for exactly where you are parked.`
+var blurbCal = `Adds time & date of next-move and car's location to your iOS calendar.`
 var blurbAdjust = `Adjusts if your next-move date falls on an ASP holiday.`
 var blurbAlarm = `Generates an iOS notification two hours before the next-move time.`
 var blurbImport = `Lets you import the entire ASP suspention schedule into your iOS calendar.`
@@ -63,20 +63,20 @@ export default class FirstUse extends Component {
 				flexDirection: 'row', 
 				flexWrap: 'wrap', 
 				justifyContent: 'space-between', 
-				backgroundColor: 'black'
+				backgroundColor: '#1F2C4B'
 			}
 		})
 	/*	const { navigate } = this.props.navigation;*/
 		return(
-			<View style={{flex: 1, justifyContent: 'center', backgroundColor: 'black'}}>
+			<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#1F2C4B'}}>
 			<View style={{alignItems: 'center', marginTop: 30, marginBottom: 30}}>
 				<Image style={{paddingLeft: 16, height: 56, width: 56, borderRadius: 8}}source={require('./assets/sp60*3.png')}/>
 			</View>
-			<View style={{backgroundColor: 'black'}}>
+			<View style={{backgroundColor: '#1F2C4B'}}>
 				<Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold',color: '#F6FEAC'}}>{blurbOne}</Text>
 			</View>
 			
-			<View style={{backgroundColor: 'black', marginTop: 16, marginBottom: 16}}>
+			<View style={{backgroundColor: '#1F2C4B', marginTop: 16, marginBottom: 16}}>
 				<Text style={{textAlign: 'center', fontSize: 20, color: 'rgba(223, 117, 63,.9)', fontWeight: 'bold'}}>{blurbTwo}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
 			</View>
 			<View    >

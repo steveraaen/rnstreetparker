@@ -240,7 +240,7 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'black'}}> 
+        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'rgba(33, 44, 73, .9)'}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
            </TouchableOpacity>  

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { Alert, Animated, AsyncStorage, Button,  FlatList, NetInfo, Platform, ScrollView, StatusBar, StyleSheet, Image, Text, View, TouchableHighlight ,TouchableOpacity } from 'react-native';
+import { Alert, Animated, AsyncStorage, Button,  FlatList, NetInfo, Platform, ScrollView, SectionList, StatusBar, StyleSheet, Image, Text, View, TouchableHighlight ,TouchableOpacity } from 'react-native';
 import moment from 'moment'
 import axios from 'axios'
 import TextTicker from 'react-native-text-ticker'
 import Icon from 'react-native-vector-icons/Ionicons';
 import gkey from './keys.js'
 import aspDays from './asp.js'
+import aspDays19 from './asp19.js'
 
 export default class ASPCalendar extends Component {
 	constructor(props) {
 		super(props)
 		this.state={
-			aspArray: aspDays
+			aspArray: aspDays,
+			aspArray19: aspDays19
 		}
 		this.saveAllASP = this.saveAllASP.bind(this)
 	}
@@ -31,10 +33,12 @@ export default class ASPCalendar extends Component {
 	}
 saveAllASP() {
 	for(let i = 0; i < this.state.nextArr.length; i++) {
-		this.props.importASPList(this.state.nextArr[i].date, this.state.nextArr[i].date, this.state.nextArr[i].holiday)
+		this.props.importASPList(this.state.nextArr[i].date, this.state.nextArr[i].date, this.state.nextArr[i].holiday, () => {
+			this.props.importASPList(this.state.aspArray19[i].date, this.state.aspArray19[i].date, this.state.aspArray19[i].holiday)
+		})
 	}
     Alert.alert(
-   `${this.state.nextArr.length} ASP holidays added to your iPhone Calendar`,
+   `${this.state.nextArr.length + this.state.aspArray19.length} ASP holidays added to your iPhone Calendar`,
    ``,
    [
      {text: 'Okay', onPress: () => console.log('added')},
@@ -49,32 +53,32 @@ saveAllASP() {
 		return(
 		
 
-				<View style={{flex: 1, marginLeft: 20, marginRight: 20,backgroundColor: 'black'}}>
+				<View style={{flex: .7, marginLeft: 20, marginRight: 20,backgroundColor: 'rgba(33, 44, 73, .9)', borderRadius: 14, marginBottom: 6}}>
 				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
 				 </TouchableOpacity>
-				<View style={{marginBottom: 12}}><Text style={{color: 'yellow', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>Remaining 2018 ASP holidays</Text></View>
-				 <FlatList 
-				 	data={this.state.nextArr}
-				 	keyExtractor={keyExtractor}
-				 	renderItem={({ item }) => (
-				 		<View style={{flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
-				 			<View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
 
-				 				<View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
-				 				<View><Text style={{color: 'coral', fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>				 			
-				 			</View>
-				 		</View>
-				 		)}
-				 	/>			
+<SectionList
+  renderItem={({item, index, section}) => (
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
+                <View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
+                <View><Text style={{color: '#F1C137', fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>             
+              </View>
+  	)}
+  renderSectionHeader={({section: {title}}) => (
+    <Text style={{color: 'white', fontSize: 16, color: 'coral', fontWeight: 'bold', margin: 8, textAlign:'center'}}>{title}</Text>
+  )}
+  sections={[
+    {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},
+    {title: '2019 ASP Holiday Suspensions', data: this.state.aspArray19}
+  ]}
+  keyExtractor={(item, index) => item + index}
+/>		
 		
-			<View style={{marginLeft: 24, marginRight: 24, backgroundColor: 'black', marginTop: 12}}>
-				<Text style={{color: 'yellow', fontSize: 14, fontWeight: 'bold'}}>Save this list to your phone's native calendar?</Text>
 				<Button 
-				title={"Save List"}
+				title={"Save List to iPhone Calendar"}
 				onPress={()=> this.saveAllASP()}
 				/>
-			</View>
 			</View>
 			)
 	} else {

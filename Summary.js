@@ -43,12 +43,12 @@ export default class Summary extends Component {
 
 				if(this.state.todayIsASP) {
 			return  (
-				<View style={{marginBottom: 12}}>
+				<View style={{marginBottom: 2}}>
 					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'red', textAlign: 'center'}}> ASP IS SUSPENDED TODAY!</Text>
 				</View>
 				)
 		} else { return (
-				<View style={{marginBottom: 12}}>
+				<View style={{marginBottom: 2}}>
 					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}> ASP is in effect today</Text>
 				</View>
 			)}
@@ -90,7 +90,7 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{display: 'flex', flex: 1, marginBottom:4, backgroundColor: 'black', marginLeft: 20, marginRight: 20, justifyContent: 'flex-start'}}>
+			<View style={{display: 'flex', flex: .8, borderRadius: 24,  marginBottom:4, backgroundColor: 'rgba(33, 44, 73, .9)', marginLeft: 20, marginRight: 20, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
@@ -123,7 +123,7 @@ export default class Summary extends Component {
 					  }}
 					/>
 					 
-					<View style={{marginTop: 12}}>
+					<View style={{marginTop: 2}}>
 						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
