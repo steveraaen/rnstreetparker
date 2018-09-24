@@ -25,9 +25,7 @@ import MapView, { Callout, Circle, Marker } from 'react-native-maps'
 import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
-import nice from './niceMap.js'
 import aspDays from './asp.js'
-import niceBlack from './niceMapBlack.js'
 import ModalContent from './ModalContent.js'
 import SearchB from './SearchB.js'
 import FirstUse from './FirstUse.js'
@@ -148,7 +146,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
         this.setState({prevLaunched: JSON.parse(val)})
       })
     }  
-
+console.log(this.state.parkingObject)
     if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
 /*      console.log(this.state.parkingObject)
       AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.parkingObject), () => {
@@ -370,8 +368,9 @@ console.log(marker.noonTime)*/
       prevLaunched: true
     })
    })
-   AsyncStorage.getItem('parkingObject', (error, value) => {
-    this.setState({ASPObject: JSON.parse(value)})
+   AsyncStorage.getItem('parkingObject', (error, value) => {})
+   .then((value) => {
+      this.setState({ASPObject: JSON.parse(value)})
    })
       for(let asp in aspDays){
        /* console.log(aspDays[asp].date - this.state.fullDay)*/
@@ -511,10 +510,11 @@ console.log(marker.noonTime)*/
         location: l,
         alarms: [{
           date: a
-    }]        
+        }]        
       }
 
-      AsyncStorage.setItem('parkingObject', JSON.stringify(parkingObject))
+
+     /* AsyncStorage.setItem('parkingObject', JSON.stringify(parkingObject))*/
       console.log(s)
       console.log(e)
       console.log(l)
@@ -529,6 +529,9 @@ console.log(marker.noonTime)*/
   }).then((res) => {
     console.log(res)
     if(res) {
+      this.setState({
+        calendarId: res
+      })
       Alert.alert(
             `Parking info saved to calendar`,
             ``,
@@ -640,7 +643,6 @@ dontSaveSpot(e) {
         scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
-        customMapStyle={nice}
         showsUserLocation={true}
         followsUserLocation={true}
         animateToBearing={true}

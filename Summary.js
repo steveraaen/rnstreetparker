@@ -23,6 +23,8 @@ export default class Summary extends Component {
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
 
+	}
+
 	componentWillMount() {
 
 		var nextArr = []
@@ -80,7 +82,7 @@ export default class Summary extends Component {
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
 			var parkedAddress = this.props.ASPObject.location
-			var goodTill = moment(this.props.ASPObject.endDate).format('dddd, MMMM Do')
+			var goodTill = this.props.ASPObject.goodTill
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
 
