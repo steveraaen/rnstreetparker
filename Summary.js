@@ -44,12 +44,12 @@ export default class Summary extends Component {
 				if(this.state.todayIsASP) {
 			return  (
 				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'red', textAlign: 'center'}}> ASP IS SUSPENDED TODAY!</Text>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: '#e07a5f', textAlign: 'center'}}> ASP IS SUSPENDED TODAY!</Text>
 				</View>
 				)
 		} else { return (
 				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}> ASP is in effect today</Text>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: '#f2cc8f', textAlign: 'center'}}> ASP is in effect today</Text>
 				</View>
 			)}
 	}
@@ -90,48 +90,48 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{display: 'flex', flex: .8, borderRadius: 24,  marginBottom:4, backgroundColor: 'rgba(33, 44, 73, .9)', marginLeft: 20, marginRight: 20, justifyContent: 'flex-start'}}>
+			<View style={{flex: .7, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
-					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
+					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 					 </TouchableOpacity>		
 				</View>	
 				<View>
 					{this.showASPHol()}
 				<View
 					  style={{
-					    borderBottomColor: 'coral',
+					    borderBottomColor: '#3d405b',
 					    borderBottomWidth: 1,
 					    margin: 14
 					  }}
 				/>
 				<View style={{marginLeft:12}}>
-					<Text style={{color: 'coral',  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
+					<Text style={{color: this.props.fgColor,  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
-						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{nextHolidayDate}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: this.props.fgColor, fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
-					<View style={{marginBottom: 12}}>
-						<Text style={{marginTop: 6,  marginLeft:24, color: 'coral', fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
+					<View >
+						<Text style={{marginTop: 6,  marginLeft:24, color: this.props.fgColor, fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
 					</View>
 					<View
 					  style={{
-					    borderBottomColor: 'coral',
+					    borderBottomColor: this.props.fgColor,
 					    borderBottomWidth: 1,
 					    margin: 14
 					  }}
 					/>
 					 
 					<View style={{marginTop: 2}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{parkedAddress}</Text>
 					</View>
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'coral', fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 
 					<View >

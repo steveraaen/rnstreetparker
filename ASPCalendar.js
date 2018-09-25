@@ -53,20 +53,20 @@ saveAllASP() {
 		return(
 		
 
-				<View style={{flex: .7, marginLeft: 20, marginRight: 20,backgroundColor: 'rgba(33, 44, 73, .9)', borderRadius: 14, marginBottom: 6}}>
+				<View style={{flex: .7, marginLeft: 14, paddingRight: 8, marginRight: 14, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
 				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
-				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
+				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 				 </TouchableOpacity>
 
 <SectionList
   renderItem={({item, index, section}) => (
               <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
                 <View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
-                <View><Text style={{color: '#F1C137', fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>             
+                <View><Text style={{color: this.props.fgColor, fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>             
               </View>
   	)}
   renderSectionHeader={({section: {title}}) => (
-    <Text style={{color: 'white', fontSize: 16, color: 'coral', fontWeight: 'bold', margin: 8, textAlign:'center'}}>{title}</Text>
+    <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold', margin: 8, textAlign:'center'}}>{title}</Text>
   )}
   sections={[
     {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},

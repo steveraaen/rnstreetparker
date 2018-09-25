@@ -33,12 +33,7 @@ import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
 import ColorKey from './ColorKey.js'
 type Props = {};
-    var isauth = RNCalendarEvents.authorizeEventStore()
-    var test = RNCalendarEvents.authorizationStatus()
-    var calList = RNCalendarEvents.findCalendars()
-    console.log(isauth)
-    console.log(test)
-    console.log(calList)
+
 export default class AppB extends Component<Props> {
   constructor(props) {
     super(props);
@@ -59,7 +54,9 @@ export default class AppB extends Component<Props> {
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
       showKey: true,
-      prevLaunched: false
+      prevLaunched: false,
+      bgColor: '#202F63',
+      fgColor: '#F1C137'
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -504,6 +501,12 @@ console.log(marker.noonTime)*/
   }*/
 
     addToCal(s,e,l,a) {
+          var isauth = RNCalendarEvents.authorizeEventStore()
+    var test = RNCalendarEvents.authorizationStatus()
+    var calList = RNCalendarEvents.findCalendars()
+    console.log(isauth)
+    console.log(test)
+    console.log(calList)
       var parkingObject = {
         startDate: s,
         endDate: e,
@@ -558,7 +561,7 @@ colorizeIcons() {
   if(this.state.toggleASP) {
     this.setState({
       selectedIcon: "ASP",
-      colorASP: 'coral',
+      colorASP: this.state.fgColor,
       colorSave: 'white',
       colorSum: 'white',      
     })
@@ -566,7 +569,7 @@ colorizeIcons() {
     this.setState({
       selectedIcon: "SAV",
       colorASP: 'white',
-      colorSave: 'coral',
+      colorSave: this.state.fgColor,
       colorSum: 'white',      
     })
   }else if(this.state.toggleSum) {
@@ -574,7 +577,7 @@ colorizeIcons() {
       selectedIcon: "SUM",
       colorASP: 'white',
       colorSave: 'white',
-      colorSum: 'coral',      
+      colorSum: this.state.fgColor,      
     })
   } else if(!this.state.toggleASP && !this.state.toggleSave && !this.state.toggleSum) {
     this.setState({
@@ -680,7 +683,7 @@ dontSaveSpot(e) {
     {/* {this.makeCarMarker()}*/}
 
   </MapView>
-    <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 38, backgroundColor: '#1F2C4B'}}>
+    <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 38, backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 36}}>  <Icon name="ios-alarm" size={28} color={this.state.colorSave}/></Text>  

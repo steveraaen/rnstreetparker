@@ -55,3 +55,20 @@
             </View>)
   } else {return null}
  }
+
+
+
+
+
+         <FlatList 
+          data={this.state.nextArr}
+          keyExtractor={keyExtractor}
+          renderItem={({ item }) => (
+            <View style={{flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
+                <View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
+                <View><Text style={{color: '#F1C137', fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>             
+              </View>
+            </View>
+            )}
+          />  

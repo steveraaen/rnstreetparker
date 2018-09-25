@@ -74,7 +74,7 @@ export default class ModalContent extends Component {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'yellow'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: '#e07a5f'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
@@ -101,17 +101,17 @@ export default class ModalContent extends Component {
       })
 
   /*  console.log(splitCarLoc)*/
-     return( <View>
+     return( <View style={{backgroundColor: this.props.bgColor}}>
             <View >
-                <Text style={{fontSize: 20, color: 'coral', textAlign: 'center'}}>You are parked next to:</Text>  
+                <Text style={{fontSize: 20, color: this.props.fgColor, textAlign: 'center'}}>You are parked next to:</Text>  
             </View> 
-            <View style={{alignItems: 'center', marginTop: 20}}>
-              <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+            <View style={{alignItems: 'center', marginTop: 8}}>
+              <Text style={{fontSize: 22, fontWeight: 'bold', color: '#f2cc8f'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
             </View> 
             <View style={{marginTop: 20, alignItems: 'center'}}>  
-                 <Text style={{fontSize: 16, color: 'coral', textAlign: 'center'}}>Would you like to save this location? </Text>
+                 <Text style={{fontSize: 16, color: this.props.fgColor, textAlign: 'center'}}>Would you like to save this location? </Text>
             </View>
-              <TouchableOpacity>
+     
                 <Button 
                   title="Yes"
                   onPress={(e) => this.props.getTenSigns(this.state.carLoc.data.results[0].geometry)}
@@ -122,8 +122,7 @@ export default class ModalContent extends Component {
                   onPress={(e) => this.props.dontSaveSpot()}
                 >
                 </Button>
-              </TouchableOpacity>
-              <View><Text></Text></View>
+
             </View>)
   } else {return null}
  }
@@ -240,16 +239,16 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: 1,marginLeft: 24, marginRight: 24, justifyContent: 'flex-start', backgroundColor: 'rgba(33, 44, 73, .9)'}}> 
+        <View style={{ flex: .75,marginLeft: 14, marginRight: 14, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
-            <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color="coral"/></Text> 
+            <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>  
           <TouchableOpacity
           onPress={() => this.props.getTenSigns()}>                    
         
           </TouchableOpacity>
-          <View style={{marginTop: 20}}>{this.showCarLoc()}</View>
-           <View style={{height: 100}}>{this.showTenSigns()}</View>
+          <View style={{marginTop: 12}}>{this.showCarLoc()}</View>
+           <View style={{height: 86}}>{this.showTenSigns()}</View>
         </View>
       
       )
