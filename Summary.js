@@ -33,7 +33,10 @@ export default class Summary extends Component {
 				nextArr.push(this.state.aspArray[i])
 			}
 			if(moment(this.state.aspArray[i].date).format('MMM Do, YYYY') === moment(this.state.today).format('MMM Do, YYYY')) {
-				this.setState({todayIsASP: true})
+				this.setState({
+									todayIsASP: true,
+									todayHolidayName: this.state.aspArray[i].holiday
+								})
 			}
 		}
 	/*	console.log(nextArr)*/
@@ -44,7 +47,8 @@ export default class Summary extends Component {
 				if(this.state.todayIsASP) {
 			return  (
 				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: '#e07a5f', textAlign: 'center'}}> ASP IS SUSPENDED TODAY!</Text>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: this.props.fgColor, textAlign: 'center'}}> ASP IS SUSPENDED TODAY for</Text>
+					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>{this.state.todayHolidayName}</Text>
 				</View>
 				)
 		} else { return (
@@ -141,7 +145,7 @@ export default class Summary extends Component {
 				</View>
 				{this.showSignOnSummary()}
 				<View style={{marginBottom: 18}}>
-			<Text style={{textAlign: 'center', color: 'red',  fontSize: 14, fontWeight: 'bold', paddingTop: 14}}>{isHol}</Text>
+			<Text style={{textAlign: 'center', color: this.props.fgColor,  fontSize: 14, fontWeight: 'bold', paddingTop: 14}}>{isHol}</Text>
 				</View>
 				
 			</View>

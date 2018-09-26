@@ -390,8 +390,8 @@ console.log(marker.noonTime)*/
           region: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            latitudeDelta: .01,
-            longitudeDelta: .01,
+            latitudeDelta: .015,
+            longitudeDelta: .015,
           },         
          error: null,
         }, () => {
@@ -611,7 +611,9 @@ openCloseSave(tf) {
     }), () => this.colorizeIcons());
 }
 onRegionChangeComplete(region) {
-  this.setState({ region })
+  this.setState({ region }, () => {
+    this.getSigns(region.longitude, region.latitude)
+  })
 console.log(region)
 }
 dontSaveSpot(e) {
