@@ -74,7 +74,7 @@ export default class ModalContent extends Component {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: '#e07a5f'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
@@ -106,7 +106,7 @@ export default class ModalContent extends Component {
                 <Text style={{fontSize: 20, color: this.props.fgColor, textAlign: 'center'}}>You are parked next to:</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 8}}>
-              <Text style={{fontSize: 22, fontWeight: 'bold', color: '#f2cc8f'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+              <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
             </View> 
             <View style={{marginTop: 20, alignItems: 'center'}}>  
                  <Text style={{fontSize: 16, color: this.props.fgColor, textAlign: 'center'}}>Would you like to save this location? </Text>
@@ -127,7 +127,6 @@ export default class ModalContent extends Component {
   } else {return null}
  }
   parseClosest(a) {
-   /* console.log(a)*/
   this.setState({
     thisSign: a
   }, () => {
@@ -170,13 +169,10 @@ export default class ModalContent extends Component {
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
             isASPHoliday: 'This is not an Alternate Side Parking Holiday'
           }
-
-          daysArr.push(timeLeft)
-        
+          daysArr.push(timeLeft)        
         }
           for(let i = 0; i < aspDays.length; i++) {
-            var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')
-          
+            var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')         
             if(timeLeft.justDay === formDate) {
               timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
             } else {
@@ -239,7 +235,7 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: .75,marginLeft: 14, marginRight: 14, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
+        <View style={{ flex: 1, flexWrap: 'wrap', marginLeft: 14, marginRight: 14, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>  

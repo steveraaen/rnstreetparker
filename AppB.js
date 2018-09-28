@@ -55,8 +55,8 @@ export default class AppB extends Component<Props> {
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
       showKey: true,
       prevLaunched: false,
-      bgColor: '#202F63',
-      fgColor: '#F1C137'
+      bgColor: '#1F2C4B',
+      fgColor: '#FFB20B'
        }
   /*     console.log(aspDays)*/
       this.getSigns = this.getSigns.bind(this);
@@ -82,7 +82,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.hideKey = this.hideKey.bind(this)
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
     this.importASPList = this.importASPList.bind(this)
-
+this.handleCheck = this.handleCheck.bind(this)
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
       this.makeCarMarker = this.makeCarMarker.bind(this) 
@@ -101,6 +101,18 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
          // Error retrieving data
        }
     }*/
+      handleCheck() {
+    this.setState({checked: !this.state.checked}, () => {
+      if(this.state.checked) {
+        console.log('checked')
+        this.setState({prevLaunched: true})
+        AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
+      } else {
+        console.log('unchecked')
+        AsyncStorage.setItem('prevLaunched', JSON.stringify(false))
+      }
+    })
+  }
     importASPList(s,e,h) {
       RNCalendarEvents.saveEvent('ASP Is Suspended Today', {
       startDate: s,
@@ -357,6 +369,11 @@ console.log(marker.noonTime)*/
         }
 
     componentDidMount() { 
+      var {height, width} = Dimensions.get('window');
+      this.setState({
+          height: height, 
+          width:width
+        })
    AppState.addEventListener('change', this._handleAppStateChange);
 
    AsyncStorage.getItem('prevLaunched', (err, value) => {
@@ -383,13 +400,13 @@ console.log(marker.noonTime)*/
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {
         this.setState({
-          uLatitude: position.coords.latitude,
-          uLongitude: position.coords.longitude,
+          uLatitude: 40.676666,//position.coords.latitude,
+          uLongitude: -73.983944,//position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
           region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: 40.676666,//position.coords.latitude,
+            longitude: -73.983944,//position.coords.longitude,
             latitudeDelta: .015,
             longitudeDelta: .015,
           },         
@@ -627,7 +644,7 @@ dontSaveSpot(e) {
 
     if(!this.state.prevLaunched) {
   return(
-    <FirstUse { ...this.state }  ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
+    <FirstUse { ...this.state }  handleCheck={this.handleCheck} ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
 }else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
   console.log(this.state.todayMarkersArray)
@@ -685,16 +702,16 @@ dontSaveSpot(e) {
     {/* {this.makeCarMarker()}*/}
 
   </MapView>
-    <View style={{flex: .125, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', height: 38, backgroundColor: this.state.bgColor}}>
+    <View style={{flex: .15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingBottom: 4,  backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
-          <Text style={{paddingTop: 36}}>  <Icon name="ios-alarm" size={28} color={this.state.colorSave}/></Text>  
+          <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm" size={36} color={this.state.colorSave}/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseASP(true)}>
- <Text style={{paddingTop: 36}}>  <Icon name="ios-calendar" size={28} color={this.state.colorASP}/></Text>            
+ <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar" size={36} color={this.state.colorASP}/></Text>            
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseSummary(true)}>
-          <Text style={{paddingTop: 36}}>  <Icon name="ios-bookmark" size={28} color={this.state.colorSum}/></Text>  
+          <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark" size={36} color={this.state.colorSum}/></Text>  
       </TouchableOpacity> 
 
 
@@ -715,7 +732,12 @@ dontSaveSpot(e) {
   </View>
     );
     } else {
-      return <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} ><ActivityIndicator size="large" color="red"></ActivityIndicator></View>
+      return (<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} >
+        <Image
+          style={{height: this.state.height, width: this.state.width}}
+          source={require('./assets/splash.png')}
+        />
+      </View>)
     }
   }
 }

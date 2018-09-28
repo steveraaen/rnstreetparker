@@ -40,7 +40,7 @@ export default class ColorKey extends Component {
 		})
 		if(this.props.showKey) {
 		return (
-			<View style={{flex: .15, flexDirection: 'row', justifyContent: 'space-around',height: 6, alignItems: 'center', backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
+			<View style={{flex: .125, flexDirection: 'row', marginBottom: 4, justifyContent: 'space-around',height: 6, alignItems: 'center', backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
 				<TouchableOpacity onPress={() => this.props.hideKey(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 				 </TouchableOpacity>

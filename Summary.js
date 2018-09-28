@@ -46,14 +46,14 @@ export default class Summary extends Component {
 
 				if(this.state.todayIsASP) {
 			return  (
-				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: this.props.fgColor, textAlign: 'center'}}> ASP IS SUSPENDED TODAY for</Text>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>{this.state.todayHolidayName}</Text>
+				<View style={{marginBottom: 2, borderWidth: 2, borderRadius: 8, borderColor: '#f15152', padding: 8}}>
+					<Text style={{fontSize: 20,  color: 'cyan', textAlign: 'center'}}> ASP IS SUSPENDED TODAY for</Text>
+					<Text style={{fontSize: 20,  color: 'white', textAlign: 'center'}}>{this.state.todayHolidayName}</Text>
 				</View>
 				)
 		} else { return (
 				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20, fontWeight: 'bold', color: '#f2cc8f', textAlign: 'center'}}> ASP is in effect today</Text>
+					<Text style={{fontSize: 20,  color: '#FFFB00', textAlign: 'center'}}> ASP is in effect today</Text>
 				</View>
 			)}
 	}
@@ -64,11 +64,11 @@ export default class Summary extends Component {
 	}
 	showSignOnSummary() {
 		if(this.props.signText) {
-			var signText = this.props.signText
+			
 
 			return(
 			<View style={{marginLeft: 32, marginRight: 32, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
-			<Text  style={{ textAlign: 'center', color: 'black', fontSize: 16, fontWeight: 'bold'}}>{signText}</Text>
+			<Text  style={{ textAlign: 'center', color: 'black', fontSize: 16, }}>{this.props.signText}</Text>
 			</View>
 			)
 		} else return null
@@ -94,7 +94,7 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{flex: .7, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, justifyContent: 'flex-start'}}>
+			<View style={{flex: 1, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
@@ -110,11 +110,11 @@ export default class Summary extends Component {
 					  }}
 				/>
 				<View style={{marginLeft:12}}>
-					<Text style={{color: this.props.fgColor,  fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{blurbText}</Text>
+					<Text style={{color: this.props.fgColor,  fontSize: 16,  textAlign: 'center'}}>{blurbText}</Text>
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
-						<Text style={{marginTop: 6, marginLeft:24, color: this.props.fgColor, fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{nextHolidayDate}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
 					<View >
 						<Text style={{marginTop: 6,  marginLeft:24, color: this.props.fgColor, fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
@@ -128,24 +128,24 @@ export default class Summary extends Component {
 					/>
 					 
 					<View style={{marginTop: 2}}>
-						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16,  textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
-						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, fontWeight: 'bold'}}>{parkedAddress}</Text>
+						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, }}>{parkedAddress}</Text>
 					</View>
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16, fontWeight: 'bold', textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 
 					<View >
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{goodTill}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
 					</View>
 				</View>
 				</View>
 				{this.showSignOnSummary()}
 				<View style={{marginBottom: 18}}>
-			<Text style={{textAlign: 'center', color: this.props.fgColor,  fontSize: 14, fontWeight: 'bold', paddingTop: 14}}>{isHol}</Text>
+			<Text style={{textAlign: 'center', color: this.props.fgColor,  fontSize: 14,  paddingTop: 14}}>{isHol}</Text>
 				</View>
 				
 			</View>

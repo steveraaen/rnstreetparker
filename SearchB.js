@@ -93,16 +93,16 @@ componentWillMount() {
     })
     return(
 
-    <ButtonGroup
-      onPress={this.updateIndex}
-      selectedIndex={selectedIndex}
-      buttons={buttons}
-      disableSelected={true}
-      selectedButtonStyle={{backgroundColor: this.props.bgColor}}
-      selectedTextStyle={{color: this.props.fgColor, fontWeight: 'bold'}}
-      textStyle={{color: 'white', fontWeight: 'bold'}}
-      containerStyle={{backgroundColor: this.props.bgColor, borderRadius: 12}}
-    />    
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={buttons}
+        disableSelected={true}
+        selectedButtonStyle={{backgroundColor: this.props.bgColor}}
+        selectedTextStyle={{color: this.props.fgColor, fontWeight: 'bold'}}
+        textStyle={{color: 'white', fontWeight: 'bold'}}
+        containerStyle={{backgroundColor: this.props.bgColor, borderRadius: 12}}
+      />    
 
       )
   }
