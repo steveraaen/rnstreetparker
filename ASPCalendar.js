@@ -53,7 +53,7 @@ saveAllASP() {
 		return(
 		
 
-				<View style={{flex: 1, flexWrap: 'wrap', marginLeft: 14, paddingRight: 8, marginRight: 14, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
+				<View style={{flex: 1, flexWrap: 'wrap', marginLeft: 10, paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
 				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 				 </TouchableOpacity>

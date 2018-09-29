@@ -83,6 +83,8 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.dontSaveSpot = this.dontSaveSpot.bind(this)
     this.importASPList = this.importASPList.bind(this)
 this.handleCheck = this.handleCheck.bind(this)
+this.calcDistance = this.calcDistance.bind(this)
+this.deg2rad = this.deg2rad.bind(this)
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
       this.makeCarMarker = this.makeCarMarker.bind(this) 
@@ -101,11 +103,32 @@ this.handleCheck = this.handleCheck.bind(this)
          // Error retrieving data
        }
     }*/
+  deg2rad(deg) {
+    return deg * Math.PI / 180
+  }
+calcDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = this.deg2rad(lat2 - lat1); // this.deg2rad below
+  var dLon = this.deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+
+console.log(d)
+return d
+}
       handleCheck() {
     this.setState({checked: !this.state.checked}, () => {
       if(this.state.checked) {
         console.log('checked')
-        this.setState({prevLaunched: true})
+        this.setState({
+          prevLaunched: true,
+          checked: true
+        })
         AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
       } else {
         console.log('unchecked')
@@ -237,7 +260,6 @@ console.log(this.state.parkingObject)
         })
         })
       }
-
     
     getSigns(lo, la) { 
 
@@ -369,6 +391,11 @@ console.log(marker.noonTime)*/
         }
 
     componentDidMount() { 
+      this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)
+        axios.get('https://ipinfo.io/geo')
+        .then((doc) => {
+          this.setState({loc: doc})
+        })
       var {height, width} = Dimensions.get('window');
       this.setState({
           height: height, 
@@ -671,7 +698,7 @@ dontSaveSpot(e) {
          animateToViewingAngle={true} 
          showsCompass = {true}
          showScale = {true}
-      
+         
         initialRegion={this.state.region}
         onRegionChangeComplete={this.onRegionChangeComplete}
 
@@ -735,7 +762,7 @@ dontSaveSpot(e) {
       return (<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} >
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/splash.png')}
+          source={require('./assets/sp.png')}
         />
       </View>)
     }
@@ -761,6 +788,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+
   },
   slider: {
     height: 20,

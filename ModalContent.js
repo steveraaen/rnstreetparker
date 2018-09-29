@@ -176,7 +176,7 @@ export default class ModalContent extends Component {
             if(timeLeft.justDay === formDate) {
               timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
             } else {
-              timeLeft.isASPHoliday = 'ASP is in effect'
+              timeLeft.isASPHoliday = 'ASP rules are in effect'
             }
             console.log(timeLeft)
           }
@@ -235,7 +235,7 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: 1, flexWrap: 'wrap', marginLeft: 14, marginRight: 14, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
+        <View style={{ flex: 1, flexWrap: 'wrap', marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>  

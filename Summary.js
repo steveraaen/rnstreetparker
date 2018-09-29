@@ -46,14 +46,14 @@ export default class Summary extends Component {
 
 				if(this.state.todayIsASP) {
 			return  (
-				<View style={{marginBottom: 2, borderWidth: 2, borderRadius: 8, borderColor: '#f15152', padding: 8}}>
+				<View >
 					<Text style={{fontSize: 20,  color: 'cyan', textAlign: 'center'}}> ASP IS SUSPENDED TODAY for</Text>
 					<Text style={{fontSize: 20,  color: 'white', textAlign: 'center'}}>{this.state.todayHolidayName}</Text>
 				</View>
 				)
 		} else { return (
 				<View style={{marginBottom: 2}}>
-					<Text style={{fontSize: 20,  color: '#FFFB00', textAlign: 'center'}}> ASP is in effect today</Text>
+					<Text style={{fontSize: 20,  color: '#FFFB00', textAlign: 'center'}}> ASP rules are in effect today</Text>
 				</View>
 			)}
 	}
@@ -94,7 +94,7 @@ export default class Summary extends Component {
 
 		if(this.props.toggleSum) {
 		return(
-			<View style={{flex: 1, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, justifyContent: 'flex-start'}}>
+			<View style={{flex: 1, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
@@ -110,14 +110,14 @@ export default class Summary extends Component {
 					  }}
 				/>
 				<View style={{marginLeft:12}}>
-					<Text style={{color: this.props.fgColor,  fontSize: 16,  textAlign: 'center'}}>{blurbText}</Text>
+					<Text style={{color: this.props.fgColor,  fontSize: 20,  textAlign: 'center'}}>{blurbText}</Text>
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
-						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{nextHolidayDate}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
 					<View >
-						<Text style={{marginTop: 6,  marginLeft:24, color: this.props.fgColor, fontSize: 16, textAlign: 'center'}}>{nextHoliday}</Text>
+						<Text style={{marginTop: 6,  marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHoliday}</Text>
 					</View>
 					<View
 					  style={{
@@ -128,14 +128,14 @@ export default class Summary extends Component {
 					/>
 					 
 					<View style={{marginTop: 2}}>
-						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16,  textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
-						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 18, }}>{parkedAddress}</Text>
+						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 22, }}>{parkedAddress}</Text>
 					</View>
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 16,  textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 
 					<View >
@@ -145,7 +145,7 @@ export default class Summary extends Component {
 				</View>
 				{this.showSignOnSummary()}
 				<View style={{marginBottom: 18}}>
-			<Text style={{textAlign: 'center', color: this.props.fgColor,  fontSize: 14,  paddingTop: 14}}>{isHol}</Text>
+			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 14}}>{isHol}</Text>
 				</View>
 				
 			</View>
