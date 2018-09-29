@@ -118,7 +118,7 @@ calcDistance(lat1, lon1, lat2, lon2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
 
-console.log(d)
+this.setState({dist: d})
 return d
 }
       handleCheck() {
@@ -427,18 +427,19 @@ console.log(marker.noonTime)*/
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {
         this.setState({
-          uLatitude: 40.676666,//position.coords.latitude,
-          uLongitude: -73.983944,//position.coords.longitude,
+          uLatitude: position.coords.latitude,
+          uLongitude: position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
           region: {
-            latitude: 40.676666,//position.coords.latitude,
-            longitude: -73.983944,//position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
             latitudeDelta: .015,
             longitudeDelta: .015,
           },         
          error: null,
         }, () => {
+          this.calcDistance(40.741328, -73.887375, this.state.uLatitude, this.state.uLongitude)
           this.getSigns(parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6))
           this.getMeters(this.state.uLatitude, this.state.uLongitude)   
       
@@ -673,7 +674,12 @@ dontSaveSpot(e) {
   return(
     <FirstUse { ...this.state }  handleCheck={this.handleCheck} ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
-}else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
+} else if(this.state.dist > 20) {
+  return <View><Text style={{fontSize: 20, color: 'blue'}}>Not in NYC</Text></View>
+}
+
+
+else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
   console.log(this.state.todayMarkersArray)
     return (
 
