@@ -32,6 +32,7 @@ import FirstUse from './FirstUse.js'
 import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
 import ColorKey from './ColorKey.js'
+import NotInNYC from './NotInNYC.js'
 type Props = {};
 
 export default class AppB extends Component<Props> {
@@ -675,7 +676,7 @@ dontSaveSpot(e) {
     <FirstUse { ...this.state }  handleCheck={this.handleCheck} ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
 } else if(this.state.dist > 20) {
-  return <View><Text style={{fontSize: 20, color: 'blue'}}>Not in NYC</Text></View>
+  return <NotInNYC { ...this.state }/>
 }
 
 
