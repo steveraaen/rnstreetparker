@@ -8,6 +8,7 @@ import {
   AppState,
   AsyncStorage,
   Dimensions,
+  FlatList,
   Image,
   Picker,
   Platform,
@@ -43,6 +44,7 @@ export default class AppB extends Component<Props> {
       toggleASP: false,
       toggleSum: false,
       toggleSave: false,
+      toggleSearch: false,
       colorASP: 'white',
       colorSum: 'white',
       colorSave: 'white',
@@ -86,6 +88,10 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
 this.handleCheck = this.handleCheck.bind(this)
 this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
+this.getPlaces = this.getPlaces.bind(this)
+this.hideSearch = this.hideSearch.bind(this)
+this.autoC = this.autoC.bind(this)
+this.handlePlacePress = this.handlePlacePress.bind(this)
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
       this.makeCarMarker = this.makeCarMarker.bind(this) 
@@ -153,6 +159,11 @@ return d
     hideKey(tf) {
       this.setState({
         showKey: tf
+      })
+    }
+    hideSearch(tf) {
+      this.setState({
+        toggleSearch: tf
       })
     }
     openModal() {
@@ -381,6 +392,17 @@ console.log(marker.noonTime)*/
         })
       })
 }
+    getPlaces(place) {
+     return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=2&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
+        }).then((resp) => {
+          this.setState({
+            autoResp: resp.data.predictions
+          })
+          console.log(resp)
+        }).catch(function(error) {
+       throw error
+  }); 
+}
     setCarLoc(la, ln, lo) {
       this.setState({
         carMarkLocation: {
@@ -397,7 +419,7 @@ console.log(marker.noonTime)*/
         .then((doc) => {
           this.setState({loc: doc})
         })
-      var {height, width} = Dimensions.get('window');
+      let {height, width} = Dimensions.get('window');
       this.setState({
           height: height, 
           width:width
@@ -436,7 +458,7 @@ console.log(marker.noonTime)*/
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: .015,
-            longitudeDelta: .015,
+            longitudeDelta: .015
           },         
          error: null,
         }, () => {
@@ -624,13 +646,24 @@ colorizeIcons() {
       colorASP: 'white',
       colorSave: 'white',
       colorSum: this.state.fgColor,      
+      colorSearch: 'white',      
     })
-  } else if(!this.state.toggleASP && !this.state.toggleSave && !this.state.toggleSum) {
+  } 
+  else if(this.state.toggleSearch) {
+    this.setState({
+      selectedIcon: "SRC",
+      colorASP: 'white',
+      colorSave: 'white',
+      colorSum: 'white',      
+      colorSearch: this.state.fgColor,      
+    })
+  }else if(!this.state.toggleASP && !this.state.toggleSave && !this.state.toggleSum && !this.state.toggleSearch) {
     this.setState({
       selectedIcon: null,
       colorASP: 'white',
       colorSave: 'white',
       colorSum: 'white',      
+      colorSearch: 'white',      
     })    
   }
 }
@@ -638,14 +671,24 @@ openCloseSummary(tf) {
     this.setState(prevState => ({
       toggleSum: !prevState.toggleSum,
       toggleASP: false,
-      toggleSave: false
+      toggleSave: false,
+      toggleSearch: false
+    }), () => this.colorizeIcons());
+}
+openCloseSearch(tf) {
+    this.setState(prevState => ({
+      toggleSearch: !prevState.toggleSearch,
+      toggleSum: false,
+      toggleSave: false,
+      toggleASP: false
     }), () => this.colorizeIcons());
 }
 openCloseASP(tf) {
     this.setState(prevState => ({
       toggleASP: !prevState.toggleASP,
       toggleSum: false,
-      toggleSave: false
+      toggleSave: false,
+      toggleSearch: false
     }), () => this.colorizeIcons());
 }
 openCloseSave(tf) {  
@@ -653,6 +696,7 @@ openCloseSave(tf) {
       toggleSave: !prevState.toggleSave, 
       toggleASP: false,
       toggleSum: false, 
+      toggleSearch: false,
       nearestThree: null
     }), () => this.colorizeIcons());
 }
@@ -669,19 +713,63 @@ dontSaveSpot(e) {
     toggleSave: false
   }, ()=> this.colorizeIcons())
 }
+  autoC(inp) {
+    if(this.state.autoResp) {
+    return (
+      <View>
+        <FlatList 
+          scrollEventThrottle={1}       
+          data={inp} 
+          renderItem={({item}) =>       
+            <TouchableOpacity 
+              style={{height: 30}}
+              onPress={() => this.handlePlacePress(item.place_id)}      
+              >
+                <View style={{ height: 40}} >
+                   <Text numberOfLines={1}style={{fontSize: 16,fontWeight: 'bold', color: 'white'}} >{item.description.split(",")[0] + "," + item.description.split(",")[1] +  "," + item.description.split(",")[2]  }</Text>
+                </View>
+            </TouchableOpacity>}
+          keyExtractor={item => item.id}
+        />
+          <View style={{marginTop: 20}}> 
+            <Text style={{color: 'yellow', textAlign: 'center', fontSize: 14, fontWeight: 'bold', paddingTop: 8}}>Tap on a place to see the nearest street parking spaces and ASP rules.</Text>
+          </View>
+        </View>
+      )
+    }
+  }
+    handlePlacePress(id) {      
+      return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid='+id+'&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
+    /*  return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {*/
+      }).then((respon) => {
+        this.setState({
+          details: respon,
+          uLatitude: respon.data.result.geometry.location.lat,
+          uLongitude: respon.data.result.geometry.location.lng,
+          address: respon.data.result.formatted_address.split(",")[0] + ", " + respon.data.result.formatted_address.split(",")[1],
+          uPlaceId: respon.data.result.place_id,
+          iconColor: 'white',
+          modalVisible: false,
+          region: {
+            latitude: respon.data.result.geometry.location.lat,
+            longitude: respon.data.result.geometry.location.lng,
+            latitudeDelta: .015,
+            longitudeDelta: .015
+          }
+        }, () => {
+            this.getSigns(this.state.uLongitude, this.state.uLatitude)
+        })
+      })     
+    }
   render() {
 
     if(!this.state.prevLaunched) {
   return(
     <FirstUse { ...this.state }  handleCheck={this.handleCheck} ackPrevLaunched={this.ackPrevLaunched} uLnglat={this.state.uLnglat}/>
     )
-} else if(this.state.dist > 20) {
-  return <NotInNYC { ...this.state }/>
-}
-
-
+} 
 else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArray && this.state.selDay && this.state.meters) {
-  console.log(this.state.todayMarkersArray)
+
     return (
 
     <View style={styles.container}>            
@@ -744,17 +832,17 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       <TouchableOpacity onPress={() => this.openCloseASP(true)}>
  <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar" size={36} color={this.state.colorASP}/></Text>            
       </TouchableOpacity> 
+       <TouchableOpacity onPress={() => this.openCloseSearch(true)}>
+ <Text style={{paddingTop: 24}}>  <Icon name="ios-search" size={36} color={this.state.colorSearch}/></Text>            
+      </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseSummary(true)}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark" size={36} color={this.state.colorSum}/></Text>  
-      </TouchableOpacity> 
-
-
-   
+      </TouchableOpacity>    
     </View>
     <View>
       <SearchB { ...this.state } makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
-  
+ 
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
    
   
@@ -763,6 +851,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  
     <ColorKey { ...this.state } hideKey={this.hideKey}/>
+    <NotInNYC { ...this.state} hideSearch={this.hideSearch} getPlaces={this.getPlaces} autoC={this.autoC} handlePlacePress={this.handlePlacePress}/>
   </View>
     );
     } else {
@@ -775,7 +864,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     }
   }
 }
-
+let {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,   
@@ -787,6 +876,7 @@ const styles = StyleSheet.create({
 
  /*   justifyContent: 'flex-end'*/
   },
+
   daySwipeText: {
 
     color: 'white',

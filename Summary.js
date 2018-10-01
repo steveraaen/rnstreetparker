@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import gkey from './keys.js'
 import aspDays from './asp.js'
 
-
 export default class Summary extends Component {
 	constructor(props) {
 		super(props)
