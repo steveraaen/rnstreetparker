@@ -40,6 +40,7 @@ export default class AppB extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
+      appState: AppState.currentState,
       selectedIcon: null,
       toggleASP: false,
       toggleSum: false,
@@ -53,7 +54,6 @@ export default class AppB extends Component<Props> {
       uLongitude: null,
       fullDay: moment().format('MMM Do YYYY'),
       slideTime: moment(),
-      appState: AppState.currentState,
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
       showKey: true,
@@ -90,8 +90,7 @@ this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
 this.getPlaces = this.getPlaces.bind(this)
 this.hideSearch = this.hideSearch.bind(this)
-this.autoC = this.autoC.bind(this)
-this.handlePlacePress = this.handlePlacePress.bind(this)
+
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
       this.makeCarMarker = this.makeCarMarker.bind(this) 
@@ -181,7 +180,21 @@ return d
     closeModal() {
       this.setState({modalVisible:false});
     }
-  _handleAppStateChange = (nextAppState) => {
+      _handleAppStateChange = (nextAppState) => {
+        console.log(nextAppState)
+        console.log(this.appState)
+        console.log(AppState)
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
+      this.setState({appState: AppState.currentState});
+    } 
+    else if (this.state.appState.match(/active|background/) && nextAppState === 'inactive') {
+      console.log('App has gone to background!')
+       this.setState({appState: AppState.currentState});
+    } 
+    
+  }
+/*  _handleAppStateChange = (nextAppState) => {
 
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       
@@ -192,19 +205,19 @@ return d
     }  
 console.log(this.state.parkingObject)
     if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
-/*      console.log(this.state.parkingObject)
+      console.log(this.state.parkingObject)
       AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.parkingObject), () => {
         AsyncStorage.getItem('parkingObject', (err, value) => {
           this.setState({parkingObject: JSON.parse(value)})
         })
-      })*/
-     
+      })
+     console.log(this.state.appState)
       
     }
     this.setState({
       appState: nextAppState,
     });
-  }
+  }*/
   getNewDay(day) {
     if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
@@ -274,7 +287,6 @@ console.log(this.state.parkingObject)
       }
     
     getSigns(lo, la) { 
-
           /*  axios.get('http:127.0.0.1:5001/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
@@ -309,45 +321,19 @@ console.log(this.state.parkingObject)
       var satArray = []
       var sunArray = []
       
-          if(Array.isArray(endTime)){
-                marker.dayow = dayow
-                marker.rawEnd = endTime[1]
-                marker.endTime = moment(endTime[1], 'hh:mma')
-                marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
-                marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
-                    
-  
-/*console.log(marker.endTime)
-console.log(marker.noonTime)*/
-/*console.log(marker.endTime.isBefore(marker.noonTime));*/
-       /* if(marker.dif > 0 && marker.dif < 2) {*/
-        if(marker.endTime.isBefore(marker.noonTime)) {
-          marker.dotImage = require('./assets/blueDot12pt.png')
-        } /*else if(marker.dif > 2 && marker.dif < 4) {
-          marker.color = 'rgba(3,189,244,' + .8 + ')'
-        } else if(marker.dif > 4 && marker.dif < 6) {
-          marker.color = 'rgba(3,189,244,' + .7 + ')'
-        }  else if(marker.dif > 6 && marker.dif  < 8) {
-          marker.color = 'rgba(3,189,244,' + .6 + ')'
-        }  else if(marker.dif > 8 && marker.dif < 10) {
-          marker.color = 'rgba(3,189,244,' + .5 + ')'
-        }  else if(marker.dif > 10) {
-          marker.color = 'rgba(3,189,244,' + .4 + ')'
-        } */ 
-          else if(marker.endTime.isAfter(marker.noonTime)){
-        /*  else if(marker.dif  > -2 && marker.dif < 0){*/
+      if(Array.isArray(endTime)){
+            marker.dayow = dayow
+            marker.rawEnd = endTime[1]
+            marker.endTime = moment(endTime[1], 'hh:mma')
+            marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
+            marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
+
+      if(marker.endTime.isBefore(marker.noonTime)) {
+        marker.dotImage = require('./assets/blueDot12pt.png')
+        }
+          else if(marker.endTime.isAfter(marker.noonTime)){     
           marker.dotImage = require('./assets/orangeDot12pt.png')
-        } /*else if(marker.dif  > -4 && marker.dif < -2){
-          marker.color = 'rgba(252, 204, 10,'+ .8 + ')'
-        } else if(marker.dif  > -6 && marker.dif < -4){
-          marker.color = 'rgba(252, 204, 10,'+ .7 + ')'
-        } else if(marker.dif  > -8 && marker.dif  < -6){
-          marker.color = 'rgba(252, 204, 10,'+ .6 + ')'
-        } else if(marker.dif  > -10 && marker.dif  < -8){
-          marker.color = 'rgba(252, 204, 10,'+ .5 + ')'
-        } else if(marker.dif  < -10){
-          marker.color = 'rgba(252, 204, 10,'+ .4 + ')'
-        }*/
+        }
           markersArray.push(marker)          
         }
       } 
@@ -393,7 +379,7 @@ console.log(marker.noonTime)*/
       })
 }
     getPlaces(place) {
-     return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=2&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
+     return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=3&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
         }).then((resp) => {
           this.setState({
             autoResp: resp.data.predictions
@@ -414,6 +400,7 @@ console.log(marker.noonTime)*/
         }
 
     componentDidMount() { 
+      this.setState({appState: AppState.currentState})
       this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)
         axios.get('https://ipinfo.io/geo')
         .then((doc) => {
@@ -493,6 +480,7 @@ console.log(marker.noonTime)*/
 
     }
     componentWillUnmount() {
+      AppState.removeEventListener('change', this._handleAppStateChange);
       navigator.geolocation.clearWatch(this.watchID);
     }
 
@@ -702,7 +690,7 @@ openCloseSave(tf) {
 }
 onRegionChangeComplete(region) {
   this.setState({ region }, () => {
-    this.getSigns(region.longitude, region.latitude)
+    this.getSigns(this.state.region.longitude, this.state.region.latitude)
   })
 console.log(region)
 }
@@ -713,54 +701,6 @@ dontSaveSpot(e) {
     toggleSave: false
   }, ()=> this.colorizeIcons())
 }
-  autoC(inp) {
-    if(this.state.autoResp) {
-    return (
-      <View>
-        <FlatList 
-          scrollEventThrottle={1}       
-          data={inp} 
-          renderItem={({item}) =>       
-            <TouchableOpacity 
-              style={{height: 30}}
-              onPress={() => this.handlePlacePress(item.place_id)}      
-              >
-                <View style={{ height: 40}} >
-                   <Text numberOfLines={1}style={{fontSize: 16,fontWeight: 'bold', color: 'white'}} >{item.description.split(",")[0] + "," + item.description.split(",")[1] +  "," + item.description.split(",")[2]  }</Text>
-                </View>
-            </TouchableOpacity>}
-          keyExtractor={item => item.id}
-        />
-          <View style={{marginTop: 20}}> 
-            <Text style={{color: 'yellow', textAlign: 'center', fontSize: 14, fontWeight: 'bold', paddingTop: 8}}>Tap on a place to see the nearest street parking spaces and ASP rules.</Text>
-          </View>
-        </View>
-      )
-    }
-  }
-    handlePlacePress(id) {      
-      return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid='+id+'&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
-    /*  return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {*/
-      }).then((respon) => {
-        this.setState({
-          details: respon,
-          uLatitude: respon.data.result.geometry.location.lat,
-          uLongitude: respon.data.result.geometry.location.lng,
-          address: respon.data.result.formatted_address.split(",")[0] + ", " + respon.data.result.formatted_address.split(",")[1],
-          uPlaceId: respon.data.result.place_id,
-          iconColor: 'white',
-          modalVisible: false,
-          region: {
-            latitude: respon.data.result.geometry.location.lat,
-            longitude: respon.data.result.geometry.location.lng,
-            latitudeDelta: .015,
-            longitudeDelta: .015
-          }
-        }, () => {
-            this.getSigns(this.state.uLongitude, this.state.uLatitude)
-        })
-      })     
-    }
   render() {
 
     if(!this.state.prevLaunched) {
@@ -840,18 +780,18 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       </TouchableOpacity>    
     </View>
     <View>
-      <SearchB { ...this.state } makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
+      <SearchB initDay={this.state.initDay} selDay={this.state.selDay} fgColor={this.state.fgColor} bgColor={this.state.bgColor} makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
  
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
    
   
-    <ASPCalendar { ...this.state } openCloseASP={this.openCloseASP} importASPList={this.importASPList}/>
+    <ASPCalendar fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList}/>
       
-    <ModalContent  {...this.state} openCloseSave={this.openCloseSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
+    <ModalContent  fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  
-    <ColorKey { ...this.state } hideKey={this.hideKey}/>
-    <NotInNYC { ...this.state} hideSearch={this.hideSearch} getPlaces={this.getPlaces} autoC={this.autoC} handlePlacePress={this.handlePlacePress}/>
+    <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
+    <NotInNYC { ...this.state} hideSearch={this.hideSearch} getPlaces={this.getPlaces}/>
   </View>
     );
     } else {
