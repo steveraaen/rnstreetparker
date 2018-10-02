@@ -10,16 +10,28 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import axios from 'axios'
 export default class NotInNYC extends Component {
     constructor(props) {
     super(props);
     this.state = { text: null };
     this.setText = this.setText.bind(this)
+    this.getPlaces = this.getPlaces.bind(this)
   }
 setText(keyStrokes) {
   this.setState({input: keyStrokes})
 }
+    getPlaces(place) {
+     return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=3&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
+        }).then((resp) => {
+          this.setState({
+            autoResp: resp.data.predictions
+          })
+          console.log(resp)
+        }).catch(function(error) {
+       throw error
+    }); 
+  }
   render() {
     styles= StyleSheet.create({
       autoPlaces: {
@@ -38,8 +50,15 @@ setText(keyStrokes) {
          </TouchableOpacity> 
       </View>     
         <Text style={{color: 'yellow', fontSize: 22, textAlign: 'center'}}>Enter a place in New York City</Text>
-
+               <TextInput  
+                  placeHolder="Madison Square Garden "
+                  autoCorrect={false}
+                  value={this.state.input}
+                  style={{height: 30, paddingLeft: 20, borderColor: 'gray', borderWidth: 1, width: 220, backgroundColor: 'white'}}          
+                  onChangeText={(text) => this.setState({input: text}, (text) => {this.getPlaces(this.state.input)})}                 
+                /> 
       </View>
+      
       )
   } else return null
   }

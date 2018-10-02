@@ -88,7 +88,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
 this.handleCheck = this.handleCheck.bind(this)
 this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
-this.getPlaces = this.getPlaces.bind(this)
+/*this.getPlaces = this.getPlaces.bind(this)*/
 this.hideSearch = this.hideSearch.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
@@ -378,7 +378,7 @@ console.log(this.state.parkingObject)
         })
       })
 }
-    getPlaces(place) {
+/*    getPlaces(place) {
      return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=3&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
         }).then((resp) => {
           this.setState({
@@ -388,7 +388,7 @@ console.log(this.state.parkingObject)
         }).catch(function(error) {
        throw error
   }); 
-}
+}*/
     setCarLoc(la, ln, lo) {
       this.setState({
         carMarkLocation: {
