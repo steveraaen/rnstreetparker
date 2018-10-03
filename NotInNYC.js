@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import {
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +18,7 @@ export default class NotInNYC extends Component {
     this.state = { text: null };
     this.setText = this.setText.bind(this)
     this.getPlaces = this.getPlaces.bind(this)
+    this.autoC = this.autoC.bind(this)
   }
 setText(keyStrokes) {
   this.setState({input: keyStrokes})
@@ -31,6 +33,31 @@ setText(keyStrokes) {
         }).catch(function(error) {
        throw error
     }); 
+  }
+  autoC(inp) {
+    if(this.state.autoResp) {
+    return (
+      <View>
+        <FlatList 
+          scrollEventThrottle={1}       
+          data={inp} 
+          renderItem={({item}) =>       
+            <TouchableOpacity 
+              style={{height: 30}}
+              onPress={() => console.log('place pressed')}      
+              >
+                <View style={{ height: 40}} >
+                   <Text numberOfLines={1}style={{fontSize: 16,fontWeight: 'bold', color: 'white'}} >{item.description.split(",")[0] + "," + item.description.split(",")[1] +  "," + item.description.split(",")[2]  }</Text>
+                </View>
+            </TouchableOpacity>}
+          keyExtractor={item => item.id}
+        />
+
+        </View>
+        
+
+      )
+    }
   }
   render() {
     styles= StyleSheet.create({
@@ -48,7 +75,8 @@ setText(keyStrokes) {
         <TouchableOpacity onPress={() => this.props.hideSearch(false)}>
           <Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
          </TouchableOpacity> 
-      </View>     
+      </View>  
+      <View>   
         <Text style={{color: 'yellow', fontSize: 22, textAlign: 'center'}}>Enter a place in New York City</Text>
                <TextInput  
                   placeHolder="Madison Square Garden "
@@ -58,7 +86,9 @@ setText(keyStrokes) {
                   onChangeText={(text) => this.setState({input: text}, (text) => {this.getPlaces(this.state.input)})}                 
                 /> 
       </View>
-      
+<View style={styles.autoPlaces}>{this.autoC(this.state.autoResp)}</View>
+
+      </View>
       )
   } else return null
   }
