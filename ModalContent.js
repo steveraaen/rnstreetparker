@@ -7,6 +7,7 @@ import {
   Button,
   Dimensions,
   FlatList,
+  Image,
   Modal,
   Picker,
   Slider,
@@ -78,7 +79,11 @@ export default class ModalContent extends Component {
                <FlatList 
                   data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}><View style={{backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}><Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text></View></TouchableOpacity>}
+                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
+                  <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
+                    <Image source={require('./assets/p20x144-1.png')} style={{height: 20, width: 20, marginRight: 4}}/>
+                    <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
+                  </View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
                     />
                 </View>
