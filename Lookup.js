@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import {
   FlatList,
   Picker,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -23,49 +24,78 @@ export default class Lookup extends Component {
       neighborhoods: neighborhoods
        }
     this._onItemPress = this._onItemPress.bind(this)
+    this.getHoodsFromBoro = this.getHoodsFromBoro.bind(this)
   }
-  getHoodsFromBoro() {
-    var hoodsInBoro = this.state.neighborhoods.filter((boro, idx) => boro.borough.includes(this.state.curBoro))
+  getHoodsFromBoro(br) {
+    var hoodsInBoro = this.state.neighborhoods.filter((boro, idx) => boro.borough.includes(br))
     this.setState({
       curHoods: hoodsInBoro
     })
   }
   _onItemPress(sh) {
+    console.log(sh)
     this.setState({
       selHoodObj: sh
 
-    })
+    }, () => {this.props.getNewMapLoc(this.state.selHoodObj.lat, this.state.selHoodObj.lng)})
   }
   render() {
+    const styles = StyleSheet.create({
+      boroText: {
+        marginLeft:8,
+        marginRight:8
+      },
+      hoodText: {
+        fontSize: 20, 
+        color: 'white', 
+        textAlign: 'center'
+      }
+    })
+    if(this.props.toggleSearch) {
     return (
-    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'space-around', color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
-      <View style={{flex: .5}}>    
-        <Picker
-          itemStyle={{color: this.props.fgColor}}
-          selectedValue={this.state.selHood}
-          style={{color: this.props.fgColor }}
-          onValueChange={(itemValue, itemIndex) => this.setState({curBoro: itemValue}, () => this.getHoodsFromBoro(this.state.curBoro))}>
-          <Picker.Item label="Brooklyn" value="Brooklyn" />
-          <Picker.Item label="Bronx" value="Bronx" />
-          <Picker.Item label="Manhattan" value="Manhattan" />
-          <Picker.Item label="Queens" value="Queens" />
-          <Picker.Item label="Staten Island" value="Staten Island"/>
-        </Picker> 
+    <View style={{flex: 1, flexWrap: 'wrap', justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
+      <View style={{flex: .11,justifyContent: 'center', marginTop: 8 }}>    
+        <ScrollView
+          horizontal={true}
+          >
+          <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Brooklyn')}>
+            <View style={styles.boroText}>
+              <Text style={{fontSize: 20, color: this.props.fgColor }}>Brooklyn</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Bronx')}>
+            <View style={styles.boroText}>
+              <Text style={{fontSize: 20, color: this.props.fgColor }}>Bronx</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Manhattan')}>
+            <View style={styles.boroText}>
+              <Text style={{fontSize: 20, color: this.props.fgColor }}>Manhattan</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Queens')}>
+            <View style={styles.boroText}>
+              <Text style={{fontSize: 20, color: this.props.fgColor }}>Queens</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView> 
       </View>
-      <View style={{flex: .5, justifyContent: 'center', alignItems: 'space-around'}}>    
-<FlatList
-  data={this.state.curHoods}
-  renderItem={({item}) => (
-    <TouchableHighlight
-      onPress={() => this._onItemPress(item)}>
-      <View style={{backgroundColor: this.props.bgColor}}>
-        <Text style={{color: 'white', textAlign: 'center'}}>{item.name}</Text>
-      </View>
-    </TouchableHighlight>    
-  )}
-/>
+      <View style={{flex: .9, marginTop: 6, marginBottom: 24}}>    
+        <FlatList
+          data={this.state.curHoods}
+          contentContainerStyle={{justifyContent: 'flex-start'}}
+          renderItem={({item}) => (
+            <TouchableHighlight
+              onPress={() => this._onItemPress(item)}>
+              <View style={{backgroundColor: this.props.bgColor}}>
+                <Text style={styles.hoodText}>{item.name}</Text>
+              </View>
+            </TouchableHighlight>    
+          )}
+        />
      </View> 
     </View>
     )
+  } else return null
   }
 }

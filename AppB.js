@@ -90,7 +90,6 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
 this.handleCheck = this.handleCheck.bind(this)
 this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
-/*this.getPlaces = this.getPlaces.bind(this)*/
 this.hideSearch = this.hideSearch.bind(this)
 this.getNewMapLoc = this.getNewMapLoc.bind(this)
 
@@ -382,16 +381,15 @@ console.log(this.state.parkingObject)
       })
 }
     getNewMapLoc(lo, la) {
-      console.log('gnml run')
-      console.log(lo, la)
+      console.log('gnml')
       this.setState({
         region: {
           latitude: lo,
           longitude: la,
-          latitudeDelta: .015,         
-          longitudeDelta: .015
+          latitudeDelta: .15,
+          longitudeDelta: .15,
         }
-      })
+      }, ()=> {this.hideSearch()})
     }
     setCarLoc(la, ln, lo) {
       this.setState({
@@ -693,9 +691,9 @@ openCloseSave(tf) {
     }), () => this.colorizeIcons());
 }
 onRegionChangeComplete(region) {
-  this.setState({ region }, () => {
+  
     this.getSigns(this.state.region.longitude, this.state.region.latitude)
-  })
+
 console.log(region)
 }
 dontSaveSpot(e) {
@@ -732,8 +730,9 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         style={styles.map}
         showsUserLocation={true}
         followsUserLocation={true}
-        initialRegion={this.state.region}
-        onRegionChangeComplete={this.onRegionChangeComplete}
+        region={this.state.region}
+        
+        
 
         >
 
@@ -790,7 +789,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
  
     <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
 
-    <Lookup fgColor={this.state.fgColor} bgColor={this.state.bgColor} />
+    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch}/>
   </View>
     );
     } else {
