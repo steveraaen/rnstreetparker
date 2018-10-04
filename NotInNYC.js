@@ -12,13 +12,19 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
+import neighborhoods from './neighborhoods.js'
 export default class NotInNYC extends Component {
     constructor(props) {
     super(props);
-    this.state = { text: null };
+    this.state = { 
+      text: null,
+      neighborhoods: neighborhoods
+       }
+       
     this.setText = this.setText.bind(this)
     this.getPlaces = this.getPlaces.bind(this)
     this.autoC = this.autoC.bind(this)
+    this.handlePlacePress = this.handlePlacePress.bind(this)
   }
 setText(keyStrokes) {
   this.setState({input: keyStrokes})
@@ -34,6 +40,25 @@ setText(keyStrokes) {
        throw error
     }); 
   }
+    handlePlacePress(id) { 
+    console.log()     
+      return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid='+id+'&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
+    /*  return axios.get('https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {*/
+      }).then((respon) => {
+        console.log(respon)
+        this.setState({
+          details: respon,
+          uLatitude: respon.data.result.geometry.location.lat,
+          uLongitude: respon.data.result.geometry.location.lng,
+          address: respon.data.result.formatted_address.split(",")[0] + ", " + respon.data.result.formatted_address.split(",")[1],
+          uPlaceId: respon.data.result.place_id,
+          iconColor: 'white',
+          modalVisible: false,
+
+        }, () => this.props.getNewMapLoc(this.state.uLongitude, this.state.uLatitude))
+      })
+
+    }
   autoC(inp) {
     if(this.state.autoResp) {
     return (
@@ -44,7 +69,7 @@ setText(keyStrokes) {
           renderItem={({item}) =>       
             <TouchableOpacity 
               style={{height: 30}}
-              onPress={() => console.log('place pressed')}      
+              onPress={() => this.handlePlacePress(item.place_id)}      
               >
                 <View style={{ height: 40}} >
                    <Text numberOfLines={1}style={{fontSize: 16,fontWeight: 'bold', color: 'white'}} >{item.description.split(",")[0] + "," + item.description.split(",")[1] +  "," + item.description.split(",")[2]  }</Text>

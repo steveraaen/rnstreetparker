@@ -1,3 +1,8 @@
+        
+    <NotInNYC { ...this.state} hideSearch={this.hideSearch} getPlaces={this.getPlaces} getNewMapLoc={this.getNewMapLoc}/>
+
+
+
           selectedValue={"dow"}
           onValueChange={(itemValue, itemPosition) => this.setState({todayMarkersArray: itemValue[0], selDay: itemValue[1]})}
           itemStyle={styles.daySwipeText}>

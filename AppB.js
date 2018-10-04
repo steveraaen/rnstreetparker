@@ -1,5 +1,6 @@
 /*rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json*/
 // org.reactjs.native.example.streetparker
+/*ColorKey render and options in scratch.js*/
 console.disableYellowBox = true;
 import React, { Component } from 'react';
 import {
@@ -33,7 +34,8 @@ import FirstUse from './FirstUse.js'
 import Summary from './Summary.js'
 import ASPCalendar from './ASPCalendar.js'
 import ColorKey from './ColorKey.js'
-import NotInNYC from './NotInNYC.js'
+import Lookup from './Lookup.js'
+/*import NotInNYC from './NotInNYC.js'*/
 type Props = {};
 
 export default class AppB extends Component<Props> {
@@ -90,6 +92,7 @@ this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
 /*this.getPlaces = this.getPlaces.bind(this)*/
 this.hideSearch = this.hideSearch.bind(this)
+this.getNewMapLoc = this.getNewMapLoc.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)      
@@ -378,17 +381,18 @@ console.log(this.state.parkingObject)
         })
       })
 }
-/*    getPlaces(place) {
-     return axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + place + '&radius=35000&minLength=3&location=40.676666,-73.983944&key=AIzaSyD0Zrt4a_yUyZEGZBxGULidgIWK05qYeqs', {
-        }).then((resp) => {
-          this.setState({
-            autoResp: resp.data.predictions
-          })
-          console.log(resp)
-        }).catch(function(error) {
-       throw error
-  }); 
-}*/
+    getNewMapLoc(lo, la) {
+      console.log('gnml run')
+      console.log(lo, la)
+      this.setState({
+        region: {
+          latitude: lo,
+          longitude: la,
+          latitudeDelta: .015,         
+          longitudeDelta: .015
+        }
+      })
+    }
     setCarLoc(la, ln, lo) {
       this.setState({
         carMarkLocation: {
@@ -717,9 +721,8 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       <View>   
         </View>
      <MapView
-        ref={map => {
-               this.map = map;
-          }}
+
+        ref={ref => { this.mapView= ref; }}
       mapType={'mutedStandard'}
       scrollEnabled={true}  
         zoomEnabled={true}   
@@ -729,11 +732,6 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         style={styles.map}
         showsUserLocation={true}
         followsUserLocation={true}
-        animateToBearing={true}
-         animateToViewingAngle={true} 
-         showsCompass = {true}
-         showScale = {true}
-         
         initialRegion={this.state.region}
         onRegionChangeComplete={this.onRegionChangeComplete}
 
@@ -791,7 +789,8 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     <ModalContent  fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  
     <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
-    <NotInNYC { ...this.state} hideSearch={this.hideSearch} getPlaces={this.getPlaces}/>
+
+    <Lookup fgColor={this.state.fgColor} bgColor={this.state.bgColor} />
   </View>
     );
     } else {
