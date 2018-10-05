@@ -383,13 +383,17 @@ console.log(this.state.parkingObject)
     getNewMapLoc(lo, la) {
       console.log('gnml')
       this.setState({
+        uLatitude: la,
+        uLongitude: lo,
         region: {
           latitude: lo,
           longitude: la,
           latitudeDelta: .15,
           longitudeDelta: .15,
         }
-      }, ()=> {this.hideSearch()})
+      }, ()=> {this.hideSearch()}, () => {
+        this.getSigns(this.state.uLongitude, this.state.uLatitude)
+      })
     }
     setCarLoc(la, ln, lo) {
       this.setState({
@@ -443,12 +447,12 @@ console.log(this.state.parkingObject)
           uLongitude: position.coords.longitude,
           uLnglat: [pos.coords.longitude, pos.coords.latitude],
           uPosition: position.coords,
-          region: {
+/*          region: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: .015,
             longitudeDelta: .015
-          },         
+          }, */        
          error: null,
         }, () => {
           this.calcDistance(40.741328, -73.887375, this.state.uLatitude, this.state.uLongitude)
@@ -692,7 +696,7 @@ openCloseSave(tf) {
 }
 onRegionChangeComplete(region) {
   
-    this.getSigns(this.state.region.longitude, this.state.region.latitude)
+    this.getSigns(this.state.uLongitude, this.state.uLatitude)
 
 console.log(region)
 }
@@ -720,19 +724,20 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         </View>
      <MapView
 
-        ref={ref => { this.mapView= ref; }}
+      
       mapType={'mutedStandard'}
       scrollEnabled={true}  
         zoomEnabled={true}   
-        rotateEnabled={true}   
         scrollEnabled={true}   
         pitchEnabled={true}   
         style={styles.map}
         showsUserLocation={true}
-        followsUserLocation={true}
-        region={this.state.region}
-        
-        
+        region={{
+          latitude: this.state.uLatitude,
+          longitude: this.state.uLongitude,
+          latitudeDelta: .015,
+          longitudeDelta: .015,
+        }}
 
         >
 
@@ -822,7 +827,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
 
   },
   slider: {
