@@ -75,13 +75,13 @@ export default class ModalContent extends Component {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
       return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, fontWeight: 'bold', color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
+        <View><Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
                <FlatList 
                   data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
                   <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
                   <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
-                    <Image source={require('./assets/p20x144-1.png')} style={{height: 20, width: 20, marginRight: 4}}/>
+                    <Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, marginRight: 6}}/>
                     <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
                   </View></TouchableOpacity>}
                   keyExtractor={item =>item.properties.ID.toString()}
@@ -107,27 +107,27 @@ export default class ModalContent extends Component {
 
   /*  console.log(splitCarLoc)*/
      return( <View style={{backgroundColor: this.props.bgColor}}>
-            <View >
-                <Text style={{fontSize: 20, color: this.props.fgColor, textAlign: 'center'}}>You are parked next to:</Text>  
+            <View style={{}}>
+                <Text style={{fontSize: 30, color: this.props.fgColor, textAlign: 'center'}}>Are you parked near</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 8}}>
-              <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>{splitCarLoc[0] + "," + splitCarLoc[1] }</Text>
+              <Text style={{fontSize: 30, color: 'white'}}>{splitCarLoc[0] + " ?"}</Text>
             </View> 
-            <View style={{marginTop: 20, alignItems: 'center'}}>  
-                 <Text style={{fontSize: 16, color: this.props.fgColor, textAlign: 'center'}}>Would you like to save this location? </Text>
-            </View>
-     
-                <Button 
-                  title="Yes"
+            <View style={{marginTop: 16, flexDirection: "row", justifyContent: 'space-around'}}>
+                <TouchableOpacity 
+                  style={{borderWidth: 1, borderColor: 'green', borderRadius: 6, padding:8}}
                   onPress={(e) => this.props.getTenSigns(this.state.carLoc.data.results[0].geometry)}
                 >
-                </Button>
-                <Button 
-                  title="No"
+                  <Text style={{fontSize: 26, color: 'yellow'}}>Yes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{borderWidth: 1, borderColor: 'green', borderRadius: 6, padding:8}}
                   onPress={(e) => this.props.dontSaveSpot()}
                 >
-                </Button>
+                <Text style={{fontSize: 26, color: 'yellow'}}>No</Text>
+                </TouchableOpacity>
 
+            </View>
             </View>)
   } else {return null}
  }
@@ -240,7 +240,7 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flex: 1, flexWrap: 'wrap', marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
+        <View style={{ flex: 1, flexGrow: 1, marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>  

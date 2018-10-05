@@ -54,6 +54,11 @@ export default class Lookup extends Component {
     if(this.props.toggleSearch) {
     return (
     <View style={{flex: 1, flexWrap: 'wrap', justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
+            <View>    
+           <TouchableOpacity onPress={() => this.props.openCloseSearch(false)}>
+            <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
+           </TouchableOpacity>    
+        </View> 
       <View style={{flex: .11,justifyContent: 'center', marginTop: 8 }}>    
         <ScrollView
           horizontal={true}

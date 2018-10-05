@@ -6,6 +6,7 @@ import TextTicker from 'react-native-text-ticker'
 import Icon from 'react-native-vector-icons/Ionicons';
 import gkey from './keys.js'
 import aspDays from './asp.js'
+import ColorKey from './ColorKey.js'
 
 export default class Summary extends Component {
 	constructor(props) {
@@ -66,7 +67,7 @@ export default class Summary extends Component {
 			
 
 			return(
-			<View style={{marginLeft: 32, marginRight: 32, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
+			<View style={{marginLeft: 32, marginRight: 32, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12}}>
 			<Text  style={{ textAlign: 'center', color: 'black', fontSize: 16, }}>{this.props.signText}</Text>
 			</View>
 			)
@@ -80,7 +81,6 @@ export default class Summary extends Component {
 		var nextHoliday = this.state.nextArr[0].holiday
 		var nextHolidayDate = this.state.nextArr[0].date.format('dddd, MMMM Do')
 
-		
 		if(this.props.ASPObject) {
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
@@ -88,17 +88,14 @@ export default class Summary extends Component {
 			var goodTill = this.props.ASPObject.goodTill
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
-
-
-
 		if(this.props.toggleSum) {
 		return(
-			<View style={{flex: 1, flexWrap: 'wrap', borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
+			<View style={{flex: 1, flexGrow: 1, borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 					 </TouchableOpacity>		
-				</View>	
+				</View>
 				<View>
 					{this.showASPHol()}
 				<View
@@ -141,14 +138,13 @@ export default class Summary extends Component {
 						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
 					</View>
 				</View>
-				</View>
+				
 				{this.showSignOnSummary()}
 				<View style={{marginBottom: 18}}>
 			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 14}}>{isHol}</Text>
 				</View>
-				
 			</View>
-
+</View>
 			)
 	} else{
 		return null

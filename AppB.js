@@ -391,9 +391,8 @@ console.log(this.state.parkingObject)
           latitudeDelta: .15,
           longitudeDelta: .15,
         }
-      }, ()=> {this.hideSearch()}, () => {
-        this.getSigns(this.state.uLongitude, this.state.uLatitude)
-      })
+      }, ()=> {this.getSigns(this.state.uLongitude, this.state.uLatitude)})
+      this.hideSearch()
     }
     setCarLoc(la, ln, lo) {
       this.setState({
@@ -720,27 +719,21 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
-      <View>   
-        </View>
-     <MapView
-
-      
+     <MapView      
       mapType={'mutedStandard'}
       scrollEnabled={true}  
-        zoomEnabled={true}   
-        scrollEnabled={true}   
-        pitchEnabled={true}   
-        style={styles.map}
-        showsUserLocation={true}
-        region={{
-          latitude: this.state.uLatitude,
-          longitude: this.state.uLongitude,
-          latitudeDelta: .015,
-          longitudeDelta: .015,
-        }}
-
-        >
-
+      zoomEnabled={true}   
+      scrollEnabled={true}   
+      pitchEnabled={true}   
+      style={styles.map}
+      showsUserLocation={true}
+      region={{
+        latitude: this.state.uLatitude,
+        longitude: this.state.uLongitude,
+        latitudeDelta: .015,
+        longitudeDelta: .015,
+      }}
+      >
          {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
       coordinate={marker.latlng}
@@ -766,6 +759,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     {/* {this.makeCarMarker()}*/}
 
   </MapView>
+  
     <View style={{flex: .15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingBottom: 4,  backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
@@ -801,7 +795,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       return (<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} >
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/sp.png')}
+          source={require('./assets/p2.png')}
         />
       </View>)
     }
