@@ -61,12 +61,12 @@ saveAllASP() {
 <SectionList
   renderItem={({item, index, section}) => (
               <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
-                <View><Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>{item.date.format('MMMM, Do')}</Text></View>
-                <View><Text style={{color: this.props.fgColor, fontSize: 14, fontWeight: 'bold'}}>{item.holiday}</Text></View>             
+                <View><Text style={{color: 'white', fontSize: 18}}>{item.date.format('MMMM, Do')}</Text></View>
+                <View><Text style={{color: this.props.fgColor, fontSize: 16}}>{item.holiday}</Text></View>             
               </View>
   	)}
   renderSectionHeader={({section: {title}}) => (
-    <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold', margin: 8, textAlign:'center'}}>{title}</Text>
+    <Text style={{color: 'white', fontSize: 18, margin: 8, textAlign:'center'}}>{title}</Text>
   )}
   sections={[
     {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},
