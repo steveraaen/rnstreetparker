@@ -80,7 +80,7 @@ export default class ModalContent extends Component {
                   data={this.props.nearestThree.slice(0,3)}
                   renderItem={({item}) => 
                   <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
-                  <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12, marginTop: 14, padding: 8}}>
+                  <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
                     <Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, marginRight: 6}}/>
                     <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
                   </View></TouchableOpacity>}

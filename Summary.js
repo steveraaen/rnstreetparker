@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Animated, AsyncStorage, Button,  NetInfo, Platform, ScrollView, StatusBar, StyleSheet, Image, Text, View, TouchableHighlight ,TouchableOpacity } from 'react-native';
+import { Alert, Animated, AsyncStorage, Button,NetInfo, Platform, ScrollView, StatusBar, StyleSheet, Image, Text, View, TouchableHighlight ,TouchableOpacity } from 'react-native';
 import moment from 'moment'
 import axios from 'axios'
 import TextTicker from 'react-native-text-ticker'
@@ -67,8 +67,13 @@ export default class Summary extends Component {
 			
 
 			return(
-			<View style={{marginLeft: 32, marginRight: 32, backgroundColor: 'white', borderWidth: 3, borderColor: 'red', borderRadius: 12}}>
-			<Text  style={{ textAlign: 'center', color: 'black', fontSize: 16, }}>{this.props.signText}</Text>
+			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 32, marginRight: 32, backgroundColor: 'white', justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
+			<View>
+				<Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, margin: 6}}/>
+			</View>
+			<View style={{justifyContent:'center'}}>
+				<Text  style={{ textAlign: 'center', color: 'black', fontSize: 18, fontWeight: 'bold'}}>{this.props.signText}</Text>
+			</View>
 			</View>
 			)
 		} else return null
@@ -124,24 +129,24 @@ export default class Summary extends Component {
 					/>
 					 
 					<View style={{marginTop: 2}}>
-						<Text style={{marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 22, }}>{parkedAddress}</Text>
 					</View>
 					<View style={{marginTop: 12}}>
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 6, marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 
 					<View >
-						<Text style={{marginTop: 6, marginBottom: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
 					</View>
 				</View>
 				
 				{this.showSignOnSummary()}
-				<View style={{marginBottom: 18}}>
-			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 14}}>{isHol}</Text>
+				<View style={{marginBottom: 8}}>
+			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>
 			</View>
 </View>

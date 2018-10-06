@@ -28,6 +28,7 @@ export default class Lookup extends Component {
   }
   getHoodsFromBoro(br) {
     var hoodsInBoro = this.state.neighborhoods.filter((boro, idx) => boro.borough.includes(br))
+    hoodsInBoro.sort((a,b) => b.name < a.name ? 1 : -1);
     this.setState({
       curHoods: hoodsInBoro
     })
@@ -51,7 +52,7 @@ export default class Lookup extends Component {
         textAlign: 'center'
       }
     })
-    if(this.props.toggleSearch) {
+    if(this.props.toggleSearch || this.props.dist > 20) {
     return (
     <View style={{flex: 1, flexWrap: 'wrap', justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
             <View>    
