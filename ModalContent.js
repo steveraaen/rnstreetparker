@@ -132,6 +132,7 @@ export default class ModalContent extends Component {
   } else {return null}
  }
   parseClosest(a) {
+  AsyncStorage.setItem('signText', a)
   this.setState({
     thisSign: a
   }, () => {

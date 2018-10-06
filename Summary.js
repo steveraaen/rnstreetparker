@@ -8,6 +8,7 @@ import gkey from './keys.js'
 import aspDays from './asp.js'
 import ColorKey from './ColorKey.js'
 
+
 export default class Summary extends Component {
 	constructor(props) {
 		super(props)
@@ -19,14 +20,18 @@ export default class Summary extends Component {
 				showComp: true
 			}
 		this.closeASPWindow = this.closeASPWindow.bind(this)
-
 		this.showASPHol = this.showASPHol.bind(this)
 		this.showSignOnSummary = this.showSignOnSummary.bind(this)
 
 	}
 
 	componentWillMount() {
-
+		AsyncStorage.getItem('parkingObject', (error, value) => {})
+	   .then((value) => {
+	      this.setState({
+	      	ASPObject: value
+	      })
+	   })
 		var nextArr = []
 		for(let i = 0; i < this.state.aspArray.length; i++) {
 			if(this.state.aspArray[i].date.isAfter(this.state.today)){
@@ -67,12 +72,12 @@ export default class Summary extends Component {
 			
 
 			return(
-			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 32, marginRight: 32, backgroundColor: 'white', justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
+			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 22, marginRight: 22, backgroundColor: 'white', justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
 			<View>
 				<Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, margin: 6}}/>
 			</View>
-			<View style={{justifyContent:'center'}}>
-				<Text  style={{ textAlign: 'center', color: 'black', fontSize: 18, fontWeight: 'bold'}}>{this.props.signText}</Text>
+			<View style={{justifyContent:'center', paddingLeft: 8, paddingRight: 8}}>
+				<Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{this.props.signText}</Text>
 			</View>
 			</View>
 			)
@@ -93,7 +98,7 @@ export default class Summary extends Component {
 			var goodTill = this.props.ASPObject.goodTill
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
-		if(this.props.toggleSum) {
+		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
 			<View style={{flex: 1, flexGrow: 1, borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
@@ -129,22 +134,22 @@ export default class Summary extends Component {
 					/>
 					 
 					<View style={{marginTop: 2}}>
-						<Text style={{marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
+						<Text style={{marginBottom: 2, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
 					<View style={{marginTop: 4}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 22, }}>{parkedAddress}</Text>
 					</View>
-					<View style={{marginTop: 12}}>
+					{this.showSignOnSummary()}
+					<View style={{marginTop: 2}}>
 						<Text style={{marginTop: 6, marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
-
+						
 					<View >
 						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
 					</View>
-				</View>
+				</View>			
 				
-				{this.showSignOnSummary()}
 				<View style={{marginBottom: 8}}>
 			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>

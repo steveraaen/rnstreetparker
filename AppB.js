@@ -81,6 +81,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.openCloseSummary = this.openCloseSummary.bind(this)
     this.openCloseASP = this.openCloseASP.bind(this)
     this.openCloseSave = this.openCloseSave.bind(this)
+    this.openCloseSearch = this.openCloseSearch.bind(this)
     this.colorizeIcons = this.colorizeIcons.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
 /*    this.onMapReady = this.onMapReady.bind(this)*/
@@ -278,7 +279,7 @@ console.log(this.state.parkingObject)
             longitude: parseFloat(docm.data[i].geometry.coordinates[0].toFixed(6))
           }
           meter.name='meter';
-          meter.dotImage = require('./assets/purpleDot12pt.png');
+          meter.dotImage = require('./assets/purpleDot6pt.png');
           meter.text = "Parking Meter"
           metersArray.push(meter)
         }
@@ -331,10 +332,10 @@ console.log(this.state.parkingObject)
             marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
 
       if(marker.endTime.isBefore(marker.noonTime)) {
-        marker.dotImage = require('./assets/blueDot12pt.png')
+        marker.dotImage = require('./assets/blueDot6pt.png')
         }
           else if(marker.endTime.isAfter(marker.noonTime)){     
-          marker.dotImage = require('./assets/orangeDot12pt.png')
+          marker.dotImage = require('./assets/orangeDot6pt.png')
         }
           markersArray.push(marker)          
         }
@@ -427,6 +428,10 @@ console.log(this.state.parkingObject)
    AsyncStorage.getItem('parkingObject', (error, value) => {})
    .then((value) => {
       this.setState({ASPObject: JSON.parse(value)})
+   })
+   AsyncStorage.getItem('signText', (error, vlu) => {})
+   .then((vlu) => {
+      this.setState({signText: vlu})
    })
       for(let asp in aspDays){
        /* console.log(aspDays[asp].date - this.state.fullDay)*/
@@ -600,7 +605,7 @@ console.log(this.state.parkingObject)
             `Parking info saved to calendar`,
             ``,
             [
-              {text: 'Go', onPress: () => console.log('dismissed alert')},
+              {text: 'Okay', onPress: () => console.log('dismissed alert')},
             ],
             { cancelable: true }
           )
@@ -788,7 +793,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
  
     <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
 
-    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch}/>
+    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch}/>
   </View>
     );
     } else {
