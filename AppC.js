@@ -40,7 +40,7 @@ import FadeInView from './Anim.js'
 /*import NotInNYC from './NotInNYC.js'*/
 type Props = {};
 
-export default class AppB extends Component<Props> {
+export default class AppC extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
@@ -407,7 +407,13 @@ console.log(this.state.parkingObject)
               }      
             })
         }
-
+    componentWillMount(){
+      AsyncStorage.getItem('prevLaunched', (err, val) => {
+        this.setState({
+          prevLaunched: JSON.parse(val)
+        })
+      })
+    }
     componentDidMount() { 
       this.setState({appState: AppState.currentState})
       this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)
@@ -722,7 +728,8 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 
     <View style={styles.container}>            
     <StatusBar barStyle="light-content" hidden ={false}/>
-     <MapView      
+     <MapView  
+     //     
       mapType={'mutedStandard'}
       scrollEnabled={true}  
       zoomEnabled={true}   
@@ -740,9 +747,13 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
       coordinate={marker.latlng}
-      image={marker.dotImage}
+      
       key={idx}
      >
+     <Image 
+        source={marker.dotImage}
+        style={{height: 6, width: 6}}
+     />
         <Callout style={{borderWidth: 2, borderColor: 'red', borderRadius: 12, padding: 8}}>
           <Text>{marker.text}</Text>
         </Callout>
@@ -763,16 +774,16 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 
   </MapView>
   
-    <View style={{flex: .15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingBottom: 4,  backgroundColor: this.state.bgColor}}>
+    <View style={{height: 88, paddingTop:12, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: 12, backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm" size={36} color={this.state.colorSave}/></Text>  
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseASP(true)}>
- <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar" size={36} color={this.state.colorASP}/></Text>            
+          <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar" size={36} color={this.state.colorASP}/></Text>            
       </TouchableOpacity> 
-       <TouchableOpacity onPress={() => this.openCloseSearch(true)}>
- <Text style={{paddingTop: 24}}>  <Icon name="ios-search" size={36} color={this.state.colorSearch}/></Text>            
+      <TouchableOpacity onPress={() => this.openCloseSearch(true)}>
+          <Text style={{paddingTop: 24}}>  <Icon name="ios-search" size={36} color={this.state.colorSearch}/></Text>            
       </TouchableOpacity> 
       <TouchableOpacity onPress={() => this.openCloseSummary(true)}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark" size={36} color={this.state.colorSum}/></Text>  
@@ -781,9 +792,9 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     <View>
       <SearchB initDay={this.state.initDay} selDay={this.state.selDay} fgColor={this.state.fgColor} bgColor={this.state.bgColor} makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
- <FadeInView>
+ 
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
- </FadeInView>  
+   
   
     <ASPCalendar fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList}/>
       
@@ -827,8 +838,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-
+    bottom: 0
   },
   slider: {
     height: 20,

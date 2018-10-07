@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
 import neighborhoods from './neighborhoods.js'
+import FadeInView from './Anim.js'
 export default class Lookup extends Component {
     constructor(props) {
     super(props);
@@ -54,13 +55,13 @@ export default class Lookup extends Component {
     })
     if(this.props.toggleSearch || this.props.dist > 20) {
     return (
-    <View style={{flex: 1, flexWrap: 'wrap', justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
+    <FadeInView style={{flex: .88, justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
             <View>    
            <TouchableOpacity onPress={() => this.props.openCloseSearch(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>    
         </View> 
-      <View style={{flex: .11,justifyContent: 'center', marginTop: 8 }}>    
+      <View style={{justifyContent: 'center', marginTop: 8 }}>    
         <ScrollView
           horizontal={true}
           >
@@ -93,14 +94,14 @@ export default class Lookup extends Component {
           renderItem={({item}) => (
             <TouchableHighlight
               onPress={() => this._onItemPress(item)}>
-              <View style={{backgroundColor: this.props.bgColor}}>
+              <FadeInView style={{backgroundColor: this.props.bgColor}}>
                 <Text style={styles.hoodText}>{item.name}</Text>
-              </View>
+              </FadeInView>
             </TouchableHighlight>    
           )}
         />
      </View> 
-    </View>
+    </FadeInView>
     )
   } else return null
   }

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import gkey from './keys.js'
 import aspDays from './asp.js'
 import aspDays19 from './asp19.js'
+import FadeInView from './Anim.js'
 
 export default class ASPCalendar extends Component {
 	constructor(props) {
@@ -47,44 +48,43 @@ saveAllASP() {
  )
 
 }
-	render() {
-		var keyExtractor = (item, index) => item.date.format('MMMM, Do');
-		if(this.props.toggleASP) {
-		return(
-		
+render() {
+	var keyExtractor = (item, index) => item.date.format('MMMM, Do');
+	if(this.props.toggleASP) {
+	return(
+	
 
-				<View style={{flex: 1, flexWrap: 'wrap', marginLeft: 10, paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
-				<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
-				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
-				 </TouchableOpacity>
+		<FadeInView style={{flex: 1, flexWrap: 'wrap', marginLeft: 10, paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
+		<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
+		 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
+		 </TouchableOpacity>
 
-<SectionList
-	stickyHeaderIndices={[0,1]}
-  	renderItem={({item, index, section}) => (
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
-                <View><Text style={{color: 'white', fontSize: 18}}>{item.date.format('MMMM Do')}</Text></View>
-                <View><Text style={{color: this.props.fgColor, fontSize: 16}}>{item.holiday}</Text></View>             
-              </View>
-  	)}
-  renderSectionHeader={({section: {title}}) => (
+		<SectionList
+			stickyHeaderIndices={[0,1]}
+		  	renderItem={({item, index, section}) => (
+		              <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
+		                <FadeInView><Text style={{color: 'white', fontSize: 18}}>{item.date.format('MMMM Do')}</Text></FadeInView>
+		                <FadeInView><Text style={{color: this.props.fgColor, fontSize: 16}}>{item.holiday}</Text></FadeInView>             
+		              </View>
+		  	)}
+		  renderSectionHeader={({section: {title}}) => (
 
-    	<Text style={{color: 'white', fontSize: 18, margin: 8, textAlign:'center'}}>{title}</Text>
-  )}
-  sections={[
-    {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},
-    {title: '2019 ASP Holiday Suspensions', data: this.state.aspArray19}
-  ]}
-  keyExtractor={(item, index) => item + index}
-/>		
-		
-				<Button 
-				title={"Save List to iPhone Calendar"}
-				onPress={()=> this.saveAllASP()}
-				/>
-			</View>
-			)
-	} else {
-		return null
-	}
+		    	<Text style={{color: 'white', fontSize: 18, margin: 8, textAlign:'center'}}>{title}</Text>
+		  )}
+		  sections={[
+		    {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},
+		    {title: '2019 ASP Holiday Suspensions', data: this.state.aspArray19}
+		  ]}
+		  keyExtractor={(item, index) => item + index}
+		/>		
+		<Button 
+		title={"Save List to iPhone Calendar"}
+		onPress={()=> this.saveAllASP()}
+		/>
+	</FadeInView>
+	)
+		} else {
+			return null
+		}
 	}
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StatusBar, StyleSheet, Image, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FadeInView from './Anim.js'
 
 export default class ColorKey extends Component {
 	constructor(props) {
@@ -40,7 +41,8 @@ export default class ColorKey extends Component {
 		})
 		if(this.props.showKey) {
 		return (
-			<View style={{flex: .125, flexDirection: 'row', marginBottom: 4, justifyContent: 'space-around',height: 6, alignItems: 'center', backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
+
+			<FadeInView style={{flex: .16, flexDirection: 'row', flexWrap: 'wrap', paddingBottom: 14, paddingTop: 14,justifyContent: 'space-around',height: 6, alignItems: 'center', backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
 				<TouchableOpacity onPress={() => this.props.hideKey(false)}>
 				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 				 </TouchableOpacity>
@@ -56,7 +58,7 @@ export default class ColorKey extends Component {
 					<View style={styles.nightDot}></View>
 					<View><Text style={styles.txt}>Muni Parking Meters</Text></View>
 				</View>
-			</View>
+			</FadeInView>
 			)
 	} else return null
 	}

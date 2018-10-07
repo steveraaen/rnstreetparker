@@ -18,7 +18,7 @@ export default class FirstUse extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			checked: null
+			checked: false
 		}
 		
 	}
@@ -34,17 +34,7 @@ export default class FirstUse extends Component {
     })
   }
 	}
-/*	handleCheck() {
-		this.setState({checked: !this.state.checked}, () => {
-			if(this.state.checked) {
-				console.log('checked')
-				AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
-			} else {
-				console.log('unchecked')
-				AsyncStorage.setItem('prevLaunched', JSON.stringify(false))
-			}
-		})
-	}*/
+
 	savePrevStatus() {
 
 	}
@@ -75,10 +65,6 @@ export default class FirstUse extends Component {
 			</View>
 			<View style={{backgroundColor: '#1F2C4B'}}>
 				<Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold',color: '#F6FEAC'}}>{blurbOne}</Text>
-			</View>
-			
-			<View style={{backgroundColor: '#1F2C4B', marginTop: 16, marginBottom: 16}}>
-				<Text style={{textAlign: 'center', fontSize: 20, color: 'rgba(223, 117, 63,.9)', fontWeight: 'bold'}}>{blurbTwo}<Text style={{color: 'white', fontWeight: 'bold'}}></Text></Text>
 			</View>
 			<View    >
 			<View style={styles.eachRow}>

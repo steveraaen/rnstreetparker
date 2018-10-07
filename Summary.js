@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import gkey from './keys.js'
 import aspDays from './asp.js'
 import ColorKey from './ColorKey.js'
-
+import FadeInView from './Anim.js'
 
 export default class Summary extends Component {
 	constructor(props) {
@@ -100,13 +100,14 @@ export default class Summary extends Component {
 		}	
 		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
-			<View style={{flex: 1, flexGrow: 1, borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
+			<View style={{borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 					 </TouchableOpacity>		
 				</View>
-				<View>
+
+				<FadeInView>
 					{this.showASPHol()}
 				<View
 					  style={{
@@ -153,7 +154,7 @@ export default class Summary extends Component {
 				<View style={{marginBottom: 8}}>
 			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>
-			</View>
+			</FadeInView>
 </View>
 			)
 	} else{

@@ -92,7 +92,7 @@ componentWillMount() {
       }
     })
     return(
-
+      <View>
       <ButtonGroup
         onPress={this.updateIndex}
         selectedIndex={selectedIndex}
@@ -103,7 +103,7 @@ componentWillMount() {
         textStyle={{color: 'white', fontWeight: 'bold'}}
         containerStyle={{backgroundColor: this.props.bgColor, borderRadius: 12}}
       />    
-
+      </View>
       )
   }
 }

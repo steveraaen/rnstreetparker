@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import AppB from './AppB';
+import AppC from './AppC';
 
-AppRegistry.registerComponent('streetparker', () => AppB);
+AppRegistry.registerComponent('streetparker', () => AppC);
