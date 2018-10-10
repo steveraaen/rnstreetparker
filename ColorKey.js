@@ -42,19 +42,23 @@ export default class ColorKey extends Component {
 		if(this.props.showKey) {
 		return (
 
-			<FadeInView style={{flex: .16, flexDirection: 'row', flexWrap: 'wrap', paddingBottom: 14, paddingTop: 14,justifyContent: 'space-around',height: 6, alignItems: 'center', backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
+			<FadeInView style={{display: 'flex',flexDirection: 'row', alignItems: 'space-between',paddingBottom: 14, paddingTop: 14,backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
+				<View style={{flex: .15}} >
 				<TouchableOpacity onPress={() => this.props.hideKey(false)}>
-				 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
+				
+				 	<Text style={{paddingTop: 14, paddingRight: 20}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
+				 
 				 </TouchableOpacity>
-				<View style={{flex: .3, flexDirection: 'column'}}>
+				 </View>
+				<View style={{flex: .28, flexDirection: 'column'}}>
 					<View style={styles.AMDot}></View>
 					<View><Text style={styles.txt}>6:00AM to 12:00PM</Text></View>
 				</View>
-				<View style={{flex: .3, flexDirection: 'column'}}>
+				<View style={{flex: .28, flexDirection: 'column'}}>
 					<View style={styles.PMDot}></View>
 					<View><Text style={styles.txt}>12:00PM to 6:00PM</Text></View>
 				</View>
-				<View style={{flex: .3, flexDirection: 'column'}}>
+				<View style={{flex: .28, flexDirection: 'column'}}>
 					<View style={styles.nightDot}></View>
 					<View><Text style={styles.txt}>Muni Parking Meters</Text></View>
 				</View>

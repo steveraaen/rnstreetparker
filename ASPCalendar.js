@@ -53,8 +53,8 @@ render() {
 	if(this.props.toggleASP) {
 	return(
 	
-
-		<FadeInView style={{flex: 1, flexWrap: 'wrap', marginLeft: 10, paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14, marginBottom: 6}}>
+		<View style={{height: this.props.height * .64, marginBottom:12}}>
+		<FadeInView style={{marginLeft: 10, paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14}}>
 		<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 		 	<Text style={{paddingTop: 14}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 		 </TouchableOpacity>
@@ -82,6 +82,7 @@ render() {
 		onPress={()=> this.saveAllASP()}
 		/>
 	</FadeInView>
+	</View>
 	)
 		} else {
 			return null

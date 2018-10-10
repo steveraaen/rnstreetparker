@@ -14,6 +14,7 @@ import {
   Image,
   Picker,
   Platform,
+  ScrollView,
   Slider,
   StatusBar,
   StyleSheet,
@@ -62,7 +63,7 @@ export default class AppC extends Component<Props> {
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
       showKey: true,
       prevLaunched: false,
-      bgColor: '#1F2C4B',
+      bgColor: 'black',
       fgColor: '#FFB20B',
       boldText: 'white'
        }
@@ -727,7 +728,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     return (
 
     <View style={styles.container}>            
-    <StatusBar barStyle="light-content" hidden ={false}/>
+    <StatusBar barStyle="light-content" hidden ={true}/>
      <MapView  
      //     
       mapType={'mutedStandard'}
@@ -747,16 +748,14 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
       coordinate={marker.latlng}
-      
+      title={marker.text}   
       key={idx}
      >
      <Image 
         source={marker.dotImage}
         style={{height: 6, width: 6}}
      />
-        <Callout style={{borderWidth: 2, borderColor: 'red', borderRadius: 12, padding: 8}}>
-          <Text>{marker.text}</Text>
-        </Callout>
+
      </Marker>
      ))}
      {this.state.meters.map((meter, idx) => (
@@ -765,16 +764,14 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       image={meter.dotImage}
       key={idx}
      >
-        <Callout>
-          <Text>{meter.text}</Text>
-        </Callout>
+
      </Marker>
      ))}
     {/* {this.makeCarMarker()}*/}
 
   </MapView>
-  
-    <View style={{height: 88, paddingTop:12, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: 12, backgroundColor: this.state.bgColor}}>
+
+    <View style={{height: this.state.height * .1,flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: 18, backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm" size={36} color={this.state.colorSave}/></Text>  
@@ -789,27 +786,36 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
           <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark" size={36} color={this.state.colorSum}/></Text>  
       </TouchableOpacity>    
     </View>
-    <View>
+    <View style={{display: 'flex'}}>
       <SearchB initDay={this.state.initDay} selDay={this.state.selDay} fgColor={this.state.fgColor} bgColor={this.state.bgColor} makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
- 
+    <ScrollView scrollEnabled={false} style={{height: this.state.height * .8}}>
+ <View style={{display: 'flex'}}>
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
-   
-  
-    <ASPCalendar fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList}/>
-      
-    <ModalContent  fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
- 
-    <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
+ </View>  
+  <View style={{display: 'flex'}}>
+    <ASPCalendar fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList} height={this.state.height} width={this.state.width}/>
+ </View> 
+  <View style={{display: 'flex'}}>    
+    <ModalContent fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
+ </View>
 
-    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch}/>
+<View style={{display: 'flex'}}>
+    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch} dist={this.state.dist}/>
+</View> 
+</ScrollView>
+ <View style={{marginBottom:14, marginTop: 6}}>
+    <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
+</View> 
+  
   </View>
     );
     } else {
       return (<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} >
+        <StatusBar barStyle="light-content" hidden ={true}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p2.png')}
+          source={require('./assets/p5.png')}
         />
       </View>)
     }
@@ -818,9 +824,9 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 let {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    flex: 1,   
+    height: height, 
+    display: 'flex',  
     flexDirection: 'column'
- /*   justifyContent: 'space-between'*/
   },
   daySwipe: {
 

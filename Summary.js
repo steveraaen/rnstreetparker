@@ -141,7 +141,9 @@ export default class Summary extends Component {
 					<View style={{marginTop: 4}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 22, }}>{parkedAddress}</Text>
 					</View>
+					<View>
 					{this.showSignOnSummary()}
+					</View>
 					<View style={{marginTop: 2}}>
 						<Text style={{marginTop: 6, marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>

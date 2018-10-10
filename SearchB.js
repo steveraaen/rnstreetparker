@@ -92,7 +92,7 @@ componentWillMount() {
       }
     })
     return(
-      <View>
+      <View style={{flex: 0}}>
       <ButtonGroup
         onPress={this.updateIndex}
         selectedIndex={selectedIndex}

@@ -26,6 +26,7 @@ export default class Lookup extends Component {
        }
     this._onItemPress = this._onItemPress.bind(this)
     this.getHoodsFromBoro = this.getHoodsFromBoro.bind(this)
+    this.separator = this.separator.bind(this)
   }
   getHoodsFromBoro(br) {
     var hoodsInBoro = this.state.neighborhoods.filter((boro, idx) => boro.borough.includes(br))
@@ -41,6 +42,17 @@ export default class Lookup extends Component {
 
     }, () => {this.props.getNewMapLoc(this.state.selHoodObj.lat, this.state.selHoodObj.lng)})
   }
+  separator() {
+    return(
+          <View
+            style={{
+              borderBottomColor: this.props.fgColor,
+              borderBottomWidth: 1,
+              margin: 6
+            }}
+          />
+      )
+  }
   render() {
     const styles = StyleSheet.create({
       boroText: {
@@ -53,18 +65,22 @@ export default class Lookup extends Component {
         textAlign: 'center'
       }
     })
+
     if(this.props.toggleSearch || this.props.dist > 20) {
+      console.log(this.props.dist)
     return (
-    <FadeInView style={{flex: .88, justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
+    <FadeInView style={{flex: 0, justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
             <View>    
            <TouchableOpacity onPress={() => this.props.openCloseSearch(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>    
         </View> 
+
+      <View>
+        <Text style={{color: 'white', fontSize: 14, textAlign: 'center'}}>Tap on a borough, then tap on a neighborhood</Text>
+      </View>
       <View style={{justifyContent: 'center', marginTop: 8 }}>    
-        <ScrollView
-          horizontal={true}
-          >
+        <View style={{display: 'flex', flexDirection: 'row'}}>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Brooklyn')}>
             <View style={styles.boroText}>
               <Text style={{fontSize: 20, color: this.props.fgColor }}>Brooklyn</Text>
@@ -85,12 +101,13 @@ export default class Lookup extends Component {
               <Text style={{fontSize: 20, color: this.props.fgColor }}>Queens</Text>
             </View>
           </TouchableOpacity>
-        </ScrollView> 
+        </View> 
       </View>
-      <View style={{flex: .9, marginTop: 6, marginBottom: 24}}>    
+      <ScrollView horizontal={false} style={{flex: 0, marginTop: 6, marginBottom: 24}}>    
         <FlatList
           data={this.state.curHoods}
           contentContainerStyle={{justifyContent: 'flex-start'}}
+          ItemSeparatorComponent={this.separator}
           renderItem={({item}) => (
             <TouchableHighlight
               onPress={() => this._onItemPress(item)}>
@@ -100,7 +117,7 @@ export default class Lookup extends Component {
             </TouchableHighlight>    
           )}
         />
-     </View> 
+     </ScrollView> 
     </FadeInView>
     )
   } else return null

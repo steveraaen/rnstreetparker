@@ -74,19 +74,23 @@ export default class ModalContent extends Component {
  showTenSigns() {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
-      return ( <View style={{height: 240, alignItems: 'center'}}>
-        <View><Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text></View>
-               <FlatList 
-                  data={this.props.nearestThree.slice(0,3)}
-                  renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
-                  <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
-                    <Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, marginRight: 6}}/>
-                    <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
-                  </View></TouchableOpacity>}
-                  keyExtractor={item =>item.properties.ID.toString()}
-                    />
+      return ( 
+        <View style={{alignItems: 'center'}}>
+          <View>
+            <Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text>
+          </View>
+            <FlatList 
+              data={this.props.nearestThree.slice(0,3)}
+              renderItem={({item}) => 
+              <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
+                <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
+                  <Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, marginRight: 6}}/>
+                  <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
                 </View>
+              </TouchableOpacity>}
+                keyExtractor={item =>item.properties.ID.toString()}
+            />
+          </View>
         )
     }
  }
@@ -107,7 +111,7 @@ export default class ModalContent extends Component {
 
   /*  console.log(splitCarLoc)*/
      return( <View style={{backgroundColor: this.props.bgColor}}>
-            <View style={{}}>
+            <View>
                 <Text style={{fontSize: 30, color: this.props.fgColor, textAlign: 'center'}}>Are you parked near</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 8}}>
@@ -241,7 +245,7 @@ export default class ModalContent extends Component {
 if(this.props.toggleSave) {
     return (
      
-        <View style={{ flexBasis: 'auto', marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6}}> 
+        <View style={{marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6, paddingBottom:12}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>  
@@ -250,7 +254,7 @@ if(this.props.toggleSave) {
         
           </TouchableOpacity>
           <View style={{marginTop: 12}}>{this.showCarLoc()}</View>
-           <View style={{height: 86}}>{this.showTenSigns()}</View>
+           <View>{this.showTenSigns()}</View>
         </View>
       
       )
