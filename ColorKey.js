@@ -39,10 +39,10 @@ export default class ColorKey extends Component {
 				color: 'white'
 			}
 		})
-		if(this.props.showKey) {
+		if(this.props.toggleColorKey) {
 		return (
 
-			<FadeInView style={{display: 'flex',flexDirection: 'row', alignItems: 'space-between',paddingBottom: 14, paddingTop: 14,backgroundColor: this.props.bgColor, marginLeft: 14, marginRight: 14, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
+			<FadeInView style={{display: 'flex',flexDirection: 'row', alignItems: 'space-between',marginBottom: 6, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
 				<View style={{flex: .15}} >
 				<TouchableOpacity onPress={() => this.props.hideKey(false)}>
 				

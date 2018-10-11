@@ -17,6 +17,7 @@ export default class ASPCalendar extends Component {
 			aspArray19: aspDays19
 		}
 		this.saveAllASP = this.saveAllASP.bind(this)
+		this.separator = this.separator.bind(this)
 	}
 
 	componentWillMount() {
@@ -46,8 +47,18 @@ saveAllASP() {
    ],
    { cancelable: true }
  )
-
 }
+  separator() {
+    return(
+          <View
+            style={{
+              borderBottomColor: this.props.fgColor,
+              borderBottomWidth: 1,
+              margin: 6
+            }}
+          />
+      )
+  }
 render() {
 	var keyExtractor = (item, index) => item.date.format('MMMM, Do');
 	if(this.props.toggleASP) {
@@ -60,7 +71,8 @@ render() {
 		 </TouchableOpacity>
 
 		<SectionList
-			stickyHeaderIndices={[0,1]}
+			stickyHeaderIndices={0}
+			ItemSeparatorComponent={this.separator}
 		  	renderItem={({item, index, section}) => (
 		              <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 2}}>
 		                <FadeInView><Text style={{color: 'white', fontSize: 18}}>{item.date.format('MMMM Do')}</Text></FadeInView>
@@ -69,18 +81,20 @@ render() {
 		  	)}
 		  renderSectionHeader={({section: {title}}) => (
 
-		    	<Text style={{color: 'white', fontSize: 18, margin: 8, textAlign:'center'}}>{title}</Text>
+		    	<Text style={{color: 'black', fontSize: 18, marginBottom: 8, textAlign:'center', backgroundColor: 'gray'}}>{title}</Text>
 		  )}
 		  sections={[
 		    {title: '2018 ASP Holiday Suspensions', data: this.state.nextArr},
 		    {title: '2019 ASP Holiday Suspensions', data: this.state.aspArray19}
 		  ]}
 		  keyExtractor={(item, index) => item + index}
-		/>		
+		/>	
+		<View style={{marginTop:12}}>	
 		<Button 
 		title={"Save List to iPhone Calendar"}
 		onPress={()=> this.saveAllASP()}
 		/>
+		</View>
 	</FadeInView>
 	</View>
 	)

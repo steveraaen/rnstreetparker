@@ -76,8 +76,8 @@ export default class ModalContent extends Component {
   if(this.props.nearestThree) {
       return ( 
         <View style={{alignItems: 'center'}}>
-          <View>
-            <Text style={{fontSize: 14, color: 'white'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text>
+          <View style={{marginBottom: 18}}>
+            <Text style={{fontSize: 16, color: 'white', textAlign: 'center'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text>
           </View>
             <FlatList 
               data={this.props.nearestThree.slice(0,3)}
@@ -148,7 +148,7 @@ export default class ModalContent extends Component {
         var endTime = this.state.thisSign.match(reEnd)
         var endDay = this.state.thisSign.match(reDay)
         var daysArr = []
-
+console.log(startTime, endTime, endDay)
         for(let i = 0; i < endDay.length; i++) {
 
         var timeLeft = {}

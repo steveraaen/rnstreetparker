@@ -38,6 +38,7 @@ import ASPCalendar from './ASPCalendar.js'
 import ColorKey from './ColorKey.js'
 import Lookup from './Lookup.js'
 import FadeInView from './Anim.js'
+import Dots from './DotsIcon.js'
 /*import NotInNYC from './NotInNYC.js'*/
 type Props = {};
 
@@ -51,9 +52,11 @@ export default class AppC extends Component<Props> {
       toggleSum: false,
       toggleSave: false,
       toggleSearch: false,
+      toggleColorKey: false,
       colorASP: 'white',
       colorSum: 'white',
       colorSave: 'white',
+      colorColorKey: 'white',
       modalVisible: false,      
       uLatitude: null,
       uLongitude: null,
@@ -61,7 +64,7 @@ export default class AppC extends Component<Props> {
       slideTime: moment(),
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
-      showKey: true,
+    /*  showKey: true,*/
       prevLaunched: false,
       bgColor: 'black',
       fgColor: '#FFB20B',
@@ -86,6 +89,7 @@ this.ackPrevLaunched = this.ackPrevLaunched.bind(this)
     this.openCloseASP = this.openCloseASP.bind(this)
     this.openCloseSave = this.openCloseSave.bind(this)
     this.openCloseSearch = this.openCloseSearch.bind(this)
+    this.openCloseColorKey = this.openCloseColorKey.bind(this)
     this.colorizeIcons = this.colorizeIcons.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
 /*    this.onMapReady = this.onMapReady.bind(this)*/
@@ -130,7 +134,9 @@ calcDistance(lat1, lon1, lat2, lon2) {
 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
-
+d >20 ? this.setState({toggleSearch: true}) : this.setState({toggleSearch: false}, ()=> {
+  navigator.geolocation.clearWatch(this.watchID);
+})
 this.setState({dist: d})
 return d
 }
@@ -353,7 +359,7 @@ console.log(this.state.parkingObject)
           wedArray.push(markersArray[i])
         } if(markersArray[i].text.includes("THU")) {
           thuArray.push(markersArray[i])
-        } if(markersArray[i].text.includes(" FRI")) {
+        } if(markersArray[i].text.includes("FRI")) {
           friArray.push(markersArray[i])
         } if(markersArray[i].text.includes("SAT")) {
           satArray.push(markersArray[i])
@@ -417,7 +423,7 @@ console.log(this.state.parkingObject)
     }
     componentDidMount() { 
       this.setState({appState: AppState.currentState})
-      this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)
+   /*   this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)*/
         axios.get('https://ipinfo.io/geo')
         .then((doc) => {
           this.setState({loc: doc})
@@ -479,6 +485,7 @@ console.log(this.state.parkingObject)
          /*   this.getNewDay(this.state.selDay)*/
           })
           this.openCloseSummary()
+
     }
     makeMarker(d) {
     /*  console.log(d)*/
@@ -628,7 +635,14 @@ getSignText(signtext) {
   this.setState({signText: signtext})
 }
 colorizeIcons() {
-  var iconColor = 'white'
+  this.state.toggleColorKey ? this.setState({colorColorKey: this.state.fgColor}) : this.setState({colorColorKey: 'white'})
+
+/*     if(this.state.toggleColorKey) {
+    this.setState({
+      selectedIcon: "KEY",     
+      colorColorKey: this.state.fgColor,      
+    })
+  }*/
   if(this.state.toggleASP) {
     this.setState({
       selectedIcon: "ASP",
@@ -660,7 +674,9 @@ colorizeIcons() {
       colorSum: 'white',      
       colorSearch: this.state.fgColor,      
     })
-  }else if(!this.state.toggleASP && !this.state.toggleSave && !this.state.toggleSum && !this.state.toggleSearch) {
+  }
+
+  else if(!this.state.toggleASP && !this.state.toggleSave && !this.state.toggleSum && !this.state.toggleSearch) {
     this.setState({
       selectedIcon: null,
       colorASP: 'white',
@@ -670,7 +686,7 @@ colorizeIcons() {
     })    
   }
 }
-openCloseSummary(tf) {
+openCloseSummary() {
     this.setState(prevState => ({
       toggleSum: !prevState.toggleSum,
       toggleASP: false,
@@ -678,7 +694,7 @@ openCloseSummary(tf) {
       toggleSearch: false
     }), () => this.colorizeIcons());
 }
-openCloseSearch(tf) {
+openCloseSearch() {
     this.setState(prevState => ({
       toggleSearch: !prevState.toggleSearch,
       toggleSum: false,
@@ -686,7 +702,7 @@ openCloseSearch(tf) {
       toggleASP: false
     }), () => this.colorizeIcons());
 }
-openCloseASP(tf) {
+openCloseASP() {
     this.setState(prevState => ({
       toggleASP: !prevState.toggleASP,
       toggleSum: false,
@@ -694,12 +710,18 @@ openCloseASP(tf) {
       toggleSearch: false
     }), () => this.colorizeIcons());
 }
-openCloseSave(tf) {  
+openCloseSave() {  
     this.setState(prevState => ({
       toggleSave: !prevState.toggleSave, 
       toggleASP: false,
       toggleSum: false, 
       toggleSearch: false,
+      nearestThree: null
+    }), () => this.colorizeIcons());
+}
+openCloseColorKey() {  
+    this.setState(prevState => ({
+      toggleColorKey: !prevState.toggleColorKey, 
       nearestThree: null
     }), () => this.colorizeIcons());
 }
@@ -728,7 +750,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     return (
 
     <View style={styles.container}>            
-    <StatusBar barStyle="light-content" hidden ={true}/>
+    <StatusBar barStyle="light-content" hidden ={false}/>
      <MapView  
      //     
       mapType={'mutedStandard'}
@@ -751,7 +773,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       title={marker.text}   
       key={idx}
      >
-     <Image 
+     <Image
         source={marker.dotImage}
         style={{height: 6, width: 6}}
      />
@@ -776,20 +798,26 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm" size={36} color={this.state.colorSave}/></Text>  
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.openCloseASP(true)}>
+      <TouchableOpacity onPress={() => this.openCloseASP()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar" size={36} color={this.state.colorASP}/></Text>            
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.openCloseSearch(true)}>
+      <TouchableOpacity onPress={() => this.openCloseSearch()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-search" size={36} color={this.state.colorSearch}/></Text>            
       </TouchableOpacity> 
-      <TouchableOpacity onPress={() => this.openCloseSummary(true)}>
+      <TouchableOpacity onPress={() => this.openCloseSummary()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark" size={36} color={this.state.colorSum}/></Text>  
-      </TouchableOpacity>    
+      </TouchableOpacity> 
+      <TouchableOpacity onPress={() => this.openCloseColorKey()}>
+          <Dots colorColor={this.state.colorColorKey}/> 
+      </TouchableOpacity>   
     </View>
     <View style={{display: 'flex'}}>
       <SearchB initDay={this.state.initDay} selDay={this.state.selDay} fgColor={this.state.fgColor} bgColor={this.state.bgColor} makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
     </View>
-    <ScrollView scrollEnabled={false} style={{height: this.state.height * .8}}>
+     <View style={{ display:'flex'}}>
+    <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleColorKey={this.state.toggleColorKey} showKey={this.state.showKey } hideKey={this.hideKey} />
+</View> 
+   
  <View style={{display: 'flex'}}>
     <Summary { ...this.state } openCloseSummary={this.openCloseSummary}/>
  </View>  
@@ -801,12 +829,10 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
  </View>
 
 <View style={{display: 'flex'}}>
-    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch} dist={this.state.dist}/>
+    <Lookup getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch} dist={this.state.dist} height={this.state.height} width={this.state.width}/>
 </View> 
-</ScrollView>
- <View style={{marginBottom:14, marginTop: 6}}>
-    <ColorKey fgColor={this.state.fgColor} bgColor={this.state.bgColor} showKey={this.state.showKey } hideKey={this.hideKey} />
-</View> 
+
+
   
   </View>
     );
@@ -815,7 +841,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         <StatusBar barStyle="light-content" hidden ={true}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p5.png')}
+          source={require('./assets/p7.png')}
         />
       </View>)
     }
@@ -826,7 +852,7 @@ const styles = StyleSheet.create({
   container: {
     height: height, 
     display: 'flex',  
-    flexDirection: 'column'
+    flexDirection: 'column', justifyContent: 'flex-start'
   },
   daySwipe: {
 

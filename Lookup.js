@@ -66,12 +66,12 @@ export default class Lookup extends Component {
       }
     })
 
-    if(this.props.toggleSearch || this.props.dist > 20) {
+    if(this.props.toggleSearch) {
       console.log(this.props.dist)
     return (
     <FadeInView style={{flex: 0, justifyContent: 'flex-start',  marginLeft: 10, marginRight: 10, marginBottom: 8, borderRadius: 12, color: this.props.fgColor, backgroundColor: this.props.bgColor}}>
             <View>    
-           <TouchableOpacity onPress={() => this.props.openCloseSearch(false)}>
+           <TouchableOpacity onPress={() => this.props.openCloseSearch()}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
            </TouchableOpacity>    
         </View> 
@@ -103,7 +103,7 @@ export default class Lookup extends Component {
           </TouchableOpacity>
         </View> 
       </View>
-      <ScrollView horizontal={false} style={{flex: 0, marginTop: 6, marginBottom: 24}}>    
+      <ScrollView horizontal={false} style={{marginTop: 6, height: this.props.height * .64, marginBottom:12}}>    
         <FlatList
           data={this.state.curHoods}
           contentContainerStyle={{justifyContent: 'flex-start'}}

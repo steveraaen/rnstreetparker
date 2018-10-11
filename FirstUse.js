@@ -53,17 +53,17 @@ export default class FirstUse extends Component {
 				flexDirection: 'row', 
 				flexWrap: 'wrap', 
 				justifyContent: 'space-between', 
-				backgroundColor: '#1F2C4B'
+				backgroundColor: 'black'
 			}
 		})
 	/*	const { navigate } = this.props.navigation;*/
 		return(
-			<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#1F2C4B'}}>
+			<View style={{flex: 1, justifyContent: 'center', backgroundColor: 'black'}}>
 			<StatusBar barStyle="light-content" hidden ={false}/>
 			<View style={{alignItems: 'center', marginTop: 30, marginBottom: 30}}>
 				<Image style={{paddingLeft: 16, height: 56, width: 56, borderRadius: 8}}source={require('./assets/p60x216.png')}/>
 			</View>
-			<View style={{backgroundColor: '#1F2C4B'}}>
+			<View style={{backgroundColor: 'black'}}>
 				<Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold',color: '#F6FEAC'}}>{blurbOne}</Text>
 			</View>
 			<View    >
