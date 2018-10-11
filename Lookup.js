@@ -77,10 +77,20 @@ export default class Lookup extends Component {
         </View> 
 
       <View>
-        <Text style={{color: 'white', fontSize: 14, textAlign: 'center'}}>Tap on a borough, then tap on a neighborhood</Text>
+        <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>Tap on a borough, then pick a neighborhood</Text>
       </View>
+      <View style={{marginTop: 4}}>
+        <Text style={{color: 'yellow', fontSize: 18, fontStyle: 'italic', textAlign: 'center'}}>There is no ASP on Staten Island</Text>
+      </View>
+          <View
+            style={{
+              borderBottomColor: this.props.fgColor,
+              borderBottomWidth: 1,
+              margin: 14
+            }}
+          />
       <View style={{justifyContent: 'center', marginTop: 8 }}>    
-        <View style={{display: 'flex', flexDirection: 'row'}}>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: 10}}>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Brooklyn')}>
             <View style={styles.boroText}>
               <Text style={{fontSize: 20, color: this.props.fgColor }}>Brooklyn</Text>
@@ -103,7 +113,7 @@ export default class Lookup extends Component {
           </TouchableOpacity>
         </View> 
       </View>
-      <ScrollView horizontal={false} style={{marginTop: 6, height: this.props.height * .64, marginBottom:12}}>    
+      <ScrollView horizontal={false} style={{marginTop: 6, height: this.props.height * .56, marginBottom:12}}>    
         <FlatList
           data={this.state.curHoods}
           contentContainerStyle={{justifyContent: 'flex-start'}}

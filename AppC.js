@@ -2,6 +2,8 @@
 // org.reactjs.native.example.streetparker
 /*ColorKey render and options in scratch.js*/
 // react-native run-ios --simulator="iPhone XS Max"
+// mongoexport -h ds239128.mlab.com:39128 -d heroku_d7twbhf6 -c meters -u steve -p modernWater360 -o meters.json
+// mongoimport -h ds131003-a0.mlab.com:31003 -d prodparking -c <collection> -u <user> -p <password> --file <input file>
 console.disableYellowBox = true;
 import React, { Component } from 'react';
 import {
@@ -101,10 +103,9 @@ this.calcDistance = this.calcDistance.bind(this)
 this.deg2rad = this.deg2rad.bind(this)
 this.hideSearch = this.hideSearch.bind(this)
 this.getNewMapLoc = this.getNewMapLoc.bind(this)
-
+this.makeCarMarker = this.makeCarMarker.bind(this)
 /*      this.mapToCar = this.mapToCar.bind(this)
-      this.mapFromCar = this.mapFromCar.bind(this)      
-      this.makeCarMarker = this.makeCarMarker.bind(this) 
+      this.mapFromCar = this.mapFromCar.bind(this)       
       this._retrieveData = this._retrieveData.bind(this)     
       this.spotListener = this.spotListener.bind(this)  */   
   }
@@ -412,16 +413,22 @@ console.log(this.state.parkingObject)
             longitude: ln,
             location: lo,
               }      
+            }, () => {
+              AsyncStorage.setItem('carMarkLocation', JSON.stringify(this.state.carMarkLocation))
             })
         }
-    componentWillMount(){
+
+    componentDidMount() { 
       AsyncStorage.getItem('prevLaunched', (err, val) => {
         this.setState({
           prevLaunched: JSON.parse(val)
         })
       })
-    }
-    componentDidMount() { 
+      AsyncStorage.getItem('carMarkLocation', (error, value) => {
+        this.setState({
+          carMarkLocation: JSON.parse(value)
+        })
+      })
       this.setState({appState: AppState.currentState})
    /*   this.calcDistance(40.676666, -73.983944, 40.711167, -73.866861)*/
         axios.get('https://ipinfo.io/geo')
@@ -554,7 +561,7 @@ console.log(this.state.parkingObject)
     })
 }
    getTenSigns(coor) {
-    this.setCarLoc(parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6))
+    this.setCarLoc(parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6), this.state.ASPObject.location)
       axios.get('https://streetparker.herokuapp.com/mycar', {
         params: {
           coordinates: [parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6)]            
@@ -566,17 +573,24 @@ console.log(this.state.parkingObject)
       })
     }, () => this.getCarLoc()) 
  }
-/*    makeCarMarker() {
+
+    makeCarMarker() {
+      console.log('mcm called', this.state.carMarkLocation)
     if(this.state.carMarkLocation) {
       return(
        <Marker 
-        coordinate={this.state.carMarkLocation}
+        coordinate={
+          {
+            latitude: JSON.parse(this.state.carMarkLocation.longitude),
+            longitude: JSON.parse(this.state.carMarkLocation.latitude)            
+          }
+        }
         >
-        <Icon name="ios-car" size={18} color="black"/>
+        <Icon name="ios-car" size={24} color="red"/>
         </Marker>
         )
     } else return null
-  }*/
+  }
 
     addToCal(s,e,l,a) {
           var isauth = RNCalendarEvents.authorizeEventStore()
@@ -789,11 +803,11 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 
      </Marker>
      ))}
-    {/* {this.makeCarMarker()}*/}
+    {this.makeCarMarker()}
 
   </MapView>
 
-    <View style={{height: this.state.height * .1,flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: 18, backgroundColor: this.state.bgColor}}>
+    <View style={{height: this.state.height * .12,flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: 18, backgroundColor: this.state.bgColor}}>
     
       <TouchableOpacity onPress={() => this.openCloseSave()}>
           <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm" size={36} color={this.state.colorSave}/></Text>  
@@ -825,7 +839,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     <ASPCalendar fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList} height={this.state.height} width={this.state.width}/>
  </View> 
   <View style={{display: 'flex'}}>    
-    <ModalContent fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} setCarLoc={this.setCarLoc} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
+    <ModalContent fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  </View>
 
 <View style={{display: 'flex'}}>

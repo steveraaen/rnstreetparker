@@ -74,10 +74,10 @@ export default class Summary extends Component {
 			return(
 			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 22, marginRight: 22, backgroundColor: 'white', justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
 			<View>
-				<Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, margin: 6}}/>
+				<Image source={require('./assets/p20x144-1.png')} style={{height: 28, width: 28, margin: 6}}/>
 			</View>
 			<View style={{justifyContent:'center', paddingLeft: 8, paddingRight: 8}}>
-				<Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{this.props.signText}</Text>
+				<Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold'}}>{this.props.signText}</Text>
 			</View>
 			</View>
 			)
@@ -121,14 +121,14 @@ export default class Summary extends Component {
 				</View>
 				<View style={{flexDirection: 'column'}}>
 					<View>
-						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHolidayDate}</Text>
+						<Text style={{marginTop: 12, marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHolidayDate}</Text>
 					</View>
 					<View >
-						<Text style={{marginTop: 6,  marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHoliday}</Text>
+						<Text style={{marginTop: 12,  marginLeft:24, color: 'white', fontSize: 22,  textAlign: 'center'}}>{nextHoliday}</Text>
 					</View>
 					<View
 					  style={{
-					    borderBottomColor: this.props.fgColor,
+					    borderBottomColor: '#3d405b',
 					    borderBottomWidth: 1,
 					    margin: 14
 					  }}
@@ -138,7 +138,7 @@ export default class Summary extends Component {
 						<Text style={{marginBottom: 2, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{parkedBlurb}</Text>
 					</View>
 
-					<View style={{marginTop: 4}}>
+					<View style={{marginTop: 8, marginBottom: 8}}>
 						<Text style={{textAlign: 'center', marginTop: 6, marginBottom: 6, color: 'white', fontSize: 22, }}>{parkedAddress}</Text>
 					</View>
 					<View>
@@ -149,7 +149,7 @@ export default class Summary extends Component {
 					</View>
 						
 					<View >
-						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 18,  textAlign: 'center'}}>{goodTill}</Text>
+						<Text style={{marginTop: 6, marginLeft:24, color: 'white', fontSize: 24, fontWeight: 'bold', textAlign: 'center'}}>{goodTill}</Text>
 					</View>
 				</View>			
 				

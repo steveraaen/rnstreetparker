@@ -77,15 +77,15 @@ export default class ModalContent extends Component {
       return ( 
         <View style={{alignItems: 'center'}}>
           <View style={{marginBottom: 18}}>
-            <Text style={{fontSize: 16, color: 'white', textAlign: 'center'}}>Just to be sure, which of these signs are you parked next to - on your side of the street?</Text>
+            <Text style={{fontSize: 22, color: 'white', textAlign: 'center'}}>Which of these signs is closest?</Text>
           </View>
             <FlatList 
               data={this.props.nearestThree.slice(0,3)}
               renderItem={({item}) => 
               <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
                 <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
-                  <Image source={require('./assets/p20x144-1.png')} style={{height: 22, width: 22, marginRight: 6}}/>
-                  <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold'}}>{item.properties.T}</Text>
+                  <Image source={require('./assets/p20x144-1.png')} style={{height: 26, width: 26, marginRight: 6}}/>
+                  <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold'}}>{item.properties.T}</Text>
                 </View>
               </TouchableOpacity>}
                 keyExtractor={item =>item.properties.ID.toString()}
@@ -117,7 +117,7 @@ export default class ModalContent extends Component {
             <View style={{alignItems: 'center', marginTop: 8}}>
               <Text style={{fontSize: 30, color: 'white'}}>{splitCarLoc[0] + " ?"}</Text>
             </View> 
-            <View style={{marginTop: 16, flexDirection: "row", justifyContent: 'space-around'}}>
+            <View style={{marginTop: 14, marginBottom: 14, flexDirection: "row", justifyContent: 'space-around'}}>
                 <TouchableOpacity 
                   style={{borderWidth: 1, borderColor: 'green', borderRadius: 6, padding:8}}
                   onPress={(e) => this.props.getTenSigns(this.state.carLoc.data.results[0].geometry)}
@@ -188,7 +188,7 @@ console.log(startTime, endTime, endDay)
             } else {
               timeLeft.isASPHoliday = 'ASP rules are in effect'
             }
-            console.log(timeLeft)
+       
           }
 
  }
