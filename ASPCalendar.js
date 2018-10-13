@@ -60,16 +60,38 @@ saveAllASP() {
       )
   }
 render() {
+switch (this.props.orientation) {
+  case 'portrait':
+
+var ASPHeight = this.props.height * .64
+    break;
+  case 'landscape':
+
+var ASPHeight = this.props.height * .5
+    break;
+  default:
+
+    var ASPHeight = this.props.height * .64
+}
+
 	var keyExtractor = (item, index) => item.date.format('MMMM, Do');
 	if(this.props.toggleASP) {
 	return(
 	
-		<View style={{marginLeft: 10, height: this.props.height * .64, marginBottom:12}}>
+		<View style={{marginLeft: 10, height: ASPHeight, marginBottom:12}}>
 		<FadeInView style={{ paddingRight: 8, marginRight: 10, paddingLeft: 8,backgroundColor: this.props.bgColor, borderRadius: 14}}>
+		<View style={{display: 'flex', flexDirection: 'row', alignItems: 'space-between'}}>
+
 		<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 		 	<Text style={{paddingTop: 14, paddingRight: 20}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 		 </TouchableOpacity>
-
+		<View >	
+		<Button 
+		title={"Save List to iPhone Calendar"}
+		onPress={()=> this.saveAllASP()}
+		/>
+		</View>
+		</View>
 		<SectionList
 			stickyHeaderIndices={0}
 			ItemSeparatorComponent={this.separator}
@@ -89,12 +111,7 @@ render() {
 		  ]}
 		  keyExtractor={(item, index) => item + index}
 		/>	
-		<View style={{marginTop:12}}>	
-		<Button 
-		title={"Save List to iPhone Calendar"}
-		onPress={()=> this.saveAllASP()}
-		/>
-		</View>
+
 	</FadeInView>
 	</View>
 	)

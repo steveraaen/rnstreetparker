@@ -1371,7 +1371,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C894D9C35993FBC83C5CEA8 /* Pods-streetparker.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = HTC7XN264G;
@@ -1394,7 +1395,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 38E2DFB09BFFD8CA99C7DA93 /* Pods-streetparker.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HTC7XN264G;
 				INFOPLIST_FILE = streetparker/Info.plist;

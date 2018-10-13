@@ -85,6 +85,16 @@ export default class Summary extends Component {
 	}
 
 	render() {
+switch (this.props.orientation) {
+  case 'portrait':
+var summaryHeight = this.props.height * .7
+    break;
+  case 'landscape':
+var summaryHeight = this.props.height * .66
+    break;
+  default:
+    var summaryHeight = this.props.height * .7
+}
 		/*console.log(this.state.savedSpot)*/
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
 		var blurbText = `The next street sweeping holiday is:`
@@ -100,13 +110,13 @@ export default class Summary extends Component {
 		}	
 		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
-			<View style={{borderRadius: 12,  marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
+			<View style={{borderRadius: 12,  height: summaryHeight, marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 					 </TouchableOpacity>		
 				</View>
-
+<ScrollView>
 				<FadeInView>
 					{this.showASPHol()}
 				<View
@@ -157,6 +167,7 @@ export default class Summary extends Component {
 			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>
 			</FadeInView>
+			</ScrollView>
 </View>
 			)
 	} else{

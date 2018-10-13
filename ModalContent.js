@@ -10,6 +10,7 @@ import {
   Image,
   Modal,
   Picker,
+  ScrollView,
   Slider,
   StatusBar,
   StyleSheet,
@@ -244,7 +245,7 @@ console.log(startTime, endTime, endDay)
   render() {
 if(this.props.toggleSave) {
     return (
-     
+
         <View style={{marginLeft: 10, marginRight: 10, borderRadius: 12, justifyContent: 'flex-start', backgroundColor: this.props.bgColor, marginBottom: 6, paddingBottom:12}}> 
            <TouchableOpacity onPress={() => this.props.openCloseSave(false)}>
             <Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
@@ -253,10 +254,12 @@ if(this.props.toggleSave) {
           onPress={() => this.props.getTenSigns()}>                    
         
           </TouchableOpacity>
+          <ScrollView>
           <View style={{marginTop: 12}}>{this.showCarLoc()}</View>
            <View>{this.showTenSigns()}</View>
+           </ScrollView>
         </View>
-      
+
       )
   } else return null
   }
