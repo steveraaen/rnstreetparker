@@ -16,7 +16,7 @@ export default class GoHome extends Component {
 	
 
 		<TouchableOpacity onPress={() => this.handlePress()}>
-		 	<Text style={{paddingTop: 14, paddingRight: 20}}>  <Icon name="ios-locate-outline" size={24} color={'rgba(0,0,0,.5)'}/></Text> 
+		 	<Text style={{paddingTop: 14, paddingRight: 20}}>  <Icon name="ios-locate-outline" size={34} color={'rgba(0,0,0)'}/></Text> 
 		 </TouchableOpacity>
 
 			)

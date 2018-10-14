@@ -119,6 +119,7 @@ this.getNewMapLoc = this.getNewMapLoc.bind(this)
 this.makeCarMarker = this.makeCarMarker.bind(this)
 this.setGoHome = this.setGoHome.bind(this)
 this.hoodStatus = this.hoodStatus.bind(this)
+this.showHome = this.showHome.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)       
@@ -798,6 +799,13 @@ dontSaveSpot(e) {
     toggleSave: false
   }, ()=> this.colorizeIcons())
 }
+showHome() {
+  if(this.state.selHood && this.state.dist < 20) {
+    return (
+      <GoHome { ...this.state } hoodStatus={this.hoodStatus} setGoHome={this.setGoHome}/> 
+      )
+  } else return null
+}
   render() {
   
 (this.state.orientation === "portrait") ? iconPaddingTop = 18 : iconPaddingTop = 0;
@@ -936,7 +944,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     </View>
      <View style={{ display:'flex'}}>
 </View> 
-  <GoHome { ...this.state } hoodStatus={this.hoodStatus} setGoHome={this.setGoHome}/> 
+  {this.showHome()}
  <View style={{display: 'flex'}}>
 <Summary {...this.state } openCloseSummary={this.openCloseSummary}/>
  </View>  
@@ -960,7 +968,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         <StatusBar barStyle="light-content" hidden ={true}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p5.png')}
+          source={require('./assets/p8.png')}
         />
       </View>)
     }
