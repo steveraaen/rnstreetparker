@@ -62,15 +62,12 @@ saveAllASP() {
 render() {
 switch (this.props.orientation) {
   case 'portrait':
-
-var ASPHeight = this.props.height * .64
+var ASPHeight = this.props.height * .72
     break;
   case 'landscape':
-
 var ASPHeight = this.props.height * .5
     break;
   default:
-
     var ASPHeight = this.props.height * .64
 }
 

@@ -36,9 +36,9 @@ export default class Lookup extends Component {
     })
   }
   _onItemPress(sh) {
-    console.log(sh)
+   this.props.hoodStatus()
     this.setState({
-      selHoodObj: sh
+      selHoodObj: sh,
 
     }, () => {this.props.getNewMapLoc(this.state.selHoodObj.lat, this.state.selHoodObj.lng)})
   }
@@ -113,7 +113,7 @@ export default class Lookup extends Component {
           </TouchableOpacity>
         </View> 
       </View>
-      <ScrollView horizontal={false} style={{marginTop: 6, height: this.props.height * .56, marginBottom:12}}>    
+      <ScrollView horizontal={false} style={{marginTop: 6, height: this.props.height * .5, marginBottom:12}}>    
         <FlatList
           data={this.state.curHoods}
           contentContainerStyle={{justifyContent: 'flex-start'}}

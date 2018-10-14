@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, Image, Text, TouchableOpacity, View} from 'react-native';
+import {StatusBar, StyleSheet, Image, Text, View, TouchableHighlight ,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ColorKey from './ColorKey.js'
 import FadeInView from './Anim.js'
 
-export default class ColorKey extends Component {
+export default class Info extends Component {
 render() {
 const styles = StyleSheet.create({
 	pic: {
@@ -38,20 +39,20 @@ const styles = StyleSheet.create({
 		color: 'white'
 	}
 })
-if(this.props.toggleColorKey) {
+
 return (
 	<View  style={{display: 'flex', alignItems: 'center', marginBottom: 12, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, paddingBottom: 6, borderRadius: 8}}>
 		<FadeInView>
 		<View style={{display: 'flex', backgroundColor: this.props.bgColor}}>
 
-		<TouchableOpacity onPress={() => this.props.hideKey(false)}>
+		<TouchableOpacity onPress={() => this.props.openCloseASP(false)}>
 		 	<Text style={{paddingTop: 14, paddingRight: 20}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 		 </TouchableOpacity>
 	</View>
 
 		   <Image
          
-          source={require('./assets/help2.png')}
+          source={require('./assets/compacthelp.png')}
        />
 <View style={{marginTop: 10}} >
       			<FadeInView style={{display: 'flex',flexDirection: 'row', alignItems: 'space-between',marginBottom: 6, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8}}>
@@ -74,6 +75,7 @@ return (
 	</FadeInView>
 </View>
       )
-			} else return null
+
      }
-	}
+
+}
