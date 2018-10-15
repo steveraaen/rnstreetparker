@@ -4,7 +4,6 @@ import moment from 'moment'
 import axios from 'axios'
 import gkey from './keys.js'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { CheckBox } from 'react-native-elements';
 
 var blurbOne = `Alternate Side Parking Manager.`
 var blurbTwo = `Features:`
@@ -21,22 +20,6 @@ export default class FirstUse extends Component {
 			checked: false
 		}
 		
-	}
-
-	componentWillMount() {
-		if(this.props.uLngLat) {
-    axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(this.props.uLngLat[1]).toFixed(5) +',' + parseFloat(this.props.uLngLat[0]).toFixed(5) + '&key=' + gkey, {}
-  ).then((doc) => {
-    console.log(doc)
-    this.setState({
-      carLoc: doc
-      })
-    })
-  }
-	}
-
-	savePrevStatus() {
-
 	}
 	render() {
 		const styles = StyleSheet.create({
@@ -61,7 +44,7 @@ export default class FirstUse extends Component {
 			<View style={{flex: 1, justifyContent: 'center', backgroundColor: 'black'}}>
 			<StatusBar barStyle="light-content" hidden ={false}/>
 			<View style={{alignItems: 'center', marginTop: 30, marginBottom: 30}}>
-				<Image style={{paddingLeft: 16, height: 56, width: 56, borderRadius: 8}}source={require('./assets/p60x216.png')}/>
+				<Image style={{paddingLeft: 16, height: 56, width: 56, borderRadius: 8}}source={require('./assets/bp60x216.png')}/>
 			</View>
 			<View style={{backgroundColor: 'black'}}>
 				<Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold',color: '#F6FEAC'}}>{blurbOne}</Text>
@@ -93,20 +76,24 @@ export default class FirstUse extends Component {
 			</View>
 			</View>
 			<View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: 24, marginBottom: 12}}>
-			<CheckBox
-			checked={this.state.checked}
-			onPress={() => this.props.handleCheck()}
-			  title="Don't show this again"
-			  containerStyle={{backgroundColor: 'black'}}
-			  textStyle={{color: "#F6FEAC"}}
-			  checkedColor='red'
-			/>
+
 
 			<TouchableOpacity onPress={() => this.props.ackPrevLaunched()}>
 			<Text style={{paddingTop: 4, textAlign: 'right', marginRight: 36}}>  <Icon name="ios-arrow-round-forward" size={48} color="#F6FEAC"/></Text> 				
 			</TouchableOpacity>
 
 			</View>
+			<View style={{display:'flex', flexDirection: 'row', flexWrap: 'wrap',justifyContent: 'center', alignItems: 'center', padding: 4}}>
+				<View style={{display: 'flex', justifyContent: 'flex-start', marginRight: 4}}>
+				 	<Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>To see this info again, tap the </Text>
+				 </View>
+				 <View style={{display: 'flex', justifyContent: 'flex-end'}}>
+				 	<Icon name="ios-information-circle-outline" size={34} color="#F6FEAC"/> 
+				</View>
+				<View style={{display: 'flex', justifyContent: 'flex-end', marginLeft: 4}}>
+				 <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>icon on the main page. </Text>
+				</View>
+				</View>
 			</View>
 			)
 	}

@@ -84,7 +84,7 @@ export default class ModalContent extends Component {
               data={this.props.nearestThree.slice(0,3)}
               renderItem={({item}) => 
               <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
-                <View style={{flexDirection: 'row', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
                   <Image source={require('./assets/p20x144-1.png')} style={{height: 26, width: 26, marginRight: 6}}/>
                   <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold'}}>{item.properties.T}</Text>
                 </View>
@@ -116,7 +116,7 @@ export default class ModalContent extends Component {
                 <Text style={{fontSize: 30, color: this.props.fgColor, textAlign: 'center'}}>Are you parked near</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 8}}>
-              <Text style={{fontSize: 30, color: 'white'}}>{splitCarLoc[0] + " ?"}</Text>
+              <Text style={{fontSize: 30, color: 'white'}}>{this.state.carAddress.house_number + " " + this.state.carAddress.road + "?"}</Text>
             </View> 
             <View style={{marginTop: 14, marginBottom: 14, flexDirection: "row", justifyContent: 'space-around'}}>
                 <TouchableOpacity 
@@ -193,15 +193,15 @@ console.log(startTime, endTime, endDay)
           }
 
  }
-/* console.log(this.state.carLoc.data.results[0])*/
- var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]
+var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddress.road
+/* var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]*/
  var neighborhood = this.state.carLoc.data.results[0].components.neighbourhood
  var boro = this.state.carLoc.data.results[0].components.suburb
         this.setState ({
           end: daysArr,
             asyncCarObject: {
              /* parkedAt: this.state.carLoc.data.results[0].formatted,*/
-              location: streetAddress + ", " + neighborhood + ", " + boro,
+              location: streetAddress + ", " + boro,
               goodTill: timeLeft.day,
               isASPHoliday: timeLeft.isASPHoliday
             }

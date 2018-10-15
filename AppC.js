@@ -185,6 +185,8 @@ return d
     ackPrevLaunched() {
       this.setState({
         prevLaunched: true
+      }, () => {
+         AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
       })
     }
     hideKey(tf) {
@@ -532,6 +534,8 @@ hoodStatus() {
     this.setState({
       uLatitude: this.state.originalLatitude,
       uLongitude: this.state.originalLongitude
+    }, () => {
+      this.getSigns(parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6))
     })
   }
     makeMarker(d) {
@@ -959,7 +963,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     <Lookup orientation={this.state.orientation} hoodStatus={this.hoodStatus} getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch} dist={this.state.dist} height={this.state.height} width={this.state.width}/>
 </View> 
 
-<ColorKey orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleColorKey={this.state.toggleColorKey} showKey={this.state.showKey } hideKey={this.hideKey} />
+<ColorKey height={this.state.height} width={this.state.width} orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleColorKey={this.state.toggleColorKey} showKey={this.state.showKey } hideKey={this.hideKey} />
   
   </View>
     );
@@ -968,7 +972,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         <StatusBar barStyle="light-content" hidden ={true}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p8.png')}
+          source={require('./assets/p9.png')}
         />
       </View>)
     }
