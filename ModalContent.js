@@ -153,18 +153,23 @@ console.log(startTime, endTime, endDay)
         for(let i = 0; i < endDay.length; i++) {
 
         var timeLeft = {}
-          currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours')  
+          currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours') 
+
           if(currentDiff < 0) {
+ console.log(currentDiff - Math.floor(currentDiff))
             timeLeft={
             justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('ddd, MMMM Do, h:mm a'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').subtract(2, 'hours').toISOString(),
+            diff: currentDiff,
+            diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
+            diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
             isASPHoliday: 'ASP is in effect'
             }
           daysArr.push(timeLeft)
-
+          
           }
           else if(currentDiff > 0) {
           timeLeft = {
@@ -180,7 +185,9 @@ console.log(startTime, endTime, endDay)
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
             isASPHoliday: 'This is not an Alternate Side Parking Holiday'
           }
-          daysArr.push(timeLeft)        
+          daysArr.push(timeLeft) 
+          daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
+          this.setState({daysArr: daysArr})       
         }
           for(let i = 0; i < aspDays.length; i++) {
             var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')         
@@ -197,6 +204,9 @@ var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddr
 /* var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]*/
  var neighborhood = this.state.carLoc.data.results[0].components.neighbourhood
  var boro = this.state.carLoc.data.results[0].components.suburb
+
+
+
         this.setState ({
           end: daysArr,
             asyncCarObject: {
