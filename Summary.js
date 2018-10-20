@@ -32,6 +32,13 @@ export default class Summary extends Component {
 	      	ASPObject: value
 	      })
 	   })
+		AsyncStorage.getItem('moveDay', (error, value) => {})
+	   .then((value) => {
+	      this.setState({
+	      	moveDay: value
+	      })
+	   })
+
 		var nextArr = []
 		for(let i = 0; i < this.state.aspArray.length; i++) {
 			if(this.state.aspArray[i].date.isAfter(this.state.today)){
@@ -76,8 +83,8 @@ export default class Summary extends Component {
 			<View>
 				<Image source={require('./assets/p20x144-1.png')} style={{height: 28, width: 28, margin: 6}}/>
 			</View>
-			<View style={{justifyContent:'center', paddingLeft: 8, paddingRight: 8}}>
-				<Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold'}}>{this.props.signText}</Text>
+			<View style={{display: "flex", flexWrap: 'wrap', justifyContent:'center', paddingLeft: 8, paddingRight: 18}}>
+				<Text adjustsFontSizeToFit style={{textAlign: 'center', color: 'black', fontSize: 18, fontWeight: 'bold'}}>{this.props.signText}</Text>
 			</View>
 			</View>
 			)
@@ -87,13 +94,13 @@ export default class Summary extends Component {
 	render() {
 switch (this.props.orientation) {
   case 'portrait':
-var summaryHeight = this.props.height * .7
+var summaryHeight = this.props.height * .76
     break;
   case 'landscape':
 var summaryHeight = this.props.height * .66
     break;
   default:
-    var summaryHeight = this.props.height * .7
+    var summaryHeight = this.props.height * .76
 }
 		/*console.log(this.state.savedSpot)*/
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
@@ -105,12 +112,12 @@ var summaryHeight = this.props.height * .66
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
 			var parkedAddress = this.props.ASPObject.location
-			var goodTill = this.props.ASPObject.goodTill
+			var goodTill = this.state.moveDay
 			var isHol = this.props.ASPObject.isASPHoliday
 		}	
 		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
-			<View style={{borderRadius: 12,  height: summaryHeight, marginBottom:4, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
+			<View style={{borderRadius: 12,  height: summaryHeight, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'flex-start'}}>
 				<View>		
 					 <TouchableOpacity onPress={() => this.props.openCloseSummary(false)}>
 					 	<Text style={{paddingTop: 4}}>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
@@ -155,7 +162,7 @@ var summaryHeight = this.props.height * .66
 					{this.showSignOnSummary()}
 					</View>
 					<View style={{marginTop: 2}}>
-						<Text style={{marginTop: 6, marginBottom: 12, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
+						<Text style={{marginTop: 16, marginLeft:24, color: this.props.fgColor, fontSize: 20,  textAlign: 'center'}}>{moveBlurb}</Text>
 					</View>
 						
 					<View >
@@ -163,7 +170,7 @@ var summaryHeight = this.props.height * .66
 					</View>
 				</View>			
 				
-				<View style={{marginBottom: 8}}>
+				<View style={{marginBottom:8}}>
 			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>
 			</FadeInView>

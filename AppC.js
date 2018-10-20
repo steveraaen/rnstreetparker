@@ -120,6 +120,8 @@ this.makeCarMarker = this.makeCarMarker.bind(this)
 this.setGoHome = this.setGoHome.bind(this)
 this.hoodStatus = this.hoodStatus.bind(this)
 this.showHome = this.showHome.bind(this)
+/*this.getDaysArr = this.getDaysArr.bind(this)*/
+this.getMoveDay = this.getMoveDay.bind(this)
 
 /*      this.mapToCar = this.mapToCar.bind(this)
       this.mapFromCar = this.mapFromCar.bind(this)       
@@ -345,7 +347,7 @@ console.log(this.state.parkingObject)
        var reStart= /\s|^([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
        var reDay= /[A-Z]{3}/g
       var endTime = doc.data[i].properties.T.match(reEnd)
-      var noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
+      var noonTime = moment(dayow + ' ' + '12:00PM','hh:mm A')
       var dayow = doc.data[i].properties.T.match(reDay)
       var todayArray = []
       var now = moment()
@@ -360,8 +362,8 @@ console.log(this.state.parkingObject)
       if(Array.isArray(endTime)){
             marker.dayow = dayow
             marker.rawEnd = endTime[1]
-            marker.endTime = moment(endTime[1], 'hh:mma')
-            marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mma')
+            marker.endTime = moment(endTime[1], 'hh:mm A')
+            marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mm A')
             marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
 
       if(marker.endTime.isBefore(marker.noonTime)) {
@@ -521,7 +523,7 @@ hoodStatus() {
        
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true,  distanceFilter: 50, timeout: 10 },
+      { enableHighAccuracy: true,  distanceFilter: 5000, timeout: 10 },
             )      
         }.bind(this))    
           this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
@@ -810,7 +812,13 @@ showHome() {
       )
   } else return null
 }
+getMoveDay(da) {
+  this.setState({moveDay: da}, () =>{
+    AsyncStorage.setItem('moveDay', da)
+  })
+  }
   render() {
+
   
 (this.state.orientation === "portrait") ? iconPaddingTop = 18 : iconPaddingTop = 0;
 
@@ -950,13 +958,13 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 </View> 
   {this.showHome()}
  <View style={{display: 'flex'}}>
-<Summary {...this.state } openCloseSummary={this.openCloseSummary}/>
+<Summary {...this.state }  openCloseSummary={this.openCloseSummary}/>
  </View>  
   <View style={{display: 'flex'}}>
     <ASPCalendar orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} openCloseASP={this.openCloseASP} toggleASP={this.state.toggleASP} importASPList={this.importASPList} height={this.state.height} width={this.state.width}/>
  </View> 
   <View style={{display: 'flex'}}>    
-    <ModalContent orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
+    <ModalContent getMoveDay={this.getMoveDay} getDaysArr={this.getDaysArr} orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} uLnglat={this.state.uLnglat} nearestThree={this.state.nearestThree} openCloseSave={this.openCloseSave} toggleSave={this.state.toggleSave} openModal={this.openModal} closeModal={this.closeModal} getSignText={this.getSignText} getASPStatus={this.getASPStatus} addToCal={this.addToCal} fullDay={this.state.fullDay} getTenSigns={this.getTenSigns} setCarLoc={this.setCarLoc} dontSaveSpot={this.dontSaveSpot}/>
  </View>
 
 <View style={{display: 'flex'}}>

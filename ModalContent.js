@@ -84,10 +84,16 @@ export default class ModalContent extends Component {
               data={this.props.nearestThree.slice(0,3)}
               renderItem={({item}) => 
               <TouchableOpacity onPress={() => this.parseClosest(item.properties.T)}>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14, padding: 8}}>
-                  <Image source={require('./assets/p20x144-1.png')} style={{height: 26, width: 26, marginRight: 6}}/>
-                  <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold'}}>{item.properties.T}</Text>
+                
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', height: 56, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: 3, borderColor: '#941100', borderRadius: 12, marginTop: 14}}>
+                  <View>  
+                    <Image source={require('./assets/p20x144-1.png')} style={{height: 26, width: 26, marginRight: 6}}/>
+                  </View>  
+                  <View>
+                    <Text numberOfLines={2} adjustsFontSizeToFit style={{ color: 'black', fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>{item.properties.T}</Text>
+                  </View>
                 </View>
+
               </TouchableOpacity>}
                 keyExtractor={item =>item.properties.ID.toString()}
             />
@@ -143,7 +149,7 @@ export default class ModalContent extends Component {
   }, () => {
         this.props.getSignText(this.state.thisSign)
         var reEnd = /\-([0-9]{1,2}\:[0-9]{2}[A-Z]{2})/
-        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-Z]{2}\-)/
+        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-Z]{2})\-/
         var reDay= /[A-Z]{3}/g
         var startTime = this.state.thisSign.match(reStart)
         var endTime = this.state.thisSign.match(reEnd)
@@ -175,9 +181,9 @@ console.log(startTime, endTime, endDay)
           timeLeft = {
             justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('ddd, MMM Do, h:mm a'),
-            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').toISOString(),
+            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm a').toISOString(),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
-            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').subtract(2, 'hours').toISOString(),
+            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm a').subtract(2, 'hours').toISOString(),
             
             nowISO: moment().toISOString(),
             diff: currentDiff,
@@ -187,7 +193,8 @@ console.log(startTime, endTime, endDay)
           }
           daysArr.push(timeLeft) 
           daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
-          this.setState({daysArr: daysArr})       
+          this.props.getMoveDay(daysArr[0].day)    
+  
         }
           for(let i = 0; i < aspDays.length; i++) {
             var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')         
