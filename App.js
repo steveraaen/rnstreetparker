@@ -119,23 +119,23 @@ export default class AppC extends Component<Props> {
       this.showHome = this.showHome.bind(this)
       this.getMoveDay = this.getMoveDay.bind(this)
   }
-
+// --------- Find out if  user is within 20 miles of NYC center
   deg2rad(deg) {
     return deg * Math.PI / 180
   }
-
 calcDistance(lat1, lon1, lat2, lon2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = this.deg2rad(lat2 - lat1); // this.deg2rad below
-  var dLon = this.deg2rad(lon2 - lon1);
-  var a =
+    var R = 6371; // Radius of the earth in km
+    var dLat = this.deg2rad(lat2 - lat1); // this.deg2rad below
+    var dLon = this.deg2rad(lon2 - lon1);
+    var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
     Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
-d >20 ? this.setState({toggleSearch: true}) : this.setState({toggleSearch: false}, ()=> {
+  d >20 ? this.setState({toggleSearch: true}) : this.setState({toggleSearch: false}, ()=> {
+// ---------- If user is > 20 miles outside NYC, disable location watch
   navigator.geolocation.clearWatch(this.watchID);
 })
 this.setState({dist: d})
@@ -212,30 +212,6 @@ return d
     } 
     
   }
-/*  _handleAppStateChange = (nextAppState) => {
-
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      
-      AsyncStorage.getItem('prevLaunched', (err, val) => {
-        console.log(JSON.parse(val))
-        this.setState({prevLaunched: JSON.parse(val)})
-      })
-    }  
-console.log(this.state.parkingObject)
-    if (this.state.appState  === 'active' && nextAppState.match(/inactive|background/) ) {
-      console.log(this.state.parkingObject)
-      AsyncStorage.setItem('parkingObject', JSON.stringify(this.state.parkingObject), () => {
-        AsyncStorage.getItem('parkingObject', (err, value) => {
-          this.setState({parkingObject: JSON.parse(value)})
-        })
-      })
-     console.log(this.state.appState)
-      
-    }
-    this.setState({
-      appState: nextAppState,
-    });
-  }*/
   getNewDay(day) {
     if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
