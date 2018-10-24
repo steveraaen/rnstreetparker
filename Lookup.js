@@ -22,7 +22,11 @@ export default class Lookup extends Component {
     super(props);
     this.state = { 
       text: null,
-      neighborhoods: neighborhoods
+      neighborhoods: neighborhoods,
+      brooklynColor: 'white',
+      bronxColor: 'white',
+      manhattanColor: 'white',
+      queensColor: 'white'
        }
     this._onItemPress = this._onItemPress.bind(this)
     this.getHoodsFromBoro = this.getHoodsFromBoro.bind(this)
@@ -32,7 +36,55 @@ export default class Lookup extends Component {
     var hoodsInBoro = this.state.neighborhoods.filter((boro, idx) => boro.borough.includes(br))
     hoodsInBoro.sort((a,b) => b.name < a.name ? 1 : -1);
     this.setState({
-      curHoods: hoodsInBoro
+      selectedBoro: br,
+      curHoods: hoodsInBoro,
+    }, () => {
+      switch(this.state.selectedBoro) {
+        case 'Brooklyn':
+        this.setState({
+          brooklynColor: this.props.fgColor, 
+          bronxColor: 'white',
+          manhattanColor: 'white',
+          queensColor: 'white'
+        })
+        break;
+
+        case 'Bronx':
+        this.setState({
+          brooklynColor: 'white',
+          bronxColor: this.props.fgColor,
+          manhattanColor: 'white',
+          queensColor: 'white'
+        })
+        break;
+
+        case 'Manhattan':
+        this.setState({
+          brooklynColor: 'white',
+          bronxColor: 'white',
+          manhattanColor: this.props.fgColor,
+          queensColor: 'white'
+        })
+        break;
+
+        case 'Queens':
+        this.setState({
+          brooklynColor: 'white',
+          bronxColor: 'white',
+          manhattanColor: 'white',
+          queensColor: this.props.fgColor
+        })
+        break;
+
+        default:
+        this.setState({
+          brooklynColor: 'white',
+          bronxColor: 'white',
+          manhattanColor: 'white',
+          queensColor: 'white'
+        })       
+
+      }
     })
   }
   _onItemPress(sh) {
@@ -57,7 +109,8 @@ export default class Lookup extends Component {
     const styles = StyleSheet.create({
       boroText: {
         marginLeft:8,
-        marginRight:8
+        marginRight:8, 
+        color: 'white'
       },
       hoodText: {
         fontSize: 20, 
@@ -80,7 +133,7 @@ export default class Lookup extends Component {
         <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>Tap on a borough, then pick a neighborhood</Text>
       </View>
       <View style={{marginTop: 4}}>
-        <Text style={{color: 'yellow', fontSize: 18, fontStyle: 'italic', textAlign: 'center'}}>There is no ASP on Staten Island</Text>
+        <Text style={{color: this.props.fgColor, fontSize: 18, fontStyle: 'italic', textAlign: 'center'}}>There is no ASP on Staten Island</Text>
       </View>
           <View
             style={{
@@ -93,22 +146,22 @@ export default class Lookup extends Component {
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: 10}}>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Brooklyn')}>
             <View style={styles.boroText}>
-              <Text style={{fontSize: 20, color: this.props.fgColor }}>Brooklyn</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold',color: this.state.brooklynColor }}>Brooklyn</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Bronx')}>
             <View style={styles.boroText}>
-              <Text style={{fontSize: 20, color: this.props.fgColor }}>Bronx</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold',color: this.state.bronxColor }}>Bronx</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Manhattan')}>
             <View style={styles.boroText}>
-              <Text style={{fontSize: 20, color: this.props.fgColor }}>Manhattan</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold',color: this.state.manhattanColor }}>Manhattan</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=> this.getHoodsFromBoro('Queens')}>
             <View style={styles.boroText}>
-              <Text style={{fontSize: 20, color: this.props.fgColor }}>Queens</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold',color: this.state.queensColor }}>Queens</Text>
             </View>
           </TouchableOpacity>
         </View> 

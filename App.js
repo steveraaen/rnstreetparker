@@ -213,6 +213,7 @@ return d
     
   }
   getNewDay(day) {
+// TODO: Refactor with switch case break
     if(this.state.selDay === "MON" && this.state.markersArray) {
     this.setState({
       selDay: day,
@@ -332,6 +333,7 @@ return d
         }
       } 
         for(let i = 0; i < markersArray.length; i++) {
+// TODO  - refactor with switch case break
           if(markersArray[i].text.includes("MON")) {
           monArray.push(markersArray[i])
         } if(markersArray[i].text.includes("TUE")) {
@@ -491,7 +493,8 @@ hoodStatus() {
   setGoHome() {
     this.setState({
       uLatitude: this.state.originalLatitude,
-      uLongitude: this.state.originalLongitude
+      uLongitude: this.state.originalLongitude,
+      toggleSearch: false
     }, () => {
       this.getSigns(parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6))
     })
@@ -780,9 +783,9 @@ getMoveDay(da) {
 
 switch (this.state.orientation) {
   case 'portrait':
-    var iconPaddingTop = 18
+    var iconPaddingTop = 12
     var iconPaddingBottom = 0
-var iconBarHeight = this.state.height * .12
+var iconBarHeight = this.state.height * .16
     break;
   case 'landscape':
     var iconPaddingTop = 0
@@ -889,23 +892,57 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
   </MapView>
 
     <View style={{height: iconBarHeight,flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around', paddingTop: iconPaddingTop, paddingBottom: iconPaddingBottom, backgroundColor: this.state.bgColor}}>
-    
+    <View>
+      <View style={{alignItems: 'center'}}>
       <TouchableOpacity onPress={() => this.openCloseSave()}>
-          <Text style={{paddingTop: 24}}>  <Icon name="ios-alarm-outline" size={36} color={this.state.colorSave}/></Text>  
+          <Text >  <Icon name="ios-alarm-outline" size={36} color={this.state.colorSave}/></Text>  
       </TouchableOpacity> 
+      </View>
+      <View>
+          <Text style={{color: 'white', textAlign: 'center'}}>Remind</Text>
+      </View>
+    </View>
+    <View style={{alignItems: 'center'}}>
+      <View>
       <TouchableOpacity onPress={() => this.openCloseASP()}>
-          <Text style={{paddingTop: 24}}>  <Icon name="ios-calendar-outline" size={36} color={this.state.colorASP}/></Text>            
-      </TouchableOpacity> 
+          <Text >  <Icon name="ios-calendar-outline" size={36} color={this.state.colorASP}/></Text>            
+      </TouchableOpacity>
+      </View>
+      <View>
+          <Text style={{color: 'white', textAlign: 'center'}}>ASP List</Text>
+      </View>
+    </View>
+    <View style={{alignItems: 'center'}}>
+      <View>
       <TouchableOpacity onPress={() => this.openCloseSearch()}>
-          <Text style={{paddingTop: 24}}>  <Icon name="ios-search-outline" size={36} color={this.state.colorSearch}/></Text>            
+          <Text >  <Icon name="ios-search-outline" size={36} color={this.state.colorSearch}/></Text>            
       </TouchableOpacity> 
+      </View>
+      <View>
+          <Text style={{color: 'white', textAlign: 'center'}}>Find</Text>
+      </View>
+    </View>
+    <View style={{alignItems: 'center'}}>
+      <View>
       <TouchableOpacity onPress={() => this.openCloseSummary()}>
-          <Text style={{paddingTop: 24}}>  <Icon name="ios-bookmark-outline" size={36} color={this.state.colorSum}/></Text>  
+          <Text >  <Icon name="ios-bookmark-outline" size={36} color={this.state.colorSum}/></Text>  
       </TouchableOpacity> 
+      </View>
+      <View>
+          <Text style={{color: 'white', textAlign: 'center'}}>Info</Text>
+      </View>
+    </View>
+     <View style={{alignItems: 'center'}}> 
+      
       <TouchableOpacity onPress={() => this.openCloseColorKey()}>
-           <Text style={{paddingTop: 24}}>  <Icon name="ios-information-circle-outline" size={36} color={this.state.colorColorKey}/></Text>  
+           <Text >  <Icon name="ios-information-circle-outline" size={36} color={this.state.colorColorKey}/></Text>  
       </TouchableOpacity> 
+<View>
+<Text style={{color: 'white', textAlign: 'center'}}>Help</Text>
+</View>
+
   
+    </View>
     </View>
     <View style={{display: 'flex'}}>
       <SearchB orientation={this.state.orientation} initDay={this.state.initDay} selDay={this.state.selDay} fgColor={this.state.fgColor} bgColor={this.state.bgColor} makeMarker={this.makeMarker} getNewDay={this.getNewDay}/>
