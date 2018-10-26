@@ -256,7 +256,7 @@ return d
 
   }
     getMeters(ln, la) {
-      /*axios.get('http:127.0.0.1:5000/api/meters', {*/
+      /*axios.get('http:127.0.0.1:5001/api/meters', {*/
       axios.get('https://streetparker.herokuapp.com/api/meters', {
               params: {
                 coordinates: [parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6)],           
@@ -282,7 +282,7 @@ return d
       }
     
     getSigns(lo, la) { 
-          /*  axios.get('http:127.0.0.1:5001/mon', {*/
+           /* axios.get('http:127.0.0.1:5001/mon', {*/
             axios.get('https://streetparker.herokuapp.com/mon', {
             params: {
               coordinates: [lo, la],
@@ -327,7 +327,7 @@ return d
         marker.dotImage = require('./assets/blueDot6pt.png')
         }
           else if(marker.endTime.isAfter(marker.noonTime)){     
-          marker.dotImage = require('./assets/orangeDot6pt.png')
+          marker.dotImage = require('./assets/brightorange12p.png')
         }
           markersArray.push(marker)          
         }
@@ -498,6 +498,7 @@ hoodStatus() {
     }, () => {
       this.getSigns(parseFloat(this.state.uLongitude).toFixed(6), parseFloat(this.state.uLatitude).toFixed(6))
     })
+      this.colorizeIcons()
   }
     makeMarker(d) {
     /*  console.log(d)*/
@@ -783,9 +784,9 @@ getMoveDay(da) {
 
 switch (this.state.orientation) {
   case 'portrait':
-    var iconPaddingTop = 12
+    var iconPaddingTop = 14
     var iconPaddingBottom = 0
-var iconBarHeight = this.state.height * .16
+var iconBarHeight = this.state.height * .13
     break;
   case 'landscape':
     var iconPaddingTop = 0
@@ -793,9 +794,9 @@ var iconBarHeight = this.state.height * .16
 var iconBarHeight = this.state.height * .2
     break;
   default:
-    var iconPaddingTop = 18;
-    var iconPaddingBottom = 12
-    var iconBarHeight = this.state.height * .12
+    var iconPaddingTop = 12;
+    var iconPaddingBottom = 0
+    var iconBarHeight = this.state.height * .14
 }
 
 
@@ -899,7 +900,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       </TouchableOpacity> 
       </View>
       <View>
-          <Text style={{color: 'white', textAlign: 'center'}}>Remind</Text>
+          <Text style={{color: this.state.colorSave, textAlign: 'center'}}>Remind</Text>
       </View>
     </View>
     <View style={{alignItems: 'center'}}>
@@ -909,7 +910,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       </TouchableOpacity>
       </View>
       <View>
-          <Text style={{color: 'white', textAlign: 'center'}}>ASP List</Text>
+          <Text style={{color: this.state.colorASP, textAlign: 'center'}}>ASP List</Text>
       </View>
     </View>
     <View style={{alignItems: 'center'}}>
@@ -919,7 +920,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       </TouchableOpacity> 
       </View>
       <View>
-          <Text style={{color: 'white', textAlign: 'center'}}>Find</Text>
+          <Text style={{color: this.state.colorSearch, textAlign: 'center'}}>Find</Text>
       </View>
     </View>
     <View style={{alignItems: 'center'}}>
@@ -929,7 +930,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
       </TouchableOpacity> 
       </View>
       <View>
-          <Text style={{color: 'white', textAlign: 'center'}}>Info</Text>
+          <Text style={{color: this.state.colorSum, textAlign: 'center'}}>Info</Text>
       </View>
     </View>
      <View style={{alignItems: 'center'}}> 
@@ -938,7 +939,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
            <Text >  <Icon name="ios-information-circle-outline" size={36} color={this.state.colorColorKey}/></Text>  
       </TouchableOpacity> 
 <View>
-<Text style={{color: 'white', textAlign: 'center'}}>Help</Text>
+<Text style={{color: this.state.colorColorKey, textAlign: 'center'}}>Help</Text>
 </View>
 
   
