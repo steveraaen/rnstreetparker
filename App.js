@@ -104,7 +104,7 @@ export default class AppC extends Component<Props> {
       this.openCloseSearch = this.openCloseSearch.bind(this)
       this.openCloseColorKey = this.openCloseColorKey.bind(this)
       this.colorizeIcons = this.colorizeIcons.bind(this)
-      this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
+  /*    this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)*/
       this.hideKey = this.hideKey.bind(this)
       this.dontSaveSpot = this.dontSaveSpot.bind(this)
       this.importASPList = this.importASPList.bind(this)
@@ -752,12 +752,12 @@ openCloseColorKey() {
       toggleSearch: false,
     }), () => this.colorizeIcons());
 }
-onRegionChangeComplete(region) {
+/*onRegionChangeComplete(region) {
   
     this.getSigns(this.state.uLongitude, this.state.uLatitude)
 
 console.log(region)
-}
+}*/
 dontSaveSpot(e) {
   this.setState({
     carLoc: null,
@@ -784,7 +784,7 @@ getMoveDay(da) {
 
 switch (this.state.orientation) {
   case 'portrait':
-    var iconPaddingTop = 14
+    var iconPaddingTop = 16
     var iconPaddingBottom = 0
 var iconBarHeight = this.state.height * .13
     break;
@@ -862,6 +862,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         latitudeDelta: .015,
         longitudeDelta: .015,
       }}
+    
       >
     {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
@@ -971,10 +972,10 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
     );
     } else {
       return (<View style={{flex: 1, justifyContent: 'center', backgroundColor: '#212121' }} >
-        <StatusBar barStyle="light-content" hidden ={true}/>
+        <StatusBar barStyle="light-content" hidden ={false}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p9.png')}
+          source={require('./assets/p10.png')}
         />
       </View>)
     }

@@ -119,7 +119,7 @@ export default class ModalContent extends Component {
   /*  console.log(splitCarLoc)*/
      return( <View style={{backgroundColor: this.props.bgColor}}>
             <View>
-                <Text style={{fontSize: 30, color: this.props.fgColor, textAlign: 'center'}}>Are you parked near</Text>  
+                <Text style={{fontSize: 30, color: this.props.fgColor, textAlign: 'center'}}>Are you parked next to</Text>  
             </View> 
             <View style={{alignItems: 'center', marginTop: 8}}>
               <Text style={{fontSize: 30, color: 'white'}}>{this.state.carAddress.house_number + " " + this.state.carAddress.road + "?"}</Text>
@@ -197,6 +197,7 @@ console.log(startTime, endTime, endDay)
   
         }
           for(let i = 0; i < aspDays.length; i++) {
+            console.log(timeLeft.justDay, moment(aspDays[i].date).format('MMMM Do YYYY'))
             var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')         
             if(timeLeft.justDay === formDate) {
               timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
