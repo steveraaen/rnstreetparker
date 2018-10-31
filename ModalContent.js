@@ -165,7 +165,7 @@ console.log(startTime, endTime, endDay)
  console.log(currentDiff - Math.floor(currentDiff))
             timeLeft={
             justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY'),
-            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('ddd, MMMM Do, h:mm a'),
+            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('ddd, MMMM Do, h:mm A'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').subtract(2, 'hours').toISOString(),
@@ -175,15 +175,16 @@ console.log(startTime, endTime, endDay)
             isASPHoliday: 'ASP is in effect'
             }
           daysArr.push(timeLeft)
+          console.log(daysArr)
           
           }
           else if(currentDiff > 0) {
           timeLeft = {
             justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY'),
-            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('ddd, MMM Do, h:mm a'),
-            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm a').toISOString(),
+            day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('ddd, MMM Do, h:mm A'),
+            startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm A').toISOString(),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
-            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm a').subtract(2, 'hours').toISOString(),
+            alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm A').subtract(2, 'hours').toISOString(),
             
             nowISO: moment().toISOString(),
             diff: currentDiff,
@@ -192,6 +193,7 @@ console.log(startTime, endTime, endDay)
             isASPHoliday: 'This is not an Alternate Side Parking Holiday'
           }
           daysArr.push(timeLeft) 
+          console.log(daysArr)
           daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
           this.props.getMoveDay(daysArr[0].day)    
   
@@ -231,7 +233,7 @@ var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddr
             `Move your car before ${this.state.end[0].day}`,
             ``,
             [
-              {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].endISO, this.state.carLoc.data.results[0].formatted, this.state.end[0].alarmISO)},
+              {text: 'Add calendar notification', onPress: () => this.props.addToCal(this.state.end[0].startISO, this.state.end[0].startISO, this.state.carLoc.data.results[0].formatted, this.state.end[0].alarmISO)},
           
               {text: 'Go Back', onPress: () => console.log('dismissed alert')},
             ],

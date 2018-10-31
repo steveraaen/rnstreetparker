@@ -82,7 +82,8 @@ export default class AppC extends Component<Props> {
       height: Dimensions.get('window').height,
       orientation: Rescale.isPortrait() ? 'portrait' : 'landscape',
       devicetype: Rescale.isTablet() ? 'tablet' : 'phone',
-      selHood: false
+      selHood: false,
+      ASPList: aspDays
        }
 
       this.getSigns = this.getSigns.bind(this);
@@ -304,7 +305,7 @@ return d
        var reStart= /\s|^([0-9]{1,2}\:[0-9]{2}[A-P]{2})/
        var reDay= /[A-Z]{3}/g
       var endTime = doc.data[i].properties.T.match(reEnd)
-      var noonTime = moment(dayow + ' ' + '12:00PM','hh:mm A')
+      var noonTime = moment(dayow + ' ' + '12:00PM','hh:mm hA')
       var dayow = doc.data[i].properties.T.match(reDay)
       var todayArray = []
       var now = moment()
@@ -319,8 +320,8 @@ return d
       if(Array.isArray(endTime)){
             marker.dayow = dayow
             marker.rawEnd = endTime[1]
-            marker.endTime = moment(endTime[1], 'hh:mm A')
-            marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mm A')
+            marker.endTime = moment(endTime[1], 'hh:mm hA')
+            marker.noonTime = moment(dayow + ' ' + '12:00PM','hh:mm hA')
             marker.dif = ((moment(marker.endTime) - this.state.slideTime))/1000000 
 
       if(marker.endTime.isBefore(marker.noonTime)) {
@@ -406,9 +407,6 @@ hoodStatus() {
               AsyncStorage.setItem('carMarkLocation', JSON.stringify(this.state.carMarkLocation))
             })
         }
-    componentWillMount() {
-
-    }
     componentDidMount() { 
     AppState.addEventListener('change', this._handleAppStateChange);
       Dimensions.addEventListener('change', () => {
@@ -576,6 +574,8 @@ hoodStatus() {
 
       this.setState({
         nearestThree: doc.data.slice(0,3)
+      }, () => {
+
       })
     }, () => this.getCarLoc()) 
  }
@@ -613,8 +613,6 @@ hoodStatus() {
           date: a
         }]        
       }
-
-
      /* AsyncStorage.setItem('parkingObject', JSON.stringify(parkingObject))*/
       console.log(s)
       console.log(e)
@@ -862,7 +860,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         latitudeDelta: .015,
         longitudeDelta: .015,
       }}
-    
+
       >
     {this.state.todayMarkersArray.map((marker, idx) => (
     <Marker
