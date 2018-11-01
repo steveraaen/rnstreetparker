@@ -75,11 +75,14 @@ export default class Summary extends Component {
 		this.setState({showComp: false})
 	}
 	showSignOnSummary() {
+		var bgSign
+		this.props.isHol ? bgSign = 'cyan' : bgSign = 'white'
+
 		if(this.props.signText) {
 			
 
 			return(
-			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 22, marginRight: 22, backgroundColor: 'white', justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
+			<View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 22, marginRight: 22, backgroundColor: bgSign, justifyContent:'center', borderWidth: 3, borderColor: '#941100', borderRadius: 12}}>
 			<View>
 				<Image source={require('./assets/p20x144-1.png')} style={{height: 28, width: 28, margin: 6}}/>
 			</View>
@@ -112,8 +115,9 @@ var summaryHeight = this.props.height * .66
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
 			var parkedAddress = this.props.ASPObject.location
-			var goodTill = this.state.moveDay
-			var isHol = this.props.ASPObject.isASPHoliday
+			var goodTill = this.props.moveBy
+			var isHol
+			this.props.isHol ? isHol = 'ASP IS SUSPENDED' : isHol = ''
 		}	
 		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
@@ -171,7 +175,7 @@ var summaryHeight = this.props.height * .66
 				</View>			
 				
 				<View style={{marginBottom:8}}>
-			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
+			<Text style={{textAlign: 'center', color: 'cyan',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
 				</View>
 			</FadeInView>
 			</ScrollView>

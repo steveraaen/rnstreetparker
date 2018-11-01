@@ -36,6 +36,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 import aspDays from './asp.js'
+import aspDays19 from './asp19.js'
 import ModalContent from './ModalContent.js'
 import SearchB from './SearchB.js'
 import FirstUse from './FirstUse.js'
@@ -74,6 +75,8 @@ export default class AppC extends Component<Props> {
       slideTime: moment(),
       selectedDay: null,
       initDay : moment().format("dddd").toUpperCase().substring(0, 3),
+      isHol: false,
+      holName: null,
       prevLaunched: false,
       bgColor: 'black',
       fgColor: '#FFB20B',
@@ -83,7 +86,7 @@ export default class AppC extends Component<Props> {
       orientation: Rescale.isPortrait() ? 'portrait' : 'landscape',
       devicetype: Rescale.isTablet() ? 'tablet' : 'phone',
       selHood: false,
-      ASPList: aspDays
+      allASP:  [ ...aspDays, ...aspDays19]
        }
 
       this.getSigns = this.getSigns.bind(this);
@@ -119,6 +122,7 @@ export default class AppC extends Component<Props> {
       this.hoodStatus = this.hoodStatus.bind(this)
       this.showHome = this.showHome.bind(this)
       this.getMoveDay = this.getMoveDay.bind(this)
+
   }
 // --------- Find out if  user is within 20 miles of NYC center
   deg2rad(deg) {
@@ -443,15 +447,15 @@ hoodStatus() {
    .then((vlu) => {
       this.setState({signText: vlu})
    })
-      for(let asp in aspDays){
-       /* console.log(aspDays[asp].date - this.state.fullDay)*/
+/*      for(let asp in aspDays){
+  
         if(this.state.fullDay === aspDays[asp].date){         
           this.setState({
             isTodayASP: true,
             todaysHoliday: aspDays[asp].holiday
           })
         }
-      }    
+      } */   
 
       navigator.geolocation.getCurrentPosition(function(pos) {
       this.watchId = navigator.geolocation.watchPosition(
@@ -571,10 +575,18 @@ hoodStatus() {
           coordinates: [parseFloat(coor.lng).toFixed(6), parseFloat(coor.lat).toFixed(6)]            
         }
     }).then((doc) => {
+        var reStart = /([0-9]{1,2}\:[0-9]{2}[A-Z]{2})\-/
+        var reDay= /[A-Z]{3}/g
+/*        var startTime = this.state.thisSign.match(reStart)
+        var endDay = this.state.thisSign.match(reDay)*/
+for( let i = 0; i < doc.data.length; i++) {
+  console.log(doc.data[i].properties.T)
+}
 
       this.setState({
         nearestThree: doc.data.slice(0,3)
       }, () => {
+
 
       })
     }, () => this.getCarLoc()) 
@@ -770,10 +782,27 @@ showHome() {
       )
   } else return null
 }
-getMoveDay(da) {
-  this.setState({moveDay: da}, () =>{
-    AsyncStorage.setItem('moveDay', da)
-  })
+
+getMoveDay(jd) {
+console.log(jd)
+  for(let i = 0; i < this.state.allASP.length; i++) {
+    if(this.state.allASP[i].date._i ===jd) {
+      this.setState({
+        holName: this.state.allASP[i].holiday, 
+        isHol: true,
+        moveBy: jd
+      })
+      break
+    } else {
+      this.setState({
+        holName: "", 
+        isHol: false,
+        moveBy: jd
+      })
+    } 
+    
+  }
+
   }
   render() {
 

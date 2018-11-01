@@ -23,6 +23,7 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import aspDays from './asp.js';
+import aspDays19 from './asp19.js';
 import ckey from './keys.js';
 
 export default class ModalContent extends Component {
@@ -72,6 +73,8 @@ export default class ModalContent extends Component {
     })
   }, () => this.getCarLoc()) 
  }*/
+
+
  showTenSigns() {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
@@ -155,16 +158,16 @@ export default class ModalContent extends Component {
         var endTime = this.state.thisSign.match(reEnd)
         var endDay = this.state.thisSign.match(reDay)
         var daysArr = []
-console.log(startTime, endTime, endDay)
+
         for(let i = 0; i < endDay.length; i++) {
 
         var timeLeft = {}
           currentDiff = (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).diff(moment(), 'days', 'hours') 
 
           if(currentDiff < 0) {
- console.log(currentDiff - Math.floor(currentDiff))
+
             timeLeft={
-            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMMM Do YYYY'),
+            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('MMM D, YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').format('ddd, MMMM Do, h:mm A'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
             endISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm').add(7, 'days').toISOString(),
@@ -172,7 +175,7 @@ console.log(startTime, endTime, endDay)
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
-            isASPHoliday: 'ASP is in effect'
+          /*  isASPHoliday: 'ASP is in effect'*/
             }
           daysArr.push(timeLeft)
           console.log(daysArr)
@@ -180,54 +183,36 @@ console.log(startTime, endTime, endDay)
           }
           else if(currentDiff > 0) {
           timeLeft = {
-            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMMM Do YYYY'),
+            justDay: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('MMM D, YYYY'),
             day: moment(endDay[i] +" "+ startTime, 'dd, h:mm').format('ddd, MMM Do, h:mm A'),
             startISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm A').toISOString(),
             endISO: moment(endDay[i] +" "+ endTime, 'dd, h:mm').toISOString(),
             alarmISO: moment(endDay[i] +" "+ startTime, 'dd, h:mm A').subtract(2, 'hours').toISOString(),
             
-            nowISO: moment().toISOString(),
             diff: currentDiff,
             diffb: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('hours'),
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
-            isASPHoliday: 'This is not an Alternate Side Parking Holiday'
+        
           }
           daysArr.push(timeLeft) 
           console.log(daysArr)
           daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
-          this.props.getMoveDay(daysArr[0].day)    
+             
   
         }
-          for(let i = 0; i < aspDays.length; i++) {
-            console.log(timeLeft.justDay, moment(aspDays[i].date).format('MMMM Do YYYY'))
-            var formDate = moment(aspDays[i].date).format('MMMM Do YYYY')         
-            if(timeLeft.justDay === formDate) {
-              timeLeft.isASPHoliday = 'ASP IS SUSPENDED!'
-            } else {
-              timeLeft.isASPHoliday = 'ASP rules are in effect'
-            }
-       
-          }
-
  }
+
 var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddress.road
 /* var streetAddress = this.state.carLoc.data.results[0].formatted.split(",")[0]*/
  var neighborhood = this.state.carLoc.data.results[0].components.neighbourhood
  var boro = this.state.carLoc.data.results[0].components.suburb
 
 
-
         this.setState ({
-          end: daysArr,
-            asyncCarObject: {
-             /* parkedAt: this.state.carLoc.data.results[0].formatted,*/
-              location: streetAddress + ", " + boro,
-              goodTill: timeLeft.day,
-              isASPHoliday: timeLeft.isASPHoliday
-            }
+          end: daysArr
         }, () => {
-          this.props.getASPStatus(this.state.asyncCarObject)
-           /*this.setAsyncSummary(JSON.stringify(this.state.asyncCarObject))*/
+         this.props.getMoveDay(this.state.end[0].justDay)
+
          
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
