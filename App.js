@@ -213,6 +213,7 @@ return d
     } 
     else if (this.state.appState.match(/active|background/) && nextAppState === 'inactive') {
       console.log('App has gone to background!')
+
        this.setState({appState: AppState.currentState});
     } 
     
@@ -425,6 +426,11 @@ hoodStatus() {
       AsyncStorage.getItem('prevLaunched', (err, val) => {
         this.setState({
           prevLaunched: JSON.parse(val)
+        })
+      })
+      AsyncStorage.getItem('moveObj', (err, val) => {
+        this.setState({
+          moveObj: JSON.parse(val)
         })
       })
       AsyncStorage.getItem('carMarkLocation', (error, value) => {
@@ -783,21 +789,41 @@ showHome() {
   } else return null
 }
 
-getMoveDay(jd) {
+getMoveDay(jd, loc) {
 console.log(jd)
   for(let i = 0; i < this.state.allASP.length; i++) {
     if(this.state.allASP[i].date._i ===jd) {
       this.setState({
+        moveObj: {
         holName: this.state.allASP[i].holiday, 
         isHol: true,
-        moveBy: jd
+        moveBy: jd,
+        location: loc
+        }
+      }, () => {
+        AsyncStorage.setItem('moveObj', JSON.stringify({
+          moveBy: this.state.moveObj.moveBy,
+          isHol: this.state.moveObj.isHol,
+          holName: this.state.moveObj.holName,
+          location: this.state.moveObj.location
+      }))
       })
       break
     } else {
       this.setState({
+        moveObj: {
         holName: "", 
         isHol: false,
-        moveBy: jd
+        moveBy: jd,
+        location: loc
+        }
+      }, () => {
+        AsyncStorage.setItem('moveObj', JSON.stringify({
+          moveBy: this.state.moveObj.moveBy,
+          isHol: this.state.moveObj.isHol,
+          holName: this.state.moveObj.holName,
+          location: this.state.moveObj.location
+      }))
       })
     } 
     

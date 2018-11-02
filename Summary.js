@@ -76,7 +76,7 @@ export default class Summary extends Component {
 	}
 	showSignOnSummary() {
 		var bgSign
-		this.props.isHol ? bgSign = 'cyan' : bgSign = 'white'
+		this.props.isHol ? bgSign = 'yellow' : bgSign = 'white'
 
 		if(this.props.signText) {
 			
@@ -107,17 +107,17 @@ var summaryHeight = this.props.height * .66
 }
 		/*console.log(this.state.savedSpot)*/
 		var blurb = `Next ASP holiday: ${this.state.nextArr[0].holiday} on ${this.state.nextArr[0].date.format('ddd, MMM Do')}`
-		var blurbText = `The next street sweeping holiday is:`
+		var blurbText = `Next ASP holiday is:`
 		var nextHoliday = this.state.nextArr[0].holiday
 		var nextHolidayDate = this.state.nextArr[0].date.format('dddd, MMMM Do')
 
-		if(this.props.ASPObject) {
+		if(this.props.moveObj) {
 			var moveBlurb = 'You can park there until:'
 			var parkedBlurb = 'You are parked at:'
-			var parkedAddress = this.props.ASPObject.location
-			var goodTill = this.props.moveBy
+			var parkedAddress = this.props.moveObj.location
+			var goodTill = this.props.moveObj.moveBy
 			var isHol
-			this.props.isHol ? isHol = 'ASP IS SUSPENDED' : isHol = ''
+			this.props.moveObj.isHol ? isHol = 'ASP IS SUSPENDED For ' + this.props.moveObj.holName : isHol = ''
 		}	
 		if(this.props.toggleSum && this.props.dist < 20) {
 		return(
@@ -175,7 +175,7 @@ var summaryHeight = this.props.height * .66
 				</View>			
 				
 				<View style={{marginBottom:8}}>
-			<Text style={{textAlign: 'center', color: 'cyan',  fontSize: 16,  paddingTop: 4}}>{isHol}</Text>
+			<Text style={{textAlign: 'center', color: 'yellow',  fontSize: 18,  paddingTop: 4}}>{isHol}</Text>
 				</View>
 			</FadeInView>
 			</ScrollView>

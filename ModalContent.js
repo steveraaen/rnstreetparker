@@ -78,6 +78,13 @@ export default class ModalContent extends Component {
  showTenSigns() {
   console.log(this.props.nearestThree)
   if(this.props.nearestThree) {
+
+/*    var mapThree = []
+    for(let i = 0; i < this.props.nearestThree.length; i++) {
+      mapThree.push(this.parseClosest(this.props.nearestThree[i].properties.T))
+    }
+    console.log(mapThree)*/
+
       return ( 
         <View style={{alignItems: 'center'}}>
           <View style={{marginBottom: 18}}>
@@ -194,12 +201,11 @@ export default class ModalContent extends Component {
             diffc: (moment(endDay[i] +" "+ startTime, 'dd, h:mm')).fromNow('dd h:mm'),
         
           }
-          daysArr.push(timeLeft) 
-          console.log(daysArr)
-          daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
-             
+          daysArr.push(timeLeft)  
   
         }
+          daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
+           console.log(daysArr)  
  }
 
 var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddress.road
@@ -211,9 +217,9 @@ var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddr
         this.setState ({
           end: daysArr
         }, () => {
-         this.props.getMoveDay(this.state.end[0].justDay)
+         this.props.getMoveDay(this.state.end[0].justDay, streetAddress)
 
-         
+
           Alert.alert(
             `Move your car before ${this.state.end[0].day}`,
             ``,
