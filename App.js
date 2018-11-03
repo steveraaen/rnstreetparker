@@ -47,6 +47,7 @@ import Lookup from './Lookup.js'
 import GoHome from './GoHome.js'
 import FadeInView from './Anim.js'
 import Dots from './DotsIcon.js'
+import DotsPanel from './DotsPanel.js'
 
 
 
@@ -495,7 +496,7 @@ hoodStatus() {
           this.setState({selDay: moment().format("dddd").toUpperCase().substring(0, 3)}, () => {
          /*   this.getNewDay(this.state.selDay)*/
           })
-          this.openCloseSummary()
+          this.openCloseColorKey()
 
     }
   setGoHome() {
@@ -990,10 +991,10 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
      <View style={{alignItems: 'center'}}> 
       
       <TouchableOpacity onPress={() => this.openCloseColorKey()}>
-           <Text >  <Icon name="ios-information-circle-outline" size={36} color={this.state.colorColorKey}/></Text>  
+           <Dots size={36} color={this.state.colorColorKey}/>  
       </TouchableOpacity> 
 <View>
-<Text style={{color: this.state.colorColorKey, textAlign: 'center'}}>Help</Text>
+<Text style={{color: this.state.colorColorKey, textAlign: 'center'}}>Dots</Text>
 </View>
 
   
@@ -1018,9 +1019,9 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
 <View style={{display: 'flex'}}>
     <Lookup orientation={this.state.orientation} hoodStatus={this.hoodStatus} getNewMapLoc={this.getNewMapLoc} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleSearch={this.state.toggleSearch} colorSearch={this.state.colorSearch} openCloseSearch={this.openCloseSearch} dist={this.state.dist} height={this.state.height} width={this.state.width}/>
 </View> 
-
-<ColorKey height={this.state.height} width={this.state.width} orientation={this.state.orientation} fgColor={this.state.fgColor} bgColor={this.state.bgColor} toggleColorKey={this.state.toggleColorKey} showKey={this.state.showKey } hideKey={this.hideKey} />
-  
+<View style={{position: 'absolute', bottom: 4, width: this.state.width}}>
+  <DotsPanel hideKey={this.hideKey} toggleColorKey={this.state.toggleColorKey} bgColor={this.state.bgColor} fgColor={this.state.fgColor}/>
+</View>
   </View>
     );
     } else {
@@ -1028,7 +1029,7 @@ else if( this.state.uLongitude && this.state.signs && this.state.todayMarkersArr
         <StatusBar barStyle="light-content" hidden ={false}/>
         <Image
           style={{height: this.state.height, width: this.state.width}}
-          source={require('./assets/p10.png')}
+          source={require('./assets/lnch.png')}
         />
       </View>)
     }

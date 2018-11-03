@@ -5,7 +5,7 @@ import FadeInView from './Anim.js'
 export default class Dots extends Component {
 	render() {
 		return (
-			<View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 32, width: 32, marginTop: 24, borderWidth: 1, backgroundColor: this.props.colorColor, borderRadius: 4}}>
+			<View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 38, width: 34,  borderWidth: 1, borderColor: this.props.color, borderRadius: 8}}>
 				<Image 
 					source={require('./assets/blueDot12pt.png')}
 					style={{height: 8, width: 8}}

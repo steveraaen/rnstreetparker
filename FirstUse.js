@@ -12,7 +12,7 @@ var blurbSave = `Saves location and parking rules for exactly where you are park
 var blurbCal = `Adds time & date of next-move and car's location to your iOS calendar.`
 var blurbAdjust = `Adjusts if your next-move date falls on an ASP holiday.`
 var blurbAlarm = `Generates an iOS notification two hours before the next-move time.`
-var blurbImport = `Lets you import the entire ASP suspention schedule into your iOS calendar.`
+var blurbImport = `Import the entire ASP suspention schedule into your iOS calendar.`
 export default class FirstUse extends Component {
 	constructor(props) {
 		super(props);
