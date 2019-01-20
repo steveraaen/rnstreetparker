@@ -20,7 +20,7 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 var todayOW = moment().format('ddd').toUpperCase()
-console.log(todayOW)
+/*console.log(todayOW)*/
 export default class SearchB extends Component {
   constructor(props) {
     super(props) ;

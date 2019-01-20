@@ -22,8 +22,6 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import aspDays from './asp.js';
-import aspDays19 from './asp19.js';
 import ckey from './keys.js';
 
 export default class ModalContent extends Component {
@@ -76,7 +74,7 @@ export default class ModalContent extends Component {
 
 
  showTenSigns() {
-  console.log(this.props.nearestThree)
+ /* console.log(this.props.nearestThree)*/
   if(this.props.nearestThree) {
 
 /*    var mapThree = []
@@ -185,7 +183,7 @@ export default class ModalContent extends Component {
           /*  isASPHoliday: 'ASP is in effect'*/
             }
           daysArr.push(timeLeft)
-          console.log(daysArr)
+      /*    console.log(daysArr)*/
           
           }
           else if(currentDiff > 0) {
@@ -205,7 +203,7 @@ export default class ModalContent extends Component {
   
         }
           daysArr.sort((a,b) => b.startISO < a.startISO ? 1 : -1);
-           console.log(daysArr)  
+        /*   console.log(daysArr) */ 
  }
 
 var streetAddress= this.state.carAddress.house_number + " " + this.state.carAddress.road

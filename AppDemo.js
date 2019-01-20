@@ -36,6 +36,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/Ionicons';
 import aspDays from './asp.js'
+import aspDays19 from './asp19.js'
 import ModalContent from './ModalContent.js'
 import SearchB from './SearchB.js'
 import FirstUse from './FirstUse.js'
@@ -52,7 +53,7 @@ import DotsPanel from './DotsPanel.js'
 
 type Props = {};
 
-export default class AppC extends Component<Props> {
+export default class AppDemo extends Component<Props> {
   constructor(props) {
     super(props);
 
@@ -86,7 +87,7 @@ export default class AppC extends Component<Props> {
       orientation: Rescale.isPortrait() ? 'portrait' : 'landscape',
       devicetype: Rescale.isTablet() ? 'tablet' : 'phone',
       selHood: false,
-      allASP:  [ ...aspDays]
+      allASP:  [ ...aspDays, ...aspDays19]
        }
 
       this.getSigns = this.getSigns.bind(this);
@@ -149,14 +150,14 @@ return d
       handleCheck() {
     this.setState({checked: !this.state.checked}, () => {
       if(this.state.checked) {
-      /*  console.log('checked')*/
+        console.log('checked')
         this.setState({
           prevLaunched: true,
           checked: true
         })
         AsyncStorage.setItem('prevLaunched', JSON.stringify(true))
       } else {
-       /* console.log('unchecked')*/
+        console.log('unchecked')
         AsyncStorage.setItem('prevLaunched', JSON.stringify(false))
       }
     })
@@ -204,15 +205,15 @@ return d
       this.setState({modalVisible:false});
     }
       _handleAppStateChange = (nextAppState) => {
-/*        console.log(nextAppState)
+        console.log(nextAppState)
         console.log(this.appState)
-        console.log(AppState)*/
+        console.log(AppState)
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-     /* console.log('App has come to the foreground!')*/
+      console.log('App has come to the foreground!')
       this.setState({appState: AppState.currentState});
     } 
     else if (this.state.appState.match(/active|background/) && nextAppState === 'inactive') {
-   /*   console.log('App has gone to background!')*/
+      console.log('App has gone to background!')
 
        this.setState({appState: AppState.currentState});
     } 
@@ -386,7 +387,7 @@ hoodStatus() {
   })
 }
     getNewMapLoc(lo, la) {
-    /*  console.log('gnml')*/
+      console.log('gnml')
       this.setState({
         uLatitude: la,
         uLongitude: lo,
@@ -467,12 +468,12 @@ hoodStatus() {
       this.watchId = navigator.geolocation.watchPosition(
       (position) => {
         this.setState({
-          originalLatitude: position.coords.latitude,
-          originalLongitude: position.coords.longitude,          
-          uLatitude: position.coords.latitude,
-          uLongitude: position.coords.longitude,
-          uLnglat: [pos.coords.longitude, pos.coords.latitude],
-          uPosition: position.coords,
+          originalLatitude: 40.76873, //position.coords.latitude,
+          originalLongitude: -73.9659, //position.coords.longitude,          
+          uLatitude: 40.76873, //position.coords.latitude,
+          uLongitude: -73.9659, //position.coords.longitude,
+          uLnglat: [-73.9659, 40.76873], //[pos.coords.longitude, pos.coords.latitude],
+         
 /*          region: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -586,17 +587,20 @@ hoodStatus() {
 /*        var startTime = this.state.thisSign.match(reStart)
         var endDay = this.state.thisSign.match(reDay)*/
 for( let i = 0; i < doc.data.length; i++) {
- /* console.log(doc.data[i].properties.T)*/
+  console.log(doc.data[i].properties.T)
 }
 
       this.setState({
         nearestThree: doc.data.slice(0,3)
+      }, () => {
+
+
       })
     }, () => this.getCarLoc()) 
  }
 
     makeCarMarker() {
-   /*   console.log('mcm called', this.state.carMarkLocation)*/
+      console.log('mcm called', this.state.carMarkLocation)
     if(this.state.carMarkLocation) {
       return(
        <Marker 
@@ -617,9 +621,9 @@ for( let i = 0; i < doc.data.length; i++) {
           var isauth = RNCalendarEvents.authorizeEventStore()
     var test = RNCalendarEvents.authorizationStatus()
     var calList = RNCalendarEvents.findCalendars()
-/*    console.log(isauth)
+    console.log(isauth)
     console.log(test)
-    console.log(calList)*/
+    console.log(calList)
       var parkingObject = {
         startDate: s,
         endDate: e,
@@ -629,10 +633,10 @@ for( let i = 0; i < doc.data.length; i++) {
         }]        
       }
      /* AsyncStorage.setItem('parkingObject', JSON.stringify(parkingObject))*/
-/*      console.log(s)
+      console.log(s)
       console.log(e)
       console.log(l)
-      console.log(a)*/
+      console.log(a)
       RNCalendarEvents.saveEvent('Move Car', {
         startDate: s,
         endDate: e,
@@ -641,7 +645,7 @@ for( let i = 0; i < doc.data.length; i++) {
           date: a
     }]
   }).then((res) => {
-   /* console.log(res)*/
+    console.log(res)
     if(res) {
       this.setState({
         calendarId: res
@@ -787,7 +791,7 @@ showHome() {
 }
 
 getMoveDay(jd, loc) {
-/*console.log(jd)*/
+console.log(jd)
   for(let i = 0; i < this.state.allASP.length; i++) {
     if(this.state.allASP[i].date._i ===jd) {
       this.setState({

@@ -118,17 +118,7 @@ export default class FirstUse extends Component {
 			</TouchableOpacity>
 
 			</View>
-			<View style={{display:'flex', flexDirection: 'row', flexWrap: 'wrap',justifyContent: 'center', alignItems: 'center', padding: 4}}>
-				<View style={{display: 'flex', justifyContent: 'flex-start', marginRight: 4}}>
-				 	<Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>To see this info again, tap the </Text>
-				 </View>
-				 <View style={{display: 'flex', justifyContent: 'flex-end'}}>
-				 	<Icon name="ios-information-circle-outline" size={34} color="#F6FEAC"/> 
-				</View>
-				<View style={{display: 'flex', justifyContent: 'flex-end', marginLeft: 4}}>
-				 <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>icon on the main page. </Text>
-				</View>
-				</View>
+
 			</View>
 			)
 	}

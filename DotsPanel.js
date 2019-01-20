@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 if(this.props.toggleColorKey) {
 		return (
       	<View style={{flex: 1, display: 'flex',flexDirection: 'row',marginBottom: 2, backgroundColor: this.props.bgColor, marginLeft: 10, marginRight: 10, justifyContent: 'space-between', paddingTop: 6,  borderRadius: 8}}>
-				<View style={{flex: .16}} >
+				<View style={{flex: .16, marginLeft: 20}} >
 					<TouchableOpacity onPress={() => this.props.hideKey(false)}>
 					 	<Text>  <Icon name="ios-close" size={36} color={this.props.fgColor}/></Text> 
 					 </TouchableOpacity>
